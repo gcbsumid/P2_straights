@@ -41,6 +41,7 @@ void GamePlay::AddPlayer(bool human) {
 }
 
 void GamePlay::PlayGame() {
+    cout << "WOULD YOU LIEK TO PLAY A GAME?!" << endl;
     // Initializes players.
     for (int i = 0; i < 4; i++) {
         // Ask the view if the player should be a human or computer

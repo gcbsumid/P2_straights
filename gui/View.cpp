@@ -1,6 +1,6 @@
 //#include "observer.h"
 #include "View.h"
-//#include "../gameplay/GamePlay.h"
+#include "../gameplay/GamePlay.h"
 //#include "../gameplay/GameState.h"
 //#include "subject.h" // Will figure out this one
 //#include "../gui/DeckGui.h"
@@ -16,7 +16,7 @@ using namespace std;
 
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
-View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck), 
+View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck), 
         mMenu(false, 10), mPanel(false, 0), mHand() {
     // Sets some properties in the window
     set_title("Straights");
@@ -84,6 +84,7 @@ View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck),
 
     show_all_children();
 
+
     //mPanel.add(mTable);
     //mTable.Display();
     // Adds the table to the window
@@ -105,6 +106,7 @@ void View::update() {
 void View::onNewGame() {
     // TODO: NEW GAME
     cout << "New Game" << endl;
+    mGamePlay->PlayGame();
 }
 
 void View::onNewSeed() {
@@ -122,12 +124,21 @@ void View::onQuit() {
 
 // Implementations of the view external interface.
 void View::AddPlayer(int player) {
+    cout << "Got addplayer signal" << endl;
     stringstream s;
     s << "Is player " << player << " a human or a computer?";
     Gtk::Dialog dialog(s.str());
     dialog.add_button("Human", 1);
     dialog.add_button("Computer", 2);
-    dialog.show();
+    int resp = dialog.run();
+    cout << "Got response " << resp << endl;
+    if (resp == 1) {
+        // Human player.
+        mGamePlay->AddPlayer(true);
+    } else {
+        // Computer player.
+        mGamePlay->AddPlayer(false);
+    }
 }
 
 

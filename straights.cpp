@@ -5,6 +5,7 @@
 //#include "model.h"
 //#include "controller.h"
 #include "gui/View.h"
+#include "gameplay/GamePlay.h"
 
 //#include "gameplay/GamePlay.h"
 
@@ -18,7 +19,7 @@ int main(int argc, char** argv) {
     //    srand48(seed);
     //}
 
-    //GamePlay* gameplay = new GamePlay();
+    GamePlay* gameplay = new GamePlay();
     // Play the game, round by round.
     //while(gameplay->PlayRound()) {}
 
@@ -30,7 +31,9 @@ int main(int argc, char** argv) {
     //    Controller controller( &model );  // Create controller
     //View view( &controller, &model );     // Create the view -- is passed handle to controller and model
     DeckGui deck;
-    View view(&deck);
-    Gtk::Main::run( view );               // Show the window and return when it is closed.
+    View view(&deck, gameplay);
+    gameplay->AddView(&view);
+    //gameplay->PlayGame();
+    Gtk::Main::run(view);               // Show the window and return when it is closed.
     return 0;
 }

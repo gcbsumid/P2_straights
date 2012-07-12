@@ -21,7 +21,6 @@ GameState::GameState(GamePlay* gameplay) : mGamePlay(gameplay), mCurrentPlayer(-
     for (int i = 0; i < 4; i++) {
         mScores.push_back(0);
     }
-    mHands.resize(4);
     mDiscards.resize(4);
 }
 
@@ -72,17 +71,20 @@ void GameState::Shuffle() {
 
 
 void GameState::DealCards() {
+    cout << "Dealing cards" << endl;
     assert(mPlayers.size() == 4);
     // We only tell the observers about human cards.
     vector<vector<Card*> > observerUpdate;
-
+    int card = 0;
     for (int i = 0; i < 4; i++) {
-        // Slice up the cards into individual hands, represented as vectors.
-        Card** handBegin = mCardsArray + (i * 13);
-        Card** handEnd = handBegin + 13 * sizeof(Card*);
-        mHands[i] = vector<Card*>(handBegin, handEnd);
+        vector<Card*> hand;
+        for (int j = 0; j < 13; j++) {
+            hand.push_back(mCardsArray[card++]);
+        }
+        mHands.push_back(hand);
         if (mPlayers[i]->IsHuman()) {
             observerUpdate.push_back(mHands[i]);
+            cout << "This hand " << i << " has " << observerUpdate[i].size() << " cards " << endl;
             assert(observerUpdate[i].size() == 13);
         } else {
             vector<Card*> v;

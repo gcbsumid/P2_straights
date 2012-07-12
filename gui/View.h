@@ -14,7 +14,7 @@
 //#include "gameplay/GamePlay.h"
 //#include "gameplay/GameState.h"
 
-//class GamePlay; // Controller
+class GamePlay; // Controller
 //class GameState; // Model
 
 class DeckGui;  // Images of cards.
@@ -22,7 +22,7 @@ class DeckGui;  // Images of cards.
 class View : public Gtk::Window, public ModelObserver, public ViewInterface {
     //, public ControllerObserver, public ModelObserver
 public:
-    View(DeckGui* deck);
+    View(DeckGui* deck, GamePlay* gameplay);
     //View(Controller*, Model*);
     virtual ~View();
     virtual void update(); 
@@ -48,7 +48,7 @@ private:
     //GameState* mGameState;
     
     // Strategy Pattern member (plus signal handlers)
-    //GamePlay* mGamePlay;
+    GamePlay* mGamePlay;
 
     // Card Images
     DeckGui* mDeck;
