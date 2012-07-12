@@ -16,7 +16,6 @@ RowHBox::RowHBox(DeckGui* deck, int suit, int spacing = 5) : HBox(true, spacing)
             // 7 of spades;
             mCards[i] = new CardPics(false, mDeck, SEVEN, SPADE);
         } else {
-            cout << "Other card" << endl;
             mCards[i] = new CardPics(false, mDeck, RANK_COUNT, SUIT_COUNT);
         }
         //mCards[i] = new Gtk::Button("Fuck Nuts");
