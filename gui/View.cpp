@@ -4,7 +4,8 @@
 //#include "../gameplay/GameState.h"
 //#include "subject.h" // Will figure out this one
 //#include "../gui/DeckGui.h"
-//#include "../gui/TableVBox.h"
+#include "TableVBox.h"
+#include "RowHBox.h"
 #include <iostream>
 using namespace std;
 
@@ -25,7 +26,6 @@ View::View() : Gtk::Window(), mTable(), mMenu(false, 10), mPanel(false, 0) {
 
     // Adds the menu at the top
     mPanel.add(mMenu);
-    mPanel.add(mTable);
 
     // Define the actions:
     mRefActionGroup = Gtk::ActionGroup::create();
@@ -63,9 +63,12 @@ View::View() : Gtk::Window(), mTable(), mMenu(false, 10), mPanel(false, 0) {
 
     Gtk::Widget* pMenuBar = mRefUIManager->get_widget("/MenuBar");
 
-    mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
-
     mTable.Display();
+    mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
+    mMenu.pack_start(mTable, Gtk::PACK_SHRINK);
+
+    //mPanel.add(mTable);
+    //mTable.Display();
     show_all_children();
     // Adds the table to the window
     //mTable = new TableVBox(10);

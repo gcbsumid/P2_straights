@@ -2,7 +2,7 @@
 #define ROW_HBOX
 
 #include <gtkmm/box.h>
-//#include "CardPics.h"
+#include "CardPics.h"
 
 class CardPics;
 
@@ -14,8 +14,8 @@ public:
 
 protected:
     int mSuit;
-    Gtk::VBox* mCards[13];
-    //CardPics* mCards[13];
+    //Gtk::VBox* mCards[13];
+    CardPics* mCards[13];
 };
 
 #endif
