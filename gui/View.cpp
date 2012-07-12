@@ -7,6 +7,7 @@
 #include "TableVBox.h"
 #include "RowHBox.h"
 #include "DeckGui.h"
+#include "PlayerInfoBox.h"
 #include <gtkmm/messagedialog.h>
 
 #include <iostream>
@@ -164,6 +165,11 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
         add(*mHand[playerid-1]);
     } else {
         mHand[playerid-1] = NULL;
+
+    // Displays the player information onto the screen
+    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid);
+    add(*mPlayerInfo[playerid-1]);
+    mPlayerInfo[playerid-1]->show();
     }
 }
 

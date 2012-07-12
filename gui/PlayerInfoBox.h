@@ -1,10 +1,10 @@
 #ifndef PLAYER_INFO
 #define PLAYER_INFO
 
-#include <gtkmm/vbox>
-#include <gtkmm/button>
+#include <gtkmm/box.h>
+#include <gtkmm/button.h>
 
-class PlayerInfoBox : Gtk::VBox {
+class PlayerInfoBox : public Gtk::VBox {
 public:
     PlayerInfoBox(bool, int); // bool is for human or computer, int is player number
     ~PlayerInfoBox();
@@ -15,7 +15,7 @@ private:
     int mScore;
 
     // Widgets
-    Gtk::VBox mPanels;          // Frame Box
+    Gtk::VBox mPanel;          // Frame Box
     Gtk::VBox mButtonBox;       // VBox containing button data
     Gtk::VBox mScoreTextBox;    // VBox containing the score as text
     Gtk::Button mRageQuit;      // Rage Quit Button

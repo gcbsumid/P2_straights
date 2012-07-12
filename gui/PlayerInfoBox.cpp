@@ -1,29 +1,34 @@
 #include "PlayerInfoBox.h"
 #include <sstream>
 #include <iostream>
+using namespace std;
 
 PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum) : 
-    HBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
-    mScore(0), mRageQuit("Rage Quit"), mDiscard("Discard"), 
-    mScoreTextBox(false), mButtonBox(false) {
+    VBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
+    mScore(0), mButtonBox(false), mScoreTextBox(false),
+    mRageQuit("Rage Quit"), mDiscard("Discard") {
 
     // set sme properties of the box
     stringstream playerNumberStream, scoreStream; 
     playerNumberStream << "Player " << playerNum << endl;
-    set_title(playerNumberStream.str().c_str());
+    set_name(playerNumberStream.str().c_str());
     add(mPanel);
 
+    // Displays the score
     scoreStream << mScore << endl;
-    mScoreTextBox.set_title(scoreStream.str().c_str());
+    mScoreTextBox.set_name(scoreStream.str().c_str());
     add(mScoreTextBox);
 
+    //Add Button container
     add(mButtonBox);
 
+    // Adds the buttons 
     mButtonBox.add(mRageQuit);
     mButtonBox.add(mDiscard);
 
-    mRageQuit.signal_clicked().connect(sigc::mem_fun(*this, PlayerInfoBox::RageQuitButtonPressed));
-    mDiscard.signal_clicked().connect(sigc::mem_fun(*this, PlayerInfoBox::DiscardButtonPressed));
+    // clicked functions assigned to buttons
+    mRageQuit.signal_clicked().connect(sigc::mem_fun(*this, &PlayerInfoBox::RageQuitButtonPressed));
+    mDiscard.signal_clicked().connect(sigc::mem_fun(*this, &PlayerInfoBox::DiscardButtonPressed));
     
     show_all();
 }

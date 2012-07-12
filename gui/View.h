@@ -11,6 +11,7 @@
 #include <vector>
 #include "TableVBox.h"
 #include "HandHBox.h"
+#include "PlayerInfoBox.h"
 //#include "gameplay/GamePlay.h"
 //#include "gameplay/GameState.h"
 
@@ -63,6 +64,7 @@ private:
     Gtk::VBox mMenu;
     Gtk::VBox mPanel;       // This is the container for all objects
     HandHBox* mHand[4];
+    PlayerInfoBox* mPlayerInfo[4]; // contains info and button for players
 
     Glib::RefPtr<Gtk::UIManager> mRefUIManager;
     Glib::RefPtr<Gtk::ActionGroup> mRefActionGroup;
