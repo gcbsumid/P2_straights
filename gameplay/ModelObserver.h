@@ -7,6 +7,8 @@ class Card;
 
 class ModelObserver {
 public:
+    // Receives a vector of size 4.
+    // The value is either an empty vector for a computer player or a vector of 13 cards for a human.
     virtual void Model_CardsDealt(std::vector<std::vector<Card*> >) = 0;
     virtual void Model_PlayerAdded(bool isHuman, int id) = 0;
     virtual void Model_PlayerRageQuitted(int player) = 0;

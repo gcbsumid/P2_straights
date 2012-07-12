@@ -26,8 +26,8 @@ public:
     void AddModelObserver(ModelObserver* m);
     
     // Functions called by the main game.
+    void PlayGame();                        // Main game loop. Initializes game and plays it out.
     void AddPlayer(bool human);             // Add a human/computer player to the game.
-    void PlayGame();                       // Each individual round happens in here. Return true if game over.
     
     // Functions called by players in the view.
 
@@ -36,7 +36,6 @@ public:
     // The player discards the card with the given suit and rank. Returns false if invalid card.
     bool DiscardCard(int player, Suit suit, Rank rank);
 
-    void Quit();                            // Called by a human player when they want to quit. Ends the game.
     void RageQuit(int player);              // Converts indicated player from human to computer.
     void ResetSeed(int seed);               // Reset the seed to some other value.
     std::vector<Card*> GetDiscards(int player) const;    // Returns a player's discarded cards.

@@ -41,6 +41,12 @@ void GamePlay::AddPlayer(bool human) {
 }
 
 void GamePlay::PlayGame() {
+    // Initializes players.
+    for (int i = 0; i < 4; i++) {
+        // Ask the view if the player should be a human or computer
+        // The view calls GamePlay::AddPlayer, then we call PlayerAdded.
+        mView->AddPlayer();
+    }
     while(!mQuit) {
         mState->Shuffle();
         mState->DealCards();
@@ -94,40 +100,6 @@ void GamePlay::PlayGame() {
             return;
         }
     }
-}
-/*
-void GamePlay::PrintCardsOnTable() const {
-    cout << "Cards on the table:" << endl;
-    for (int i = 0; i < 4; i++) {
-        switch (i) {
-            case 0:
-                cout << "Clubs:";
-                break;
-            case 1:
-                cout << "Diamonds:";
-                break;
-            case 2:
-                cout << "Hearts:";
-                break;
-            case 3:
-                cout << "Spades:";
-                break;
-            default:
-                // Should never get here.
-                break;
-        }
-        for (int j = 0; j < 13; j++) {
-            // Print out all cards in that suit which are on the table.
-            if (mCardsOnTable.count(mArrangedCards[i*13 + j]) > 0) {
-                cout << " " << mArrangedCards[i*13 + j]->getRankName();
-            }
-        }
-        cout << endl;
-    }
-}*/
-
-void GamePlay::Quit() {
-    mQuit = true;
 }
 
 bool GamePlay::PlayCard(int player, Suit suit, Rank rank) {

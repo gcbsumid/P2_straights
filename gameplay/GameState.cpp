@@ -73,14 +73,25 @@ void GameState::Shuffle() {
 
 void GameState::DealCards() {
     assert(mPlayers.size() == 4);
+    // We only tell the observers about human cards.
+    vector<vector<Card*> > observerUpdate;
+
     for (int i = 0; i < 4; i++) {
         // Slice up the cards into individual hands, represented as vectors.
         Card** handBegin = mCardsArray + (i * 13);
         Card** handEnd = handBegin + 13 * sizeof(Card*);
         mHands[i] = vector<Card*>(handBegin, handEnd);
+        if (mPlayers[i]->IsHuman()) {
+            observerUpdate.push_back(mHands[i]);
+            assert(observerUpdate[i].size() == 13);
+        } else {
+            vector<Card*> v;
+            observerUpdate.push_back(v);
+            assert(observerUpdate[i].empty());
+        }
     }
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
-        (*i)->Model_CardsDealt(mHands);
+        (*i)->Model_CardsDealt(observerUpdate);
     }
 }
 int GameState::PlayerWithSevenOfSpades() const {
