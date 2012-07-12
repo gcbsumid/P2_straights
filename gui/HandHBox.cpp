@@ -1,29 +1,16 @@
 #include "HandHBox.h"
+#include "RowHBox.h"
 #include "CardPics.h"
 #include "../gameplay/Card.h"
 #include "DeckGui.h"
 using namespace std;
 
 // Constructor - it creates the 4 suits in a Hbox each
-HandHBox::HandHBox(Vector<Card*> cards, int spacing = 5) : HBox(true, spacing){
-    int i = 0;
-    Card* card = cards.at(i);
+HandHBox::HandHBox(DeckGui* deck, int player, int spacing) : RowHBox(deck, -1, spacing) {
+    mCards.resize(13);
 
-    // Display all the cards
-    while (card != NULL) {
-        bool isLegal = false;
-        // TODO: change this to the actual is legal function
-        if(isLegal(card)) {
-            isLegal = true;
-        }
-
-        mCards[i] = new CardPics(isLegal, card->getRank(), card->getSuit());
-        add(mCards[i]);
-        i++;
-    }
 
     // The final step is to display the buttons (they display themselves)
-    show_all();
 
 }
 
@@ -42,6 +29,38 @@ void HandHBox::update(){
     }
 }
 
-void HandHBox::NoLegalPlays(){
+void HandHBox::StaticToButton() {
     // TODO: delete all images and replace them as buttons
+    for (int i = 0; i < 13; i++) {
+        if (mCards[i]->IsValidCard()) {
+            remove(mCards[i]);
+            CardPics* card = new CardPics(true, mCards[i]->GetRank(), mCards[i]->getSuit());
+            delete mCards[i];
+            mCards[i] = card;
+            add(mCards[i]);
+        }
+    }
+}
+
+void HandHBox::ButtonToStatic() {
+    // TODO: delete buttons and replace them as static images
+    for (int i = 0; i < 13; i++) {
+        if (mCards[i]->IsValidCard()) {
+            remove(mCards[i]);
+            CardPics* card = new CardPics(false, mCards[i]->getRank(), mCards[i]->getSuit());
+            delete mCards[i];
+            mCards[i] = card;
+            add(mCards[i]);
+        }
+    }
+}
+
+void HandHBox::AddCards(std::vector<Card*> cards) {
+    // Display all the cards
+    for (int i = 0; i < 13; i++) {
+        Card* card = cards.at(i);
+        mCards[i] = new CardPics(false, deck, card->getRank(), card->getSuit());
+        add(*mCards[i]);
+    }
+    // show_all_children();  // Not sure if needed
 }

@@ -14,7 +14,7 @@ void TableVBox::Display() {
     add(mPanel);
 
     for (int i = 0; i < 4; i++) {
-        mSuits[i] = new RowHBox(mDeck, 5, i);
+        mSuits[i] = new RowHBox(mDeck, i, 5);
         mPanel.pack_start(*mSuits[i], Gtk::PACK_SHRINK);
         cout << "this should be adding hbox " << i << endl;
     }

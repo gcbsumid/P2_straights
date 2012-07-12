@@ -5,7 +5,7 @@
 //DeckGui CardPics::deck;
 
 CardPics::CardPics(bool isButton, DeckGui* deck, Rank f, Suit s) 
-        : HBox(false,0), mDeck(deck) {
+        : HBox(false,0), mDeck(deck), mRank(f), mSuit(s) {
     Glib::RefPtr<Gdk::Pixbuf> card;
 
     // Sets the image to be displayed
@@ -31,4 +31,19 @@ CardPics::CardPics(bool isButton, DeckGui* deck, Rank f, Suit s)
 
 CardPics::~CardPics() {
     delete mCard;
+}
+
+Rank CardPics::GetRank() {
+    return mRank;
+}
+
+Suit CardPics::GetSuit() {
+    return mSuit;
+}
+
+bool CardPics::IsValidCard() {
+    if(mRank != RANK_COUNT || mSuit != SUIT_COUNT){
+        return true;
+    }
+    return false;
 }

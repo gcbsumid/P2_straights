@@ -2,14 +2,21 @@
 #define HAND_HBOX
 #include "RowHBox.h"
 #include "../gameplay/Card.h"
+#include <vector>
+
+class CardPic;
 
 class HandHBox : public RowHBox {
 public:    
-    HandHBox(int, Vector<Card*>);
+    HandHBox(DeckGui* deck, int player, int spacing = 5);
     ~HandHBox();
     void update();
+
+    void AddCards(std::vector<Card*>);
 private:
-    void NoLegalPlays();
+    void StaticToButton();
+    void ButtonToStatic();
+    int mPlayer;
 };
 
 #endif

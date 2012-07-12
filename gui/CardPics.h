@@ -12,9 +12,15 @@ class CardPics : public Gtk::HBox {
 public:
     CardPics(bool isButton, DeckGui* deck, Rank f = RANK_COUNT, Suit s = SUIT_COUNT);
     ~CardPics();
+    Rank GetRank();
+    Suit GetSuit();
+    bool IsValidCard();
+
 private:
     DeckGui* mDeck;
 
+    Rank mRank;
+    Suit mSuit;
     // Member widgets:
     Gtk::Image* mCard;          // Images to display.
     Gtk::Button mButton;        // Button that will hold an image.

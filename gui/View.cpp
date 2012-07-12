@@ -9,6 +9,7 @@
 #include "DeckGui.h"
 #include <iostream>
 #include <cassert>
+#include <vector>
 using namespace std;
 
 // Creates the table
@@ -79,16 +80,7 @@ View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck),
     mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
     mMenu.pack_start(mTable, Gtk::PACK_SHRINK);
 
-    /***********************/
-    /* ADDING THE PLAYERS  */
-    /***********************/
-
     show_all_children();
-
-    for (int i = 0; i < 4; i++) {
-        mHand[i] = new HandHBox(i+1);
-        add(mHand[i]);
-    }
 
     //mPanel.add(mTable);
     //mTable.Display();
@@ -129,15 +121,21 @@ void View::onQuit() {
 // gets a call from 
 void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     assert(playerid > 0 && playerid < 5);
+    if (IsHuman) {
+        mHand[playerid-1] = new HandHBox(mDeck, playerid);
+        add(*mHand[playerid-1]);
+    } else {
+        mHand[playerid-1] = NULL;
+    }
 
 }
 
-void View::Model_CardsDealt(std::vector<std::std::vector<Card*> > playerCards) {
-    assert(playerid > 0 && playerid < 5);
+void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
     for (int i = 0; i < 4; i++) {
-        if(!playerCards.at(i).empty()){
-            mHand[playerid-1]->AddCards(playerCards.at(i));
-            mHand[playerid-1]->show();
+        if (!playerCards[i].empty()) {
+            assert(mHand[i] != NULL);
+            mHand[i]->AddCards(playerCards.at(i));
+            mHand[i]->show();
         }
     }
 }

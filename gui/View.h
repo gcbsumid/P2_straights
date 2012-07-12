@@ -5,6 +5,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/actiongroup.h>
+#include "../gameplay/ModelObserver.h"
 #include "TableVBox.h"
 #include "HandHBox.h"
 //#include "gameplay/GamePlay.h"
@@ -15,13 +16,15 @@
 
 class DeckGui;  // Images of cards.
 
-class View : public Gtk::Window {
+class View : public Gtk::Window, public ModelObserver{
     //, public ControllerObserver, public ModelObserver
 public:
     View(DeckGui* deck);
     //View(Controller*, Model*);
     virtual ~View();
     virtual void update(); 
+    virtual void Model_CardsDealt(std::vector<std::vector<Card*> >);
+    virtual void Model_PlayerAdded(bool isHuman, int id);
     // Observer Pattern: concrete update() method
 
 private:
