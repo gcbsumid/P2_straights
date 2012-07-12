@@ -31,6 +31,6 @@ int main(int argc, char** argv) {
     //View view( &controller, &model );     // Create the view -- is passed handle to controller and model
     DeckGui deck;
     View view(&deck);
-    //Gtk::Main::run( view );               // Show the window and return when it is closed.
+    Gtk::Main::run( view );               // Show the window and return when it is closed.
     return 0;
 }
