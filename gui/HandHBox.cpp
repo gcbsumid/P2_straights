@@ -6,10 +6,8 @@
 using namespace std;
 
 // Constructor - it creates the 4 suits in a Hbox each
-HandHBox::HandHBox(DeckGui* deck, int player, int spacing) : RowHBox(deck, -1, spacing) {
-    mCards.resize(13);
-
-
+HandHBox::HandHBox(DeckGui* deck, int player, int spacing) : 
+                RowHBox(deck, -1, spacing), mDeck(deck) {
     // The final step is to display the buttons (they display themselves)
 
 }
@@ -24,20 +22,18 @@ HandHBox::~HandHBox() {
 }
 
 void HandHBox::update(){
-    for (int i = 0; i < 13; i++) {
-        mCards[i]->update();
-    }
+    // TODO: something/
 }
 
 void HandHBox::StaticToButton() {
     // TODO: delete all images and replace them as buttons
     for (int i = 0; i < 13; i++) {
         if (mCards[i]->IsValidCard()) {
-            remove(mCards[i]);
-            CardPics* card = new CardPics(true, mCards[i]->GetRank(), mCards[i]->getSuit());
+            remove(*mCards[i]);
+            CardPics* card = new CardPics(true, mDeck, mCards[i]->GetRank(), mCards[i]->GetSuit());
             delete mCards[i];
             mCards[i] = card;
-            add(mCards[i]);
+            add(*mCards[i]);
         }
     }
 }
@@ -46,11 +42,11 @@ void HandHBox::ButtonToStatic() {
     // TODO: delete buttons and replace them as static images
     for (int i = 0; i < 13; i++) {
         if (mCards[i]->IsValidCard()) {
-            remove(mCards[i]);
-            CardPics* card = new CardPics(false, mCards[i]->getRank(), mCards[i]->getSuit());
+            remove(*mCards[i]);
+            CardPics* card = new CardPics(false, mDeck, mCards[i]->GetRank(), mCards[i]->GetSuit());
             delete mCards[i];
             mCards[i] = card;
-            add(mCards[i]);
+            add(*mCards[i]);
         }
     }
 }
@@ -59,7 +55,7 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
     // Display all the cards
     for (int i = 0; i < 13; i++) {
         Card* card = cards.at(i);
-        mCards[i] = new CardPics(false, deck, card->getRank(), card->getSuit());
+        mCards[i] = new CardPics(false, mDeck, card->getRank(), card->getSuit());
         add(*mCards[i]);
     }
     // show_all_children();  // Not sure if needed

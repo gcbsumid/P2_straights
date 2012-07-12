@@ -14,6 +14,8 @@ public:
 
     void AddCards(std::vector<Card*>);
 private:
+    DeckGui* mDeck;
+
     void StaticToButton();
     void ButtonToStatic();
     int mPlayer;
