@@ -65,6 +65,7 @@ private:
     Gtk::VBox mPanel;       // This is the container for all objects
     HandHBox* mHand[4];
     PlayerInfoBox* mPlayerInfo[4]; // contains info and button for players
+    Gtk::HBox mPlayerInfoContainer;
 
     Glib::RefPtr<Gtk::UIManager> mRefUIManager;
     Glib::RefPtr<Gtk::ActionGroup> mRefActionGroup;

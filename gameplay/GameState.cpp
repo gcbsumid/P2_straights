@@ -38,6 +38,7 @@ GameState::~GameState() {
 }
 
 void GameState::AddObserver(ModelObserver* o) {
+    cout << "Adding an observer to the game state" << endl;
     mObservers.push_back(o);
 }
 
@@ -93,6 +94,7 @@ void GameState::DealCards() {
         }
     }
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        cout << "Sending a vector of size " << observerUpdate.size() << " to an observer for dealing cards " << endl;
         (*i)->Model_CardsDealt(observerUpdate);
     }
 }

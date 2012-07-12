@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
     DeckGui deck;
     View view(&deck, gameplay);
     gameplay->AddView(&view);
+    gameplay->AddModelObserver(&view);
     //gameplay->PlayGame();
     Gtk::Main::run(view);               // Show the window and return when it is closed.
     return 0;

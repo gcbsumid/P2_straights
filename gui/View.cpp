@@ -18,7 +18,7 @@ using namespace std;
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
 View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck), 
-        mMenu(false, 10), mPanel(false, 0), mHand() {
+        mMenu(false, 10), mPanel(, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
     set_title("Straights");
     set_default_size(1000, 1000);
@@ -75,13 +75,15 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
 
     Gtk::Widget* pMenuBar = mRefUIManager->get_widget("/MenuBar");
 
-    /***********************/
-    /* DONE THE MENU SHIT  */
-    /***********************/
+    /**********************
+     * DONE THE MENU       
+     ***********************/
 
     mTable.Display();
     mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
-    mMenu.pack_start(mTable, Gtk::PACK_SHRINK);
+    mPanel.pack_start(mTable, Gtk::PACK_SHRINK);
+
+    mPanel.pack_start(mPlayerInfoContainer, Gtk::PACK_SHRINK);
 
     show_all_children();
 
@@ -159,24 +161,26 @@ void View::Model_CardDiscarded(int player, Card*) {}
 // creates an HBox for the hand to be displayed
 // also creates a new player
 void View::Model_PlayerAdded(bool IsHuman, int playerid) {
+    cout << "Hey, apparently some player just got added lol. isHuman " << IsHuman << " id " << playerid << endl;
     assert(playerid > 0 && playerid < 5);
     if (IsHuman) {
         mHand[playerid-1] = new HandHBox(mDeck, playerid);
-        add(*mHand[playerid-1]);
+        mPanel.add(*mHand[playerid-1]);
+        // Displays the player information onto the screen
     } else {
         mHand[playerid-1] = NULL;
-
-    // Displays the player information onto the screen
-    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid);
-    add(*mPlayerInfo[playerid-1]);
-    mPlayerInfo[playerid-1]->show();
     }
+    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid);
+    mPlayerInfoContainer.add(*mPlayerInfo[playerid-1]);
+    mPlayerInfo[playerid-1]->show();
 }
 
 // Gives the list of cards to the mHand box to be displayed
 void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
+    cout << "Got some cards dealt" << endl;
     for (int i = 0; i < 4; i++) {
         if (!playerCards[i].empty()) {
+            cout << "Got some human cards dealt" << endl;
             assert(mHand[i] != NULL);
             mHand[i]->AddCards(playerCards.at(i));
             mHand[i]->show();

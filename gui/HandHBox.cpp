@@ -58,5 +58,5 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
         mCards[i] = new CardPics(false, mDeck, card->getRank(), card->getSuit());
         add(*mCards[i]);
     }
-    // show_all_children();  // Not sure if needed
+    show_all_children();  // Not sure if needed
 }
