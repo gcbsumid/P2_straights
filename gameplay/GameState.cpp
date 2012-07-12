@@ -125,17 +125,13 @@ void GameState::PlayCard(int player, Card* card) {
     for (int i = 0; i < 13; i++) {
         if (mHands[player][i] && mHands[player][i] == card) {
             mHands[player][i] = NULL;
-            AddCardToTable(card);
+            mCardsOnTable.insert(card);
             return;
         }
     }
     // Tried to play a card that wasn't in the hand.
     cerr << "Tried to play card " << *card << " that wasn't in player " << player + 1 << "'s hand." << endl;
     assert(false);
-}
-
-void GameState::AddCardToTable(Card* card) {
-    mCardsOnTable.insert(card);
 }
 
 void GameState::DiscardCard(int player, Card* card) {
@@ -177,18 +173,18 @@ void GameState::UpdateScore(int player, int score) {
     mScores[player - 1] = score;
 }
 
-int GameState::GetScore(int player) {
+int GameState::GetScore(int player) const {
     assert(player < 5 &&  player > 0);
     return mScores[player - 1];
 }
 
 
-const vector<Card*> GameState::GetDiscards(int player) {
+const vector<Card*> GameState::GetDiscards(int player) const {
     assert(player < 5 && player > 0);
     return mDiscards[player - 1];
 }
 
-vector<Card*> GameState::GetHand(int player) {
+vector<Card*> GameState::GetHand(int player) const {
     assert(player < 5 && player > 0);
     return mHands[player - 1];
 }
@@ -198,19 +194,7 @@ void GameState::ClearDiscard(int player) {
     mDiscards[player - 1].clear();
 }
 
-void GameState::RemoveFromHand(int player, Card* card) {
-    assert(player < 5 && player > 0 && card != NULL);
-    player--;
-    for (int i = 0; i < 13; i++) {
-        if (mHands[player][i] && *mHands[player][i] == *card) {
-            mHands[player][i] = NULL;
-            return;
-        }
-    }
-    cerr << "The card is not in your hand."<< endl;
-}
-
-Card* GameState::CardInHand(int player, Card* card) {
+Card* GameState::CardInHand(int player, Card* card) const {
     assert(player < 5 && player > 0 && card != NULL);
     player--;
     for (int i = 0; i < 13; i++) {
