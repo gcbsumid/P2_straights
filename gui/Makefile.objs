@@ -1,1 +1,1 @@
-OBJECTS = DeckGui.o View.o TableVBox.o RowHBox.o CardPics.o HandHBox.o
+OBJECTS = DeckGui.o View.o TableVBox.o RowHBox.o CardPics.o HandHBox.o Card.o

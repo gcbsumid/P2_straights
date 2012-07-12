@@ -1,4 +1,5 @@
 include ../Makefile.inc
+include ../gameplay/Makefile.objs
 include Makefile.objs
 
 OBJLIB = GamePlay.a
