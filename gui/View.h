@@ -6,6 +6,7 @@
 #include <gtkmm/uimanager.h>
 #include <gtkmm/actiongroup.h>
 #include "TableVBox.h"
+#include "HandHBox.h"
 //#include "gameplay/GamePlay.h"
 //#include "gameplay/GameState.h"
 
@@ -42,6 +43,7 @@ private:
     TableVBox mTable;       // This is where all the cards on table is shown
     Gtk::VBox mMenu;
     Gtk::VBox mPanel;       // This is the container for all objects
+    HandHBox* mHand[4];
 
     Glib::RefPtr<Gtk::UIManager> mRefUIManager;
     Glib::RefPtr<Gtk::ActionGroup> mRefActionGroup;
