@@ -37,13 +37,13 @@ const char * image_names[] = {
     // Set up TEN of {DIAMOND,CLUB,HEART,SPADE}
     "img/0_9.png", "img/1_9.png", "img/2_9.png", "img/3_9.png",
     // Set up ELEVEN of {DIAMOND,CLUB,HEART,SPADE}
-    "img/0_10.png", "img/1_10.png", "img/2_10.png", "img/3_10.png",
+    "img/0_j.png", "img/1_j.png", "img/2_j.png", "img/3_j.png",
     // Set up QUEEN of {DIAMOND,CLUB,HEART,SPADE}
-    "img/0_11.png", "img/1_11.png", "img/2_11.png", "img/3_11.png",
+    "img/0_q.png", "img/1_q.png", "img/2_q.png", "img/3_q.png",
     // Set up KING of {DIAMOND,CLUB,HEART,SPADE}
-    "img/0_12.png", "img/1_12.png", "img/2_12.png", "img/3_12.png",
+    "img/0_k.png", "img/1_k.png", "img/2_k.png", "img/3_k.png",
     // Set up the back of a card for a place holder/null card
-    "img/back_1.png"
+    "img/nothing.png"
 }; 
 
 // Loads the image from the specified file name into a pixel buffer.
