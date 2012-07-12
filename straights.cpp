@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 
     GamePlay* gameplay = new GamePlay();
     // Play the game, round by round.
-    while(gameplay->PlayRound()) {}
+    gameplay->PlayGame();
     delete gameplay;
     return 0;
 }

@@ -6,10 +6,11 @@
 
 class GamePlay;
 class GameState;
+class ViewInterface;
 class Player {
 friend class ComputerPlayer;
 public:
-    Player(GamePlay *, GameState*, int);
+    Player(GamePlay *, GameState*, ViewInterface*, int);
     virtual ~Player();
     
     // Functions called by the GamePlay.
@@ -22,6 +23,7 @@ public:
 protected:
     GamePlay* mGamePlay;                    // Pointer to the gameplay object
     GameState* mGameState;                  // Pointer to the game state.
+    ViewInterface* mView;                   // Pointer to the view.
     int mID;                                // Player's ID
 };
 

@@ -8,7 +8,7 @@
 using namespace std;
 
 // Copy Constructor
-ComputerPlayer::ComputerPlayer(Player* human) : Player(human->mGamePlay, human->mGameState, human->mID) {
+ComputerPlayer::ComputerPlayer(Player* human) : Player(human->mGamePlay, human->mGameState, human->mView, human->mID) {
     mID = human->GetID();
 }
 

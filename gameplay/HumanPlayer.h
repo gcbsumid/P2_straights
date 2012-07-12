@@ -8,11 +8,13 @@
 class GamePlay;
 class GameState;
 class Card;
+class ViewInterface;
 
 class HumanPlayer : public Player {
 friend ComputerPlayer::ComputerPlayer(Player*);
 public:
-    HumanPlayer(GamePlay *gameplay, GameState* gamestate, int id) : Player(gameplay, gamestate, id) {}
+    HumanPlayer(GamePlay *gameplay, GameState* gamestate, ViewInterface* view, int id)
+        : Player(gameplay, gamestate, view, id) {}
     virtual ~HumanPlayer() {}
     void TakeTurn();                    // Take Human Player's turn
     bool IsRageQuitted() const;         // Player rage quits and is replaced by a computer

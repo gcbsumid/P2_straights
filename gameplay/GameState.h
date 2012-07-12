@@ -2,19 +2,24 @@
 #define GAME_STATE
 
 #include <vector>
+#include <set>
 
 class Player;
 class Card;
 class GamePlay;
 class HumanPlayer;
+class ViewInterface;
+class ModelObserver;
+
 class GameState {
 public:
     GameState(GamePlay* gameplay);
     ~GameState();
+    void AddObserver(ModelObserver*);
 
     // Functions for interaction from the GamePlay controller.
-    void AddHumanPlayer();                      // Add a Player to the game. 
-    void AddComputerPlayer();                      // Add a Player to the game.
+    void AddHumanPlayer(ViewInterface* v);      // Add a Player to the game. 
+    void AddComputerPlayer(ViewInterface* v);   // Add a Player to the game.
     void Shuffle();                             // Shuffle the cards.
     void DealCards();                           // Deal the cards between the players.
     void ClearCardsOnTable();
@@ -37,6 +42,8 @@ public:
     std::vector<Card*> GetHand(int player) const;   // Get the legal plays for the player.
 
 private:
+    std::vector<ModelObserver*> mObservers;
+
     Card* mCardsArray[52];                      // Shuffled pointers
     Card* mArrangedCards[52];                   // cards arranged in order
     std::set<Card*> mCardsOnTable;              // arranged in order Clubs, Diamonds, Hearts, Spades, from Ace to King

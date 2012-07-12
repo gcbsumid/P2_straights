@@ -3,8 +3,11 @@
 #include "GamePlay.h"
 #include "HumanPlayer.h"
 #include "Player.h"
+#include "ModelObserver.h"
 #include <cassert>
 #include <cstdlib>
+#include <vector>
+#include <set>
 
 using namespace std;
 
@@ -35,14 +38,24 @@ GameState::~GameState() {
     }
 }
 
-void GameState::AddHumanPlayer() {
-    assert(mPlayers.size() < 4);
-    mPlayers.push_back(new HumanPlayer(mGamePlay, this, mPlayers.size() + 1));
+void GameState::AddObserver(ModelObserver* o) {
+    mObservers.push_back(o);
 }
 
-void GameState::AddComputerPlayer() {
+void GameState::AddHumanPlayer(ViewInterface* v) {
     assert(mPlayers.size() < 4);
-    mPlayers.push_back(new ComputerPlayer(mGamePlay, this, mPlayers.size() + 1));
+    mPlayers.push_back(new HumanPlayer(mGamePlay, this, v, mPlayers.size() + 1));
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_PlayerAdded(true, mPlayers.size());
+    }
+}
+
+void GameState::AddComputerPlayer(ViewInterface* v) {
+    assert(mPlayers.size() < 4);
+    mPlayers.push_back(new ComputerPlayer(mGamePlay, this, v, mPlayers.size() + 1));
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_PlayerAdded(false, mPlayers.size());
+    }
 }
 
 void GameState::Shuffle() {
@@ -65,6 +78,9 @@ void GameState::DealCards() {
         Card** handBegin = mCardsArray + (i * 13);
         Card** handEnd = handBegin + 13 * sizeof(Card*);
         mHands[i] = vector<Card*>(handBegin, handEnd);
+    }
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_CardsDealt(mHands);
     }
 }
 int GameState::PlayerWithSevenOfSpades() const {
@@ -107,6 +123,10 @@ Player* GameState::HumanToComputer(HumanPlayer* human) {
     int id = human->GetID() - 1;
     delete human;
     mPlayers[id] = comp;
+
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_PlayerRageQuitted(id);
+    }
     return comp;
 }
 
@@ -117,6 +137,9 @@ Player* GameState::PlayerWithID(int player) const {
 
 void GameState::ClearCardsOnTable() {
     mCardsOnTable.clear();
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_CardsCleared();
+    }
 }
 
 void GameState::PlayCard(int player, Card* card) {
@@ -126,6 +149,9 @@ void GameState::PlayCard(int player, Card* card) {
         if (mHands[player][i] && mHands[player][i] == card) {
             mHands[player][i] = NULL;
             mCardsOnTable.insert(card);
+            for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+                (*i)->Model_CardPlayed(player + 1, card);
+            }
             return;
         }
     }
@@ -141,6 +167,9 @@ void GameState::DiscardCard(int player, Card* card) {
         if (mHands[player][i] && mHands[player][i] == card) {
             mHands[player][i] = NULL;
             mDiscards[player].push_back(card);
+            for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+                (*i)->Model_CardDiscarded(player + 1, card);
+            }
             return;
         }
     }
@@ -171,6 +200,9 @@ bool GameState::IsLegal(Card* card) const {
 void GameState::UpdateScore(int player, int score) {
     assert(player < 5 && player > 0);
     mScores[player - 1] = score;
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_ScoreUpdated(player, score);
+    }
 }
 
 int GameState::GetScore(int player) const {
@@ -179,7 +211,7 @@ int GameState::GetScore(int player) const {
 }
 
 
-const vector<Card*> GameState::GetDiscards(int player) const {
+vector<Card*> GameState::GetDiscards(int player) const {
     assert(player < 5 && player > 0);
     return mDiscards[player - 1];
 }
@@ -192,6 +224,9 @@ vector<Card*> GameState::GetHand(int player) const {
 void GameState::ClearDiscard(int player) {
     assert(player < 5 && player > 0);
     mDiscards[player - 1].clear();
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_DiscardsCleared(player);
+    }
 }
 
 Card* GameState::CardInHand(int player, Card* card) const {

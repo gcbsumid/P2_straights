@@ -4,12 +4,14 @@
 #include "GamePlay.h"
 #include "GameState.h"
 #include "Card.h"
+#include "../gui/ViewInterface.h"
 using namespace std;
 
 // Constructor 
-Player::Player(GamePlay* gameplay, GameState* gamestate, int id) :
+Player::Player(GamePlay* gameplay, GameState* gamestate, ViewInterface* view, int id) :
     mGamePlay(gameplay),
     mGameState(gamestate),
+    mView(view),
     mID(id)
     {}
 

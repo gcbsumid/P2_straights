@@ -5,9 +5,11 @@
 
 class GamePlay;
 class GameState;
+class ViewInterface;
 class ComputerPlayer : public Player {
 public:
-    ComputerPlayer(GamePlay *gameplay, GameState* gamestate, int id): Player(gameplay, gamestate, id) {}
+    ComputerPlayer(GamePlay *gameplay, GameState* gamestate, ViewInterface* view, int id)
+        : Player(gameplay, gamestate, view, id) {}
 
     ComputerPlayer(Player*);
     virtual ~ComputerPlayer() {}

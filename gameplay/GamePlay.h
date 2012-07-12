@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <set>
+#include <vector>
 #include "Player.h"
 #include "HumanPlayer.h"
 #include "ComputerPlayer.h"
@@ -11,6 +12,8 @@
 
 class Card;
 class GameState;
+class ModelObserver;
+class ViewInterface;
 
 class GamePlay {
 friend class Player;
@@ -19,10 +22,12 @@ friend class ComputerPlayer;
 public:
     GamePlay();                             // want an array of pointers to cards;
     ~GamePlay();
+    void AddView(ViewInterface* v);
+    void AddModelObserver(ModelObserver* m);
     
     // Functions called by the main game.
     void AddPlayer(bool human);             // Add a human/computer player to the game.
-    bool PlayRound();                       // Each individual round happens in here. Return true if game over.
+    void PlayGame();                       // Each individual round happens in here. Return true if game over.
     
     // Functions called by players in the view.
 
@@ -34,6 +39,7 @@ public:
     void Quit();                            // Called by a human player when they want to quit. Ends the game.
     void RageQuit(int player);              // Converts indicated player from human to computer.
     void ResetSeed(int seed);               // Reset the seed to some other value.
+    std::vector<Card*> GetDiscards(int player) const;    // Returns a player's discarded cards.
     
     static int CARD_COUNT;
 private:
@@ -41,6 +47,7 @@ private:
     bool mQuit;
 
     GameState* mState;
+    ViewInterface* mView;
 };
 
 #endif
