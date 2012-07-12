@@ -29,7 +29,7 @@ private:
     //GamePlay* mGamePlay;
 
     // Card Images
-    //DeckGUI deck;
+    //  DeckGUI deck;
 
     // Signal Handlers
     virtual void onNewGame();

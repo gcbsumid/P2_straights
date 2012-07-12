@@ -13,7 +13,8 @@ LDFLAGS = `pkg-config gtkmm-2.4 --libs`
 #  ${OBJECTSGAME} ${OBJECTS}
 ${EXEC}: ${OBJ}
 	cd gameplay; make; cd ..; cd gui; make; cd ..;	
-	${CXX} ${CXXFLAGS} ${OBJ} ${OBJECTS} ${LDFLAGS} -o ${EXEC}
+	${CXX} ${CXXFLAGS} ${OBJ} View.o TableVBox.o RowHBox.o ${LDFLAGS} -o ${EXEC}
+	#${CXX} ${CXXFLAGS} ${OBJ} ${OBJECTS} ${LDFLAGS} -o ${EXEC}
 
 clean :
 	rm -rf ${DEPENDS} ${OBJ} ${OBJECTS} ${EXEC}

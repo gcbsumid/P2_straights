@@ -11,9 +11,9 @@ public:
     TableVBox();
     ~TableVBox();
     void update();
-
+    void Display();
 private:
-    Gtk::HBox mPanel;
+    Gtk::VBox mPanel;
     RowHBox* mSuits[4];
 };
 

@@ -10,7 +10,7 @@ using namespace std;
 
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
-View::View() : Gtk::Window(), mMenu(false, 10), mPanel(false, 0) {
+View::View() : Gtk::Window(), mTable(), mMenu(false, 10), mPanel(false, 0) {
     // Sets some properties in the window
     set_title("Straights");
     set_default_size(1000, 1000);
@@ -65,6 +65,7 @@ View::View() : Gtk::Window(), mMenu(false, 10), mPanel(false, 0) {
 
     mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
 
+    mTable.Display();
     show_all_children();
     // Adds the table to the window
     //mTable = new TableVBox(10);
