@@ -1,80 +1,49 @@
 #include "Player.h"
 
 #include <iostream>
-#include "Gameplay.h"
+#include "GamePlay.h"
+#include "GameState.h"
 #include "Card.h"
 using namespace std;
 
 // Constructor 
-Player::Player(Gameplay* gameplay, int id) :
-    mGameplay(gameplay),
-    mScore(0),
+Player::Player(GamePlay* gameplay, GameState* gamestate, int id) :
+    mGamePlay(gameplay),
+    mGameState(gamestate),
     mID(id)
     {}
 
-// Destructor
-Player::~Player() {
-    mGameplay = NULL;
-}
-
-// give cards to respecting players
-void Player::ReceiveCards(vector<Card*> cardsArray) {
-    mHand = cardsArray;
-}
-
-// Returns the current score
-int Player::GetScore() const {
-    return mScore;
-}
+Player::~Player(){}
 
 int Player::GetID() const {
     return mID;
 }
 
-bool Player::PlayerHas(Card* card) const {
-    for (int i = 0; i < 13; i++) {
-        if (mHand[i]) {
-            if (*mHand[i] == *card) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-void Player::PrintDiscard() {
+void Player::ClearDiscard() {
     int newScore = 0;
-    cout << "Player " << mID << "'s discards:";
 
-    // Replicating silly behaviour of their program.
-    if (mDiscard.empty()) {
-        cout << " ";
-    }
-    
-    for (vector<Card*>::iterator it = mDiscard.begin(); it != mDiscard.end(); it++) {
+    const vector<Card*> discards = mGameState->GetDiscards(GetID());
+    for (vector<Card*>::const_iterator it = discards.begin(); it != discards.end(); it++) {
         newScore += (int)((*it)->getRank()) + 1;
-        cout << " " << (**it);
     }
-    cout << endl;
-    cout << "Player " << mID << "'s score: ";
-    cout << mScore << " + " << newScore;
-    cout << " = " << mScore + newScore << endl;
-    mScore += newScore;
-    mDiscard.clear();
+    newScore += mGameState->GetScore(GetID());
+    mGameState->UpdateScore(GetID(), newScore);
+    mGameState->ClearDiscard(GetID());
 }
 
-void Player::RemoveFromHand(Card* card) {
+vector<Card*> Player::GetLegalPlays() {
+    vector<Card*> hand = mGameState->GetHand(GetID());
+    vector<Card*> plays;
     for (int i = 0; i < 13; i++) {
-        if (mHand[i] && *mHand[i] == *card) {
-            mHand[i] = NULL;
-            return;
+        if (hand[i] && mGameState->IsLegal(hand[i])) {
+            if (hand[i]->getSuit() == SPADE && hand[i]->getRank() == SEVEN) {
+                // If the player has the seven of spades, that's their only legal play.
+                plays.clear();
+                plays.push_back(hand[i]);
+                return plays;
+            }
+            plays.push_back(hand[i]);
         }
     }
-    cerr << "The card is not in your hand."<< endl;
-}
-
-void Player::PlayCardInHand(Card* card){
-    cout << "Player " << mID << " plays " << *(card) << "." << endl;
-    mGameplay->AddCardToTable(card);
-    RemoveFromHand(card);
+    return plays;
 }

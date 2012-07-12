@@ -3,10 +3,11 @@
 
 #include "Player.h"
 
-class Gameplay;
+class GamePlay;
+class GameState;
 class ComputerPlayer : public Player {
 public:
-    ComputerPlayer(Gameplay *gameplay, int id): Player(gameplay, id) {}
+    ComputerPlayer(GamePlay *gameplay, GameState* gamestate, int id): Player(gameplay, gamestate, id) {}
 
     ComputerPlayer(Player*);
     virtual ~ComputerPlayer() {}
