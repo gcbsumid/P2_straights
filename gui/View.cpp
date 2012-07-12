@@ -8,11 +8,13 @@
 #include "RowHBox.h"
 #include "DeckGui.h"
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
-View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck), mMenu(false, 10), mPanel(false, 0) {
+View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck), 
+        mMenu(false, 10), mPanel(false, 0), mHand() {
     // Sets some properties in the window
     set_title("Straights");
     set_default_size(1000, 1000);
@@ -24,6 +26,11 @@ View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck), mMenu(fals
 
     // Adds the Panel;
     add(mPanel);
+
+
+    /*****************************
+    / THIS IS THE MENU CRAP
+    *****************************/
 
     // Adds the menu at the top
     mPanel.add(mMenu);
@@ -64,13 +71,27 @@ View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck), mMenu(fals
 
     Gtk::Widget* pMenuBar = mRefUIManager->get_widget("/MenuBar");
 
+    /***********************/
+    /* DONE THE MENU SHIT  */
+    /***********************/
+
     mTable.Display();
     mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
     mMenu.pack_start(mTable, Gtk::PACK_SHRINK);
 
+    /***********************/
+    /* ADDING THE PLAYERS  */
+    /***********************/
+
+    show_all_children();
+
+    for (int i = 0; i < 4; i++) {
+        mHand[i] = new HandHBox(i+1);
+        add(mHand[i]);
+    }
+
     //mPanel.add(mTable);
     //mTable.Display();
-    show_all_children();
     // Adds the table to the window
     //mTable = new TableVBox(10);
 
@@ -103,4 +124,20 @@ void View::onQuit() {
 
     // Closes the main window to stop the Gtk::Main::run()
     hide();
+}
+
+// gets a call from 
+void View::Model_PlayerAdded(bool IsHuman, int playerid) {
+    assert(playerid > 0 && playerid < 5);
+
+}
+
+void View::Model_CardsDealt(std::vector<std::std::vector<Card*> > playerCards) {
+    assert(playerid > 0 && playerid < 5);
+    for (int i = 0; i < 4; i++) {
+        if(!playerCards.at(i).empty()){
+            mHand[playerid-1]->AddCards(playerCards.at(i));
+            mHand[playerid-1]->show();
+        }
+    }
 }
