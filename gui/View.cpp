@@ -6,12 +6,13 @@
 //#include "../gui/DeckGui.h"
 #include "TableVBox.h"
 #include "RowHBox.h"
+#include "DeckGui.h"
 #include <iostream>
 using namespace std;
 
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
-View::View() : Gtk::Window(), mTable(), mMenu(false, 10), mPanel(false, 0) {
+View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck), mMenu(false, 10), mPanel(false, 0) {
     // Sets some properties in the window
     set_title("Straights");
     set_default_size(1000, 1000);

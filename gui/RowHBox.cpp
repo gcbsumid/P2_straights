@@ -9,13 +9,13 @@
 using namespace std;
 
 // Constructor - it creates the 4 suits in a Hbox each
-RowHBox::RowHBox(int suit, int spacing = 5) : HBox(true, spacing), mSuit(suit) {
+RowHBox::RowHBox(DeckGui* deck, int suit, int spacing = 5) : HBox(true, spacing), mSuit(suit), mDeck(deck) {
     for (int i = 0; i < 13; i++) {
         if (i == 6 && mSuit == 3) {
             // 7 of spades;
-            mCards[i] = new CardPics(true, SEVEN, SPADE);
+            mCards[i] = new CardPics(true, mDeck, SEVEN, SPADE);
         } else {
-            mCards[i] = new CardPics(true, RANK_COUNT, SUIT_COUNT);
+            mCards[i] = new CardPics(true, mDeck, RANK_COUNT, SUIT_COUNT);
         }
         //mCards[i] = new Gtk::Button("Fuck Nuts");
         mCards[i]->set_name("Test");

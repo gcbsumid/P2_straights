@@ -12,10 +12,12 @@
 //class GamePlay; // Controller
 //class GameState; // Model
 
+class DeckGui;  // Images of cards.
+
 class View : public Gtk::Window {
     //, public ControllerObserver, public ModelObserver
 public:
-    View();
+    View(DeckGui* deck);
     //View(Controller*, Model*);
     virtual ~View();
     virtual void update(); 
@@ -29,7 +31,7 @@ private:
     //GamePlay* mGamePlay;
 
     // Card Images
-    //  DeckGUI deck;
+    DeckGui* mDeck;
 
     // Signal Handlers
     virtual void onNewGame();

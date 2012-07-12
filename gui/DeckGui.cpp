@@ -7,11 +7,11 @@
  *
  */
 #include "DeckGui.h"
+#include <iostream>
 #include <algorithm>
 #include <iterator>
 #include <string>
-using std::string;
-using std::transform;
+using namespace std;
 
 // Sets up an array of the Portable Network Graphics (PNG) file names that contain the necessary card images.
 // The deck will load the contents into pixel buffers for later use.
@@ -48,7 +48,7 @@ const char * image_names[] = {
 
 // Loads the image from the specified file name into a pixel buffer.
 Glib::RefPtr<Gdk::Pixbuf> createPixbuf(const string & name) {
-    return Gdk::Pixbuf::create_from_file( name );
+    return Gdk::Pixbuf::create_from_file(name);
 } // createPixbuf
 
 DeckGui::DeckGui()  {
@@ -56,8 +56,14 @@ DeckGui::DeckGui()  {
     // constant array. Instead, use the STL transform algorithm to apply the method createPixbuf to every
     // element in the array of image names, starting with first and ending with the last. New elements are
     // added to the back of deck.
+    /*
     transform( &image_names[0], &image_names[G_N_ELEMENTS(image_names)], 
                std::back_inserter(deck), &createPixbuf );
+    */
+    for (int i = 0; i < 53; i++) {
+        cout << "Creating card " << i << image_names[i] << endl;
+        deck.push_back(createPixbuf(string(image_names[i])));
+    }
 } // DeckGui::DeckGui
 
 DeckGui::~DeckGui() {

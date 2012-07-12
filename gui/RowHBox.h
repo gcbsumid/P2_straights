@@ -5,16 +5,18 @@
 #include "CardPics.h"
 
 class CardPics;
+class DeckGui;
 
 class RowHBox : public Gtk::HBox {
 public:
-    RowHBox(int, int);
+    RowHBox(DeckGui*, int, int);
     virtual ~RowHBox();
     void update();
 
 protected:
     int mSuit;
     //Gtk::VBox* mCards[13];
+    DeckGui* mDeck;
     CardPics* mCards[13];
 };
 

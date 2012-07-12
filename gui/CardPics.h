@@ -10,10 +10,10 @@ class DeckGui;
 
 class CardPics : public Gtk::HBox {
 public:
-    CardPics(bool isButton, Rank f = RANK_COUNT, Suit s = SUIT_COUNT);
+    CardPics(bool isButton, DeckGui* deck, Rank f = RANK_COUNT, Suit s = SUIT_COUNT);
     ~CardPics();
 private:
-    static DeckGui deck;
+    DeckGui* mDeck;
 
     // Member widgets:
     Gtk::Image* mCard;          // Images to display.

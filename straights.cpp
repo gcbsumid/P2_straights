@@ -8,7 +8,10 @@
 
 //#include "gameplay/GamePlay.h"
 
+using namespace std;
+
 int main(int argc, char** argv) {
+    cout << "Started main" << endl;
     //if (argc == 2) {
         // Seed the random number generator.
     //    int seed = atoi(argv[1]);
@@ -22,10 +25,12 @@ int main(int argc, char** argv) {
     //delete gameplay;
 
     Gtk::Main kit(argc, argv);         // Initialize gtkmm with the command line arguments, as appropriate.
+    cout << "Initialized gtkmm" << endl;
     //Model model;                          // Create model
     //    Controller controller( &model );  // Create controller
     //View view( &controller, &model );     // Create the view -- is passed handle to controller and model
-    View view;
-    Gtk::Main::run( view );               // Show the window and return when it is closed.
+    DeckGui deck;
+    View view(&deck);
+    //Gtk::Main::run( view );               // Show the window and return when it is closed.
     return 0;
 }
