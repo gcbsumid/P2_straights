@@ -4,8 +4,8 @@
 // Contract that the view needs to implement. Used by the controller when it needs the view to do stuff.
 class ViewInterface {
 public:
-    void HumanTurn(int player);
-    void PlayerWon(int player);
+    virtual void HumanTurn(int player) = 0;
+    virtual void PlayerWon(int player) = 0;
 };
 
 #endif
