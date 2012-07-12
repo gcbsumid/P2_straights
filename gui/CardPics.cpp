@@ -1,13 +1,18 @@
 #include "CardPics.h"
+#include "DeckGui.h"
+#include "../gameplay/Card.h"
 
-CardPics::CardPics(bool isButton, DeckGui::Faces f = SUIT_COUNT, DeckGui::Suits s = RANK_COUNT) {
-    const Glib::RefPtr<Gdk::Pixbuf> card;
+DeckGui CardPics::deck;
+
+CardPics::CardPics(bool isButton, Rank f, Suit s) 
+        : HBox(false,0) {
+    Glib::RefPtr<Gdk::Pixbuf> card;
 
     // Sets the image to be displayed
-    if (f == SUIT_COUNT || s == RANK_COUNT) {
-        card = deck.getNullCardImage();
+    if (f == RANK_COUNT || s == SUIT_COUNT) {
+        card = deck.null();
     } else {
-        card = deck.getCardImage(f, s);
+        card = deck.image(f, s);
     }
     mCard = new Gtk::Image(card);
 

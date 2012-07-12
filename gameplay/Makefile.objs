@@ -1,1 +1,1 @@
-OBJECTS = Card.o GamePlay.o Player.o ComputerPlayer.o HumanPlayer.o GameState.o
+OBJECTSGAME = Card.o GamePlay.o Player.o ComputerPlayer.o HumanPlayer.o GameState.o

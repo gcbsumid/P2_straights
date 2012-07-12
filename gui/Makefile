@@ -5,8 +5,8 @@ OBJLIB = GamePlay.a
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC = straights
 
-all : ${OBJECTSGAME}
-	${CXX} -c ${CXXFLAGS} ${OBJECTSGAME}
+all : ${OBJECTS}
+	${CXX} -c ${CXXFLAGS} ${OBJECTS}
 	cp *.o ..
 
 

@@ -1,7 +1,7 @@
 #ifndef ROW_HBOX
 #define ROW_HBOX
 
-#include <gtkmm/hbox>
+#include <gtkmm/box.h>
 #include "CardPics.h"
 
 class CardPics;

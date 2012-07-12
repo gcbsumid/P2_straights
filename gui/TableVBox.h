@@ -1,19 +1,19 @@
 #ifndef TABLE_VBOX
 #define TABLE_VBOX
 
-#include <gtkmm/VBox>
-#include <gtkmm/HBox>
+#include <gtkmm/frame.h>
 #include "RowHBox.h"
 
 class RowHBox;
 
-class TableVBox : public Gtk::VBox {
+class TableVBox : public Gtk::Frame {
 public:
-    TableVBox(int);
+    TableVBox();
     ~TableVBox();
     void update();
 
 private:
+    Gtk::HBox mPanel;
     RowHBox* mSuits[4];
 };
 
