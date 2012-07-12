@@ -1,5 +1,6 @@
 #include <iostream>
-#include "Gameplay.h"
+#include <cassert>
+#include "GamePlay.h"
 #include "Player.h"
 #include "ComputerPlayer.h"
 #include "Card.h"
@@ -7,37 +8,27 @@
 using namespace std;
 
 // Copy Constructor
-ComputerPlayer::ComputerPlayer(Player* human) : Player(human->mGameplay, human->mID) {
-    mScore = human->GetScore();
+ComputerPlayer::ComputerPlayer(Player* human) : Player(human->mGamePlay, human->mGameState, human->mID) {
     mID = human->GetID();
-    mHand = human->mHand;
-    mDiscard = human->mDiscard;
 }
 
 // Prompt command from AI
 void ComputerPlayer::TakeTurn() {
-    // Create a seven of spades card to compare against player's hand.
-    Card sevenOfSpades(SPADE,SEVEN);
-    for (int i = 0; i < 13; i++) {
-        if (this->PlayerHas(&sevenOfSpades)) {
-            if (mHand[i] && *mHand[i] == sevenOfSpades) {
-                this->PlayCardInHand(mHand[i]);
+    vector<Card*> legalPlays = GetLegalPlays();
+    if (legalPlays.empty()) {
+        // No legal plays, discard first available card.
+        vector<Card*> hand = mGameState->GetHand(GetID());
+        for (int i = 0; i < 13; i++) {
+            if (hand[i]) {
+                cout << "Player " << GetID() << " discards " << *(hand[i]) << "." << endl;
+                mGameState->DiscardCard(GetID(), hand[i]);
                 return;
-             }
-        } else if (mHand[i] && mGameplay->IsLegal(mHand[i])) {
-            this->PlayCardInHand(mHand[i]);
-            return;
+            }
         }
+        cerr << "No legal plays and no cards to discard for player " << GetID() << endl;
+        assert(false);
     }
-
-    for (int i = 0; i < 13; i++) {
-        if (mHand[i]) {
-            cout << "Player " << mID << " discards " << *(mHand[i]) << "." << endl;
-            mDiscard.push_back(mHand[i]);
-            RemoveFromHand(mHand[i]);
-            return;
-        }
-    }
+    mGameState->PlayCard(GetID(), legalPlays[0]);
 }
 
 bool ComputerPlayer::IsHuman() const {

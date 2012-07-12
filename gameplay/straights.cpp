@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "Gameplay.h"
+#include "GamePlay.h"
 
 using namespace std;
 
@@ -13,11 +13,9 @@ int main(int argc, char* argv[]) {
         srand48(seed);
     }
 
-    Gameplay* gameplay = new Gameplay();
+    GamePlay* gameplay = new GamePlay();
     // Play the game, round by round.
-    do {
-        gameplay->PlayRound();
-    } while (!gameplay->IsGameOver());
+    while(gameplay->PlayRound()) {}
     delete gameplay;
     return 0;
 }
