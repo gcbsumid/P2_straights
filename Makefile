@@ -5,6 +5,7 @@ include gui/Makefile.objs
 OBJ = straights.o 
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC = straights
+LDFLAGS = `pkg-config gtkmm-2.4 --libs`
 
 #${EXEC}: ${OBJ}
 #	cd gameplay; make; cd ..; cd gui; make; cd ..;
@@ -12,7 +13,7 @@ EXEC = straights
 #  ${OBJECTSGAME} ${OBJECTS}
 ${EXEC}: ${OBJ}
 	cd gameplay; make; cd ..; cd gui; make; cd ..;	
-	${CXX} ${CXXFLAGS} ${OBJ} View.o -o ${EXEC}
+	${CXX} ${CXXFLAGS} ${OBJ} ${OBJECTS} ${LDFLAGS} -o ${EXEC}
 
 clean :
 	rm -rf ${DEPENDS} ${OBJ} ${OBJECTS} ${EXEC}
