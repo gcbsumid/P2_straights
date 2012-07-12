@@ -1,6 +1,7 @@
 #ifndef MODEL_OBSERVER
 #define MODEL_OBSERVER
 
+#include <vector>
 // Defines the interface which the view implements and the model calls.
 
 class Card;

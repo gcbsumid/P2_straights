@@ -7,6 +7,8 @@
 #include "TableVBox.h"
 #include "RowHBox.h"
 #include "DeckGui.h"
+#include <gtkmm/messagedialog.h>
+
 #include <iostream>
 #include <cassert>
 #include <vector>
@@ -67,7 +69,7 @@ View::View(DeckGui* deck) : Gtk::Window(), mDeck(deck), mTable(deck),
     try {
         mRefUIManager->add_ui_from_string(ui_info);
     } catch (const Glib::Error& ex) {
-        std::cerr << "building menus and toolbars failed: " << ex.what();
+        cerr << "building menus and toolbars failed: " << ex.what();
     } // catch
 
     Gtk::Widget* pMenuBar = mRefUIManager->get_widget("/MenuBar");
@@ -118,7 +120,31 @@ void View::onQuit() {
     hide();
 }
 
-// gets a call from 
+
+// Implementations of the view external interface.
+void View::AddPlayer(int player) {
+    stringstream s;
+    s << "Is player " << player << " a human or a computer?";
+    Gtk::Dialog dialog(s.str());
+    dialog.add_button("Human", 1);
+    dialog.add_button("Computer", 2);
+    dialog.show();
+}
+
+
+void View::HumanTurn(int player) {}
+void View::PlayerWon(int player) {}
+
+
+// Observer pattern - notifications of state changes from model.
+void View::Model_PlayerRageQuitted(int player) {}
+void View::Model_CardsCleared() {}
+void View::Model_ScoreUpdated(int player, int score) {}
+void View::Model_DiscardsCleared(int player) {}
+void View::Model_CardPlayed(int player, Card*) {}
+void View::Model_CardDiscarded(int player, Card*) {}
+// Implementations of model signal handlers.
+
 void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     assert(playerid > 0 && playerid < 5);
     if (IsHuman) {
@@ -127,7 +153,6 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     } else {
         mHand[playerid-1] = NULL;
     }
-
 }
 
 void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {

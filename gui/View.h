@@ -1,11 +1,14 @@
 #ifndef MVC_VIEW_H
 #define MVC_VIEW_H
 
+#include "ViewInterface.h"
+#include "../gameplay/ModelObserver.h"
+
 #include <gtkmm/window.h>
 #include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/actiongroup.h>
-#include "../gameplay/ModelObserver.h"
+#include <vector>
 #include "TableVBox.h"
 #include "HandHBox.h"
 //#include "gameplay/GamePlay.h"
@@ -16,16 +19,29 @@
 
 class DeckGui;  // Images of cards.
 
-class View : public Gtk::Window, public ModelObserver{
+class View : public Gtk::Window, public ModelObserver, public ViewInterface {
     //, public ControllerObserver, public ModelObserver
 public:
     View(DeckGui* deck);
     //View(Controller*, Model*);
     virtual ~View();
     virtual void update(); 
+
+    // Implementing the methods that the controller calls.
+    virtual void AddPlayer(int player);
+    virtual void HumanTurn(int player);
+    virtual void PlayerWon(int player);
+
+
+    // Observer pattern - notifications of state changes from model.
     virtual void Model_CardsDealt(std::vector<std::vector<Card*> >);
     virtual void Model_PlayerAdded(bool isHuman, int id);
-    // Observer Pattern: concrete update() method
+    virtual void Model_PlayerRageQuitted(int player);
+    virtual void Model_CardsCleared();
+    virtual void Model_ScoreUpdated(int player, int score);
+    virtual void Model_DiscardsCleared(int player);
+    virtual void Model_CardPlayed(int player, Card*);
+    virtual void Model_CardDiscarded(int player, Card*);
 
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject

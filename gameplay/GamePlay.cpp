@@ -45,7 +45,7 @@ void GamePlay::PlayGame() {
     for (int i = 0; i < 4; i++) {
         // Ask the view if the player should be a human or computer
         // The view calls GamePlay::AddPlayer, then we call PlayerAdded.
-        mView->AddPlayer();
+        mView->AddPlayer(i + 1);
     }
     while(!mQuit) {
         mState->Shuffle();
