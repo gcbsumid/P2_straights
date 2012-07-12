@@ -120,8 +120,6 @@ void View::onQuit() {
     hide();
 }
 
-<<<<<<< HEAD
-
 // Implementations of the view external interface.
 void View::AddPlayer(int player) {
     stringstream s;
@@ -144,12 +142,10 @@ void View::Model_ScoreUpdated(int player, int score) {}
 void View::Model_DiscardsCleared(int player) {}
 void View::Model_CardPlayed(int player, Card*) {}
 void View::Model_CardDiscarded(int player, Card*) {}
-// Implementations of model signal handlers.
 
-=======
+
 // creates an HBox for the hand to be displayed
 // also creates a new player
->>>>>>> 4f3ac70e6a1a497afaf0ea3607267d9bec66247b
 void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     assert(playerid > 0 && playerid < 5);
     if (IsHuman) {
