@@ -18,7 +18,7 @@ using namespace std;
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
 View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck), 
-        mMenu(false, 10), mPanel(, 0), mHand(), mPlayerInfoContainer(true, 5) {
+        mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
     set_title("Straights");
     set_default_size(1000, 1000);

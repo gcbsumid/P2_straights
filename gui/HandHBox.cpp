@@ -1,13 +1,15 @@
 #include "HandHBox.h"
-#include "RowHBox.h"
 #include "CardPics.h"
 #include "../gameplay/Card.h"
 #include "DeckGui.h"
+#include <gtkmm/box.h>
+#include <iostream>
 using namespace std;
 
 // Constructor - it creates the 4 suits in a Hbox each
 HandHBox::HandHBox(DeckGui* deck, int player, int spacing) : 
-                RowHBox(deck, -1, spacing), mDeck(deck) {
+                Gtk::HBox(true, spacing), mDeck(deck), 
+                mPlayer(player) {
     // The final step is to display the buttons (they display themselves)
 
 }
@@ -16,6 +18,7 @@ HandHBox::HandHBox(DeckGui* deck, int player, int spacing) :
 HandHBox::~HandHBox() {
     for (int i = 0; i < 13; i++) {
         if(mCards[i]) {
+            cout <<"I'm deleting cards in human hand" << endl;
             delete mCards[i];
         }
     }
@@ -56,6 +59,7 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
     for (int i = 0; i < 13; i++) {
         Card* card = cards.at(i);
         mCards[i] = new CardPics(false, mDeck, card->getRank(), card->getSuit());
+        cout << "I'm adding the cards dealt to me." << endl;
         add(*mCards[i]);
     }
     show_all_children();  // Not sure if needed

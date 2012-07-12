@@ -1,15 +1,18 @@
 #ifndef HAND_HBOX
 #define HAND_HBOX
-#include "RowHBox.h"
 #include "../gameplay/Card.h"
+#include "DeckGui.h"
+#include "CardPics.h"
+#include <gtkmm/box.h>
 #include <vector>
 
 class CardPic;
+class DeckGui;
 
-class HandHBox : public RowHBox {
+class HandHBox : public Gtk::HBox {
 public:    
     HandHBox(DeckGui* deck, int player, int spacing = 5);
-    ~HandHBox();
+    virtual ~HandHBox();
     void update();
 
     void AddCards(std::vector<Card*>);
@@ -19,6 +22,7 @@ private:
     void StaticToButton();
     void ButtonToStatic();
     int mPlayer;
+    CardPics* mCards[13];
 };
 
 #endif
