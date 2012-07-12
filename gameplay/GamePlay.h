@@ -40,6 +40,7 @@ public:
     void RageQuit(int player);              // Converts indicated player from human to computer.
     void ResetSeed(int seed);               // Reset the seed to some other value.
     std::vector<Card*> GetDiscards(int player) const;    // Returns a player's discarded cards.
+    std::vector<Card*> GetLegal(int player) const;    // Returns a player's discarded cards.
     
     static int CARD_COUNT;
 private:

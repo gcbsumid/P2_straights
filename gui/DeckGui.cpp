@@ -46,23 +46,9 @@ const char * image_names[] = {
     "img/nothing.png"
 }; 
 
-// Loads the image from the specified file name into a pixel buffer.
-Glib::RefPtr<Gdk::Pixbuf> createPixbuf(const string & name) {
-    return Gdk::Pixbuf::create_from_file(name);
-} // createPixbuf
-
 DeckGui::DeckGui()  {
-    // Images can only be loaded once the main window has been initialized, so cannot be done as a static
-    // constant array. Instead, use the STL transform algorithm to apply the method createPixbuf to every
-    // element in the array of image names, starting with first and ending with the last. New elements are
-    // added to the back of deck.
-    /*
-    transform( &image_names[0], &image_names[G_N_ELEMENTS(image_names)], 
-               std::back_inserter(deck), &createPixbuf );
-    */
     for (int i = 0; i < 53; i++) {
-        cout << "Creating card " << i << image_names[i] << endl;
-        deck.push_back(createPixbuf(string(image_names[i])));
+        deck.push_back(Gdk::Pixbuf::create_from_file(image_names[i]));
     }
 } // DeckGui::DeckGui
 

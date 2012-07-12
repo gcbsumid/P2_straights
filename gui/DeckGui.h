@@ -16,11 +16,7 @@
 #include "../gameplay/Card.h"
 using std::vector;
 
-// TODO: return this shit in card.h
-//enum Suit { CLUB, DIAMOND, HEART, SPADE, SUIT_COUNT };
-//enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
-//            EIGHT, NINE, TEN, JACK, QUEEN, KING, RANK_COUNT };
-
+// Only initialize this class after having initialized GTK!
 class DeckGui {
 public:
     DeckGui();

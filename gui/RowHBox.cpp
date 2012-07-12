@@ -12,10 +12,12 @@ using namespace std;
 RowHBox::RowHBox(DeckGui* deck, int suit, int spacing = 5) : HBox(true, spacing), mSuit(suit), mDeck(deck) {
     for (int i = 0; i < 13; i++) {
         if (i == 6 && mSuit == 3) {
+            cout << "Hurr durr found seven of spades lol" << endl;
             // 7 of spades;
-            mCards[i] = new CardPics(true, mDeck, SEVEN, SPADE);
+            mCards[i] = new CardPics(false, mDeck, SEVEN, SPADE);
         } else {
-            mCards[i] = new CardPics(true, mDeck, RANK_COUNT, SUIT_COUNT);
+            cout << "Other card" << endl;
+            mCards[i] = new CardPics(false, mDeck, RANK_COUNT, SUIT_COUNT);
         }
         //mCards[i] = new Gtk::Button("Fuck Nuts");
         mCards[i]->set_name("Test");

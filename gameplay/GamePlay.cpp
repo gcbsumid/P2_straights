@@ -180,3 +180,7 @@ void GamePlay::ResetSeed(int seed) {
 vector<Card*> GamePlay::GetDiscards(int player) const {
     return mState->GetDiscards(player);
 }
+
+vector<Card*> GamePlay::GetLegal(int player) const {
+    return mState->PlayerWithID(player)->GetLegalPlays();
+}
