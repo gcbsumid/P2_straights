@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 
-#include "GamePlay.h"
+#include "gameplay/GamePlay.h"
 
 using namespace std;
 
