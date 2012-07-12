@@ -25,6 +25,12 @@ public:
     virtual void update(); 
     virtual void Model_CardsDealt(std::vector<std::vector<Card*> >);
     virtual void Model_PlayerAdded(bool isHuman, int id);
+    virtual void Model_PlayerRageQuitted(int player);
+    virtual void Model_CardsCleared();
+    virtual void Model_ScoreUpdated(int player, int score);
+    virtual void Model_DiscardsCleared(int player);
+    virtual void Model_CardPlayed(int player, Card*);
+    virtual void Model_CardDiscarded(int player, Card*);
     // Observer Pattern: concrete update() method
 
 private:

@@ -118,7 +118,8 @@ void View::onQuit() {
     hide();
 }
 
-// gets a call from 
+// creates an HBox for the hand to be displayed
+// also creates a new player
 void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     assert(playerid > 0 && playerid < 5);
     if (IsHuman) {
@@ -130,6 +131,7 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
 
 }
 
+// Gives the list of cards to the mHand box to be displayed
 void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
     for (int i = 0; i < 4; i++) {
         if (!playerCards[i].empty()) {
@@ -139,3 +141,11 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
         }
     }
 }
+
+// TODO:: All of it.
+void View::Model_PlayerRageQuitted(int player) {}
+void View::Model_CardsCleared() {}
+void View::Model_ScoreUpdated(int player, int score) {}
+void View::Model_DiscardsCleared(int player) {}
+void View::Model_CardPlayed(int player, Card* card) {}
+void View::Model_CardDiscarded(int player, Card* card) {}
