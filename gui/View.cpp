@@ -212,3 +212,12 @@ void View::Model_CardDiscarded(int player, Card* card) {
     }
 }
 
+void View::Model_EndGame(int player) {
+    cout << "EndGame called" << endl;
+    Gtk::MessageDialog dialog(*this, "Game over!");
+    stringstream s;
+    s << "The winner is...player " << player << "!";
+    dialog.set_secondary_text(s.str());
+    dialog.run();
+}
+

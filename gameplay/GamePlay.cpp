@@ -83,14 +83,14 @@ void GamePlay::EndRound() {
         }
     }
     if (endGame) {
-        EndGame(winner);
+        EndGame(winner + 1);
     } else {
         StartRound();
     }
 }
 
 void GamePlay::EndGame(int winner) {
-    cout << "Player " << winner << " wins!" << endl;
+    mState->EndGame(winner);
 }
 
 void GamePlay::ContinueGame() {
@@ -98,7 +98,11 @@ void GamePlay::ContinueGame() {
     
     while (true) {
         cout << "It is " << nextPlayer->GetID() << "'s turn to play" << endl;
-        nextPlayer->TakeTurn();
+        if (!nextPlayer->TakeTurn()) {
+            // No cards left, round over?
+            EndRound();
+            break;
+        }
         // If we have a human player, we need to take various actions depending on what they input.
         if (nextPlayer->IsHuman()) {
             cout << "We have a human, freaking out" << endl;
@@ -149,8 +153,10 @@ bool GamePlay::DiscardCard(int player, Suit suit, Rank rank) {
     Card c(suit, rank);
     Card* cardInHand = mState->CardInHand(player, &c);
     if (cardInHand == NULL) {
+        cout << "Couldn't find card in hand for discarding" << endl;
         return false;
     }
+    cout << "Player " << player << " is discarding card " << c << endl;
     mState->DiscardCard(player, cardInHand);
     ContinueGame();
     return true;

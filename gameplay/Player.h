@@ -14,7 +14,7 @@ public:
     virtual ~Player();
     
     // Functions called by the GamePlay.
-    virtual void TakeTurn() = 0;            // Player's turn happens here
+    virtual bool TakeTurn() = 0;            // Player's turn happens here
     virtual bool IsHuman() const = 0;       // Returns whether or not the player is human
     int GetID() const;                      // Returns ID
     void ClearDiscard();                    // Prints discarded cards and increments the score by the appropriate amount.

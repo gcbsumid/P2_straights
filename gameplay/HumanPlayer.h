@@ -16,7 +16,7 @@ public:
     HumanPlayer(GamePlay *gameplay, GameState* gamestate, ViewInterface* view, int id)
         : Player(gameplay, gamestate, view, id) {}
     virtual ~HumanPlayer() {}
-    void TakeTurn();                    // Take Human Player's turn
+    bool TakeTurn();                    // Take Human Player's turn
     bool IsHuman() const;               // Returns true because this object is a human player
 };
 
