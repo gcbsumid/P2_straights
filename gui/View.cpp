@@ -181,6 +181,7 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
 void View::Model_PlayerRageQuitted(int player) {
     cout << "HUMAN is now a COMPUTER." << endl;
     mPlayerInfo[player-1]->HumanToComputer();
+    mPanel.remove(*mHand[player-1]);
 }
 void View::Model_CardsCleared() {
     // TODO:: Clear table
