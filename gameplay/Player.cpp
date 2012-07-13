@@ -30,8 +30,13 @@ void Player::ClearDiscard() {
     for (vector<Card*>::const_iterator it = discards.begin(); it != discards.end(); it++) {
         newScore += (int)((*it)->getRank()) + 1; // Increment the additional score by the rank of the card.
     }
+    // Add in the scores from the previous round.
     newScore += mGameState->GetScore(GetID());
+
+    // Update the model to reflect new score.
     mGameState->UpdateScore(GetID(), newScore);
+
+    // Tell the model to get rid of our discards now.
     mGameState->ClearDiscard(GetID());
 }
 
@@ -39,6 +44,8 @@ vector<Card*> Player::GetLegalPlays() {
     cout << "Getting legal plays for player " << GetID() << endl;
     vector<Card*> hand = mGameState->GetHand(GetID());
     vector<Card*> plays;
+
+    // Loop through the player's hand, adding any legal plays to a vector.
     for (int i = 0; i < 13; i++) {
         if (hand[i] && mGameState->IsLegal(hand[i])) {
             if (hand[i]->getSuit() == SPADE && hand[i]->getRank() == SEVEN) {
@@ -49,8 +56,8 @@ vector<Card*> Player::GetLegalPlays() {
                 return plays;
             }
             plays.push_back(hand[i]);
-            cout << "Found a legal card " << *hand[i] << endl;
         }
     }
     return plays;
 }
+

@@ -82,7 +82,7 @@ private:
     void EndRound();
 
     // Called when the game is over, with the ID of the winning player. Alerts the model, which alerts the view.
-    void EndGame(int winner);
+    void EndGame(std::vector<int> winner);
 
     // Pointer to the model.
     GameState* mState;

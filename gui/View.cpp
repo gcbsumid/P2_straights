@@ -1,13 +1,12 @@
 #include "View.h"
 #include "../gameplay/GamePlay.h"
-//#include "../gameplay/GameState.h"
-//#include "subject.h" // Will figure out this one
-//#include "../gui/DeckGui.h"
 #include "TableVBox.h"
 #include "RowHBox.h"
 #include "DeckGui.h"
 #include "PlayerInfoBox.h"
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/stock.h>
 
 #include <iostream>
 #include <cassert>
@@ -15,7 +14,6 @@
 using namespace std;
 
 // Creates the table
-//View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
 View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck, gameplay), 
         mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
@@ -118,19 +116,47 @@ void View::onNewGame() {
         }
     }
 
+    mTable.ClearTable();
     mGamePlay->PlayGame();
-
 }
 
 void View::onNewSeed() {
-    // TODO: NEW GAME
     cout << "New Seed" << endl;
+
+    // Prompt the user for the seed.
+    Gtk::Dialog dialog("Enter a new seed.", *this);
+
+    Gtk::Entry seedField;
+    Gtk::Label seedLabel("New seed");
+
+    Gtk::VBox* contentArea = dialog.get_vbox();
+    contentArea->pack_start(seedLabel, true, false);
+    contentArea->pack_start(seedField, true, false);
+
+    seedField.set_text("");
+    seedLabel.show();
+    seedField.show();
+
+    dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+
+    // Run the dialog box and block until response.
+    int result = dialog.run();
+    if (result == Gtk::RESPONSE_OK || result == Gtk::RESPONSE_ACCEPT) {
+        string seedstr = seedField.get_text();
+        stringstream seedstream;
+        int seed = 0;
+        seedstream << seedstr;
+        seedstream >> seed;
+        cout << "Got seed " << seed << endl;
+        mGamePlay->ResetSeed(seed);
+    } else {
+        cout << "User cancelled re-seeding" << endl;
+    }
 }
  
 void View::onQuit() {
-    // TODO: NEW GAME
     cout << "Quit" << endl;
-
     // Closes the main window to stop the Gtk::Main::run()
     hide();
 }
@@ -141,8 +167,8 @@ void View::AddPlayer(int player) {
     stringstream s;
     s << "Is player " << player << " a human or a computer?";
     Gtk::Dialog dialog(s.str());
-    dialog.add_button("Human", 1);
-    dialog.add_button("Computer", 2);
+    dialog.add_button("Player is a Human", 1);
+    dialog.add_button("Player is a Computer", 2);
     int resp = dialog.run();
     cout << "Got response " << resp << endl;
     if (resp == 1) {
@@ -168,7 +194,6 @@ void View::HumanTurn(int player) {
         mHand[player-1]->TurnHandToButton();
     }
 }
-void View::PlayerWon(int player) {}
 
 
 // Observer pattern - notifications of state changes from model.
@@ -203,6 +228,10 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
     }
 }
 
+void View::Model_NewRound(int roundNumber) {
+    cout << "We are now on round number " << roundNumber << endl;
+}
+
 void View::Model_PlayerRageQuitted(int player) {
     cout << "HUMAN is now a COMPUTER." << endl;
     mPlayerInfo[player-1]->HumanToComputer();
@@ -211,7 +240,6 @@ void View::Model_PlayerRageQuitted(int player) {
     mHand[player-1] = NULL;
 }
 void View::Model_CardsCleared() {
-    // TODO:: Clear table
     mTable.ClearTable();
 }
 void View::Model_ScoreUpdated(int player, int score) {
@@ -245,13 +273,20 @@ void View::Model_CardDiscarded(int player, Card* card) {
 
 }
 
-void View::Model_EndGame(int player) {
-    assert(player > 0 && player < 5);
+void View::Model_EndGame(vector<int> players) {
+    assert(!players.empty());
     cout << "EndGame called" << endl;
-    Gtk::MessageDialog dialog(*this, "Game over!");
-    stringstream s;
-    s << "The winner is...player " << player << "!";
-    dialog.set_secondary_text(s.str());
-    dialog.run();
+    // Disable the discard/ragequit buttons for players
+    for (int i = 0; i < 4; i++) {
+        mPlayerInfo[i]->DisableButtons();
+    }
+
+    for (int i = 0; i < players.size(); i++) {
+        Gtk::MessageDialog dialog(*this, "Game over!");
+        stringstream s;
+        s << "The winner is...player " << players[i] << "!";
+        dialog.set_secondary_text(s.str());
+        dialog.run();
+    }
 }
 

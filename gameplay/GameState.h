@@ -35,11 +35,13 @@ public:
     // Deal the cards between the players.
     void DealCards();
 
+    void NewRound();
+
     // Remove the cards from the table and let the observers know about this.
     void ClearCardsOnTable();
 
     // The game has ended, player winner won.
-    void EndGame(int winner);
+    void EndGame(std::vector<int> winner);
 
     //----- Functions for treating the game as a state machine - advance to the next player, reset the next player, return current player.
     // Returns whoever's supposed to play next. Cycles through.
@@ -136,6 +138,9 @@ private:
 
     // Seed to use for next game.
     int mSeed;
+
+    // The number of our current round.
+    int mRound;
 };
 
 #endif

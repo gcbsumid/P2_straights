@@ -57,6 +57,9 @@ void GameState::Initialize() {
     mPlayers.clear();
     // Get rid of the cards on the table.
     mCardsOnTable.clear();
+
+    // We start at the 0th round (this immediately gets incremented to 1 by NewRound).
+    mRound = 0;
 }
 
 void GameState::AddObserver(ModelObserver* o) {
@@ -119,6 +122,13 @@ void GameState::DealCards() {
     // Let the observers know about the hands.
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
         (*i)->Model_CardsDealt(observerUpdate);
+    }
+}
+
+void GameState::NewRound() {
+    mRound++;
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_NewRound(mRound);
     }
 }
 
@@ -327,7 +337,7 @@ void GameState::ClearDiscard(int player) {
 }
 
 
-void GameState::EndGame(int player) {
+void GameState::EndGame(vector<int> player) {
     // Let the observers know who won.
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
         (*i)->Model_EndGame(player);

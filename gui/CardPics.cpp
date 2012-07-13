@@ -12,6 +12,9 @@ CardPics::CardPics(bool isButton, DeckGui* deck, GamePlay* gameplay, Rank f, Sui
         : HBox(false,0), mDeck(deck), mGamePlay(gameplay), mRank(f), mSuit(s) {
     Glib::RefPtr<Gdk::Pixbuf> card;
 
+    // Wire up mButton to the button event handler.
+    mButton.signal_clicked().connect(sigc::mem_fun(*this, &CardPics::HandleButtonClick));
+
     // Sets the image to be displayed
     if (f == RANK_COUNT || s == SUIT_COUNT) {
         card = mDeck->null();
@@ -69,6 +72,9 @@ void CardPics::ButtonToImage() {
 
 void CardPics::HandleButtonClick() {
     cout << "Handling a button click" << endl;
+    if (mSuit == SUIT_COUNT || mRank == RANK_COUNT) {
+        return;
+    }
     mGamePlay->PlayCard(mSuit, mRank);
 }
 
@@ -79,7 +85,6 @@ void CardPics::ImageToButton() {
     cout << "ImageToButton called on " << mRank << " " << mSuit << endl;
     remove(*mCard);
     mButton.set_image(*mCard);
-    mButton.signal_clicked().connect(sigc::mem_fun(*this, &CardPics::HandleButtonClick));
     add(mButton);
     mButton.show();
     mIsImage = false;

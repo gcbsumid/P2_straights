@@ -30,8 +30,6 @@ public:
     // Implementing the methods that the controller calls.
     virtual void AddPlayer(int player);
     virtual void HumanTurn(int player);
-    virtual void PlayerWon(int player);
-
 
     // Observer pattern - notifications of state changes from model.
     virtual void Model_CardsDealt(std::vector<std::vector<Card*> >);
@@ -42,7 +40,8 @@ public:
     virtual void Model_DiscardsCleared(int player);
     virtual void Model_CardPlayed(int player, Card*);
     virtual void Model_CardDiscarded(int player, Card*);
-    virtual void Model_EndGame(int player);
+    virtual void Model_EndGame(std::vector<int> players);
+    virtual void Model_NewRound(int roundNumber);
 
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
