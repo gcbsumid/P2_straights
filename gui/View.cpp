@@ -1,13 +1,12 @@
 #include "View.h"
 #include "../gameplay/GamePlay.h"
-//#include "../gameplay/GameState.h"
-//#include "subject.h" // Will figure out this one
-//#include "../gui/DeckGui.h"
 #include "TableVBox.h"
 #include "RowHBox.h"
 #include "DeckGui.h"
 #include "PlayerInfoBox.h"
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/stock.h>
 
 #include <iostream>
 #include <cassert>
@@ -15,7 +14,6 @@
 using namespace std;
 
 // Creates the table
-//View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
 View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck, gameplay), 
         mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
@@ -126,6 +124,37 @@ void View::onNewGame() {
 void View::onNewSeed() {
     // TODO: NEW GAME
     cout << "New Seed" << endl;
+
+    // Prompt the user for the seed.
+    Gtk::Dialog dialog("Enter a new seed.", *this);
+
+    Gtk::Entry seedField;
+    Gtk::Label seedLabel("New seed");
+
+    Gtk::VBox* contentArea = dialog.get_vbox();
+    contentArea->pack_start(seedLabel, true, false);
+    contentArea->pack_start(seedField, true, false);
+
+    seedField.set_text("");
+    seedLabel.show();
+    seedField.show();
+
+    Gtk::Button * okButton = dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+    Gtk::Button * cancelButton = dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+
+    // Run the dialog box and block until response.
+    int result = dialog.run();
+    if (result == Gtk::RESPONSE_OK || result == Gtk::RESPONSE_ACCEPT) {
+        string seedstr = seedField.get_text();
+        stringstream seedstream;
+        int seed = 0;
+        seedstream << seedstr;
+        seedstream >> seed;
+        cout << "Got seed " << seed << endl;
+        mGamePlay->ResetSeed(seed);
+    } else {
+        cout << "User cancelled re-seeding" << endl;
+    }
 }
  
 void View::onQuit() {
