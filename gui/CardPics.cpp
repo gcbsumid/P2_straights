@@ -69,6 +69,9 @@ void CardPics::ButtonToImage() {
 
 void CardPics::HandleButtonClick() {
     cout << "Handling a button click" << endl;
+    if (mSuit == SUIT_COUNT || mRank == RANK_COUNT) {
+        return;
+    }
     mGamePlay->PlayCard(mSuit, mRank);
 }
 
