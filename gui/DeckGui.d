@@ -1,12 +1,12 @@
 DeckGui.o: DeckGui.cpp DeckGui.h /usr/include/gdkmm-2.4/gdkmm/pixbuf.h \
-  /usr/lib/x86_64-linux-gnu/gdkmm-2.4/include/gdkmmconfig.h \
-  /usr/lib/x86_64-linux-gnu/pangomm-1.4/include/pangommconfig.h \
-  /usr/lib/x86_64-linux-gnu/glibmm-2.4/include/glibmmconfig.h \
+  /usr/lib/i386-linux-gnu/gdkmm-2.4/include/gdkmmconfig.h \
+  /usr/lib/i386-linux-gnu/pangomm-1.4/include/pangommconfig.h \
+  /usr/lib/i386-linux-gnu/glibmm-2.4/include/glibmmconfig.h \
   /usr/include/glibmm-2.4/glibmm.h \
   /usr/include/glibmm-2.4/glibmm/thread.h /usr/include/glib-2.0/glib.h \
   /usr/include/glib-2.0/glib/galloca.h \
   /usr/include/glib-2.0/glib/gtypes.h \
-  /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h \
+  /usr/lib/i386-linux-gnu/glib-2.0/include/glibconfig.h \
   /usr/include/glib-2.0/glib/gmacros.h \
   /usr/include/glib-2.0/glib/gversionmacros.h \
   /usr/include/glib-2.0/glib/garray.h \
@@ -82,7 +82,7 @@ DeckGui.o: DeckGui.cpp DeckGui.h /usr/include/gdkmm-2.4/gdkmm/pixbuf.h \
   /usr/include/sigc++-2.0/sigc++/sigc++.h \
   /usr/include/sigc++-2.0/sigc++/signal.h \
   /usr/include/sigc++-2.0/sigc++/signal_base.h \
-  /usr/lib/x86_64-linux-gnu/sigc++-2.0/include/sigc++config.h \
+  /usr/lib/i386-linux-gnu/sigc++-2.0/include/sigc++config.h \
   /usr/include/sigc++-2.0/sigc++/type_traits.h \
   /usr/include/sigc++-2.0/sigc++/trackable.h \
   /usr/include/sigc++-2.0/sigc++/functors/slot.h \
@@ -397,7 +397,7 @@ DeckGui.o: DeckGui.cpp DeckGui.h /usr/include/gdkmm-2.4/gdkmm/pixbuf.h \
   /usr/include/pango-1.0/pango/pango-features.h \
   /usr/include/pango-1.0/pango/pango-renderer.h \
   /usr/include/pango-1.0/pango/pango-utils.h \
-  /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h \
+  /usr/lib/i386-linux-gnu/gtk-2.0/include/gdkconfig.h \
   /usr/include/gtk-2.0/gdk/gdkdisplay.h \
   /usr/include/gtk-2.0/gdk/gdkevents.h \
   /usr/include/gtk-2.0/gdk/gdkcolor.h /usr/include/gtk-2.0/gdk/gdkdnd.h \

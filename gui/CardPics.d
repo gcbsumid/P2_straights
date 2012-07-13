@@ -1,10 +1,10 @@
 CardPics.o: CardPics.cpp CardPics.h /usr/include/gtkmm-2.4/gtkmm/box.h \
   /usr/include/glibmm-2.4/glibmm.h \
-  /usr/lib/x86_64-linux-gnu/glibmm-2.4/include/glibmmconfig.h \
+  /usr/lib/i386-linux-gnu/glibmm-2.4/include/glibmmconfig.h \
   /usr/include/glibmm-2.4/glibmm/thread.h /usr/include/glib-2.0/glib.h \
   /usr/include/glib-2.0/glib/galloca.h \
   /usr/include/glib-2.0/glib/gtypes.h \
-  /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h \
+  /usr/lib/i386-linux-gnu/glib-2.0/include/glibconfig.h \
   /usr/include/glib-2.0/glib/gmacros.h \
   /usr/include/glib-2.0/glib/gversionmacros.h \
   /usr/include/glib-2.0/glib/garray.h \
@@ -80,7 +80,7 @@ CardPics.o: CardPics.cpp CardPics.h /usr/include/gtkmm-2.4/gtkmm/box.h \
   /usr/include/sigc++-2.0/sigc++/sigc++.h \
   /usr/include/sigc++-2.0/sigc++/signal.h \
   /usr/include/sigc++-2.0/sigc++/signal_base.h \
-  /usr/lib/x86_64-linux-gnu/sigc++-2.0/include/sigc++config.h \
+  /usr/lib/i386-linux-gnu/sigc++-2.0/include/sigc++config.h \
   /usr/include/sigc++-2.0/sigc++/type_traits.h \
   /usr/include/sigc++-2.0/sigc++/trackable.h \
   /usr/include/sigc++-2.0/sigc++/functors/slot.h \
@@ -344,7 +344,7 @@ CardPics.o: CardPics.cpp CardPics.h /usr/include/gtkmm-2.4/gtkmm/box.h \
   /usr/include/pango-1.0/pango/pango-tabs.h \
   /usr/include/pango-1.0/pango/pango-renderer.h \
   /usr/include/pango-1.0/pango/pango-utils.h \
-  /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h \
+  /usr/lib/i386-linux-gnu/gtk-2.0/include/gdkconfig.h \
   /usr/include/gtk-2.0/gdk/gdkdisplay.h \
   /usr/include/gtk-2.0/gdk/gdkevents.h \
   /usr/include/gtk-2.0/gdk/gdkcolor.h /usr/include/gtk-2.0/gdk/gdkdnd.h \
@@ -612,9 +612,9 @@ CardPics.o: CardPics.cpp CardPics.h /usr/include/gtkmm-2.4/gtkmm/box.h \
   /usr/include/gtk-2.0/gtk/gtktipsquery.h \
   /usr/include/gtkmm-2.4/gtkmm/container.h \
   /usr/include/gtkmm-2.4/gtkmm/widget.h \
-  /usr/lib/x86_64-linux-gnu/gtkmm-2.4/include/gtkmmconfig.h \
-  /usr/lib/x86_64-linux-gnu/gdkmm-2.4/include/gdkmmconfig.h \
-  /usr/lib/x86_64-linux-gnu/pangomm-1.4/include/pangommconfig.h \
+  /usr/lib/i386-linux-gnu/gtkmm-2.4/include/gtkmmconfig.h \
+  /usr/lib/i386-linux-gnu/gdkmm-2.4/include/gdkmmconfig.h \
+  /usr/lib/i386-linux-gnu/pangomm-1.4/include/pangommconfig.h \
   /usr/include/pangomm-1.4/pangomm/context.h \
   /usr/include/pangomm-1.4/pangomm/fontdescription.h \
   /usr/include/pangomm-1.4/pangomm/fontmetrics.h \
