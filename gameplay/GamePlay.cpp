@@ -54,7 +54,7 @@ void GamePlay::StartRound() {
     mState->Shuffle();
     mState->DealCards();
     
-    mState->ResetNextPlayer(mState->PlayerWithSevenOfSpades() - 1);
+    mState->ResetNextPlayer(mState->PlayerWithSevenOfSpades());
 
     cout << "A round has begun" << endl;
     ContinueGame();
@@ -112,19 +112,14 @@ bool GamePlay::PlayCard(Suit suit, Rank rank) {
     Player* p = mState->CurrentPlayer();
     cout << "Player " << p->GetID() << " played the " << rank << " of " << suit << endl;
     Card c(suit, rank);
-    if (p->IsHuman()) {
-        // Get a human pointer so we can call human-specific methods.
-        HumanPlayer* human = (HumanPlayer*)p;
-
-        if (human->IsRageQuitted()) {
-            // Convert human into computer player.
-            Player* nextPlayer = mState->HumanToComputer(human);
-            cout << "Player " << nextPlayer->GetID() << " ragequits. A computer will now take over." << endl;
-            nextPlayer->TakeTurn();    // The computer player must take a turn for the rage quit player.
-            ContinueGame();
-        }
-    }
     vector<Card*> legalPlays = p->GetLegalPlays();
+
+    // The client can discard a card by playing it. DiscardCard returns false if there are legal plays or
+    // if the card isn't in the hand, so this is perfectly legal.
+    if (DiscardCard(p->GetID(), suit, rank)) {
+        return false;
+    }
+
     bool isLegal = false;
     for (vector<Card*>::const_iterator i = legalPlays.begin(); i != legalPlays.end(); i++) {
         if ((*i)->getRank() == rank && (*i)->getSuit() == suit) {
@@ -133,7 +128,7 @@ bool GamePlay::PlayCard(Suit suit, Rank rank) {
         }
     }
     if (!isLegal) {
-        cerr << "Tried to play an illegal card " << rank << suit << endl;
+        cerr << "Player " << p->GetID() << " tried to play an illegal card " << rank + 1 << " of " << suit + 1 << endl;
         return false;
     }
     Card* cardInHand = mState->CardInHand(p->GetID(), &c);
@@ -162,8 +157,12 @@ bool GamePlay::DiscardCard(int player, Suit suit, Rank rank) {
 }
 
 void GamePlay::RageQuit(int player) {              // Converts indicated player from human to computer.
-    HumanPlayer* p = (HumanPlayer*)mState->PlayerWithID(player);
-    p->RageQuit();
+    Player* p = mState->PlayerWithID(player);
+    if (!p->IsHuman()) {
+        return;
+    }
+    HumanPlayer* h = (HumanPlayer*)p;
+    mState->HumanToComputer(h);
 }
     
 void GamePlay::ResetSeed(int seed) {

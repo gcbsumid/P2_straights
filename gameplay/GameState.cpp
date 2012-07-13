@@ -145,13 +145,14 @@ void GameState::ResetNextPlayer(int player) {
 }
 
 Player* GameState::HumanToComputer(HumanPlayer* human) {
+    cout << "Converting player " << human->GetID() << " to a computer" << endl;
     Player* comp = new ComputerPlayer(human);
     int id = human->GetID() - 1;
     delete human;
     mPlayers[id] = comp;
 
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
-        (*i)->Model_PlayerRageQuitted(id);
+        (*i)->Model_PlayerRageQuitted(id + 1);
     }
     return comp;
 }

@@ -17,12 +17,7 @@ public:
         : Player(gameplay, gamestate, view, id) {}
     virtual ~HumanPlayer() {}
     void TakeTurn();                    // Take Human Player's turn
-    bool IsRageQuitted() const;         // Player rage quits and is replaced by a computer
-    void RageQuit();
     bool IsHuman() const;               // Returns true because this object is a human player
-    
-private: 
-    bool mRageQuit;
 };
 
 #endif

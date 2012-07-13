@@ -8,7 +8,7 @@ using namespace std;
 
 PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum, GamePlay* gameplay) : 
     VBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
-    mScore(0), mButtonBox(false), mGamePlay(gameplay), mRageQuit("Rage Quit"), 
+    mScore(0), mGamePlay(gameplay), mButtonBox(false), mRageQuit("Rage Quit"), 
     mDiscard("Discard") {
 
     // set sme properties of the box
@@ -59,6 +59,8 @@ PlayerInfoBox::~PlayerInfoBox() {}
 void PlayerInfoBox::RageQuitButtonPressed() {
     // TODO: rage quit button.
     // Either GamePlay::RageQuit or View::RageQuit (the view goes to Gameplay)
+    cout << "Someone pressed the rage quit button, time to do something about that" << endl;
+    mGamePlay->RageQuit(mPlayerNumber);
 }
 
 void PlayerInfoBox::DiscardButtonPressed() {

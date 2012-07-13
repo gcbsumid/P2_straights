@@ -29,6 +29,7 @@ void ComputerPlayer::TakeTurn() {
         cerr << "No legal plays and no cards to discard for player " << GetID() << endl;
         assert(false);
     }
+    cout << "Computer " << GetID() << " has " << legalPlays.size() << " plays " << endl;
     mGameState->PlayCard(GetID(), legalPlays[0]);
 }
 

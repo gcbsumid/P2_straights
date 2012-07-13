@@ -16,13 +16,3 @@ void HumanPlayer::TakeTurn() {
 bool HumanPlayer::IsHuman() const {
     return true;
 }
-
-// Player rage quits. Sets boolean to true
-void HumanPlayer::RageQuit() {
-    mRageQuit = true;
-}
-
-// Player rage quits. Sets boolean to true
-bool HumanPlayer::IsRageQuitted() const {
-    return mRageQuit;
-}

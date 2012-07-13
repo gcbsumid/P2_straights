@@ -54,16 +54,16 @@ void HandHBox::TurnHandToStatic() {
 
 void HandHBox::DisplayLegalCards(vector<Card*> legalCards) {
     // Makes all the Legal cards into buttons
-    cout << "Trying to display legal cards - we have " << legalCards.size() << " of them" << endl;
+    //cout << "Trying to display legal cards - we have " << legalCards.size() << " of them" << endl;
     for (int i = 0; i < 13; i++) {
-        cout << "Trying card " << mCards[i]->GetRank() << " of " << mCards[i]->GetSuit() << endl;
+        //cout << "Trying card " << mCards[i]->GetRank() << " of " << mCards[i]->GetSuit() << endl;
         for(int j = 0; j < legalCards.size(); j++) {
             if (!mCards[i]->IsValidCard()) {
                 cout << "Card number " << i << " has already been played" << endl;
                 break;
             }
             if (mCards[i]->GetRank() == legalCards[j]->getRank()) {
-                cout << "Rank matches " << *legalCards[j] << endl;
+                //cout << "Rank matches " << *legalCards[j] << endl;
                 if (mCards[i]->GetSuit() == legalCards[j]->getSuit()) {
                     cout << "Found legal card " << *legalCards[j] << endl;
                     mCards[i]->ImageToButton();

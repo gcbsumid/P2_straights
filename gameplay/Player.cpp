@@ -43,7 +43,7 @@ vector<Card*> Player::GetLegalPlays() {
                 // If the player has the seven of spades, that's their only legal play.
                 plays.clear();
                 plays.push_back(hand[i]);
-                cout << "We have a seven of hearts, nothing else is legal " << endl;
+                cout << "We have a seven of spades, nothing else is legal " << endl;
                 return plays;
             }
             plays.push_back(hand[i]);
