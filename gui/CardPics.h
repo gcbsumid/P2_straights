@@ -15,12 +15,16 @@ public:
     Rank GetRank();
     Suit GetSuit();
     bool IsValidCard();
+    void ButtonToImage();
+    void ImageToButton();
+    bool IsImage();
     void UpdateCard(Rank rank, Suit suit);
 private:
     DeckGui* mDeck;
 
     Rank mRank;
     Suit mSuit;
+    bool mIsImage;
     // Member widgets:
     Gtk::Image* mCard;          // Images to display.
     Gtk::Button mButton;        // Button that will hold an image.

@@ -4,6 +4,7 @@
 #include "DeckGui.h"
 #include <gtkmm/box.h>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 // Constructor - it creates the 4 suits in a Hbox each
@@ -28,28 +29,49 @@ void HandHBox::update(){
     // TODO: something/
 }
 
-void HandHBox::StaticToButton() {
-    // TODO: delete all images and replace them as buttons
+void HandHBox::TurnHandToButton() {
+    // When no legal plays, every card turns into a discard
+    // option, therefore we turn them into buttons
     for (int i = 0; i < 13; i++) {
         if (mCards[i]->IsValidCard()) {
-            remove(*mCards[i]);
-            CardPics* card = new CardPics(true, mDeck, mCards[i]->GetRank(), mCards[i]->GetSuit());
-            delete mCards[i];
-            mCards[i] = card;
-            add(*mCards[i]);
+            mCards[i]->ImageToButton();
+        }
+    }
+
+}
+
+void HandHBox::TurnHandToStatic() {
+    // When the discard turn is done, return everything back
+    // into imagesons
+    for (int i = 0; i < 13; i++) {
+        if (mCards[i]->IsValidCard()) {
+            mCards[i]->ButtonToImage();
         }
     }
 }
 
-void HandHBox::ButtonToStatic() {
+void HandHBox::DisplayLegalCards(vector<Card*> legalCards) {
+    // Makes all the Legal cards into buttons
+    for (int i = 0; i < 13; i++) {
+        for(int j = 0; j < legalCards.size(); j++) {
+            if (!mCards[i]->IsValidCard()) {
+                break;
+            }
+            if (mCards[i]->GetRank() == legalCards[j]->getRank()
+                    && mCards[i]->GetSuit() == legalCards[j]->getSuit()) {
+                mCards[i]->ImageToButton();
+            }
+        }
+    }
+
+}
+
+void HandHBox::ReturnLegalCardsToImage() {
+    // DISCARD
     // TODO: delete buttons and replace them as static images
     for (int i = 0; i < 13; i++) {
-        if (mCards[i]->IsValidCard()) {
-            remove(*mCards[i]);
-            CardPics* card = new CardPics(false, mDeck, mCards[i]->GetRank(), mCards[i]->GetSuit());
-            delete mCards[i];
-            mCards[i] = card;
-            add(*mCards[i]);
+        if (!mCards[i]->IsImage()) {
+            mCards[i]->ButtonToImage();
         }
     }
 }

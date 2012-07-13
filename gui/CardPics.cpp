@@ -19,9 +19,11 @@ CardPics::CardPics(bool isButton, DeckGui* deck, Rank f, Suit s)
     // If its a button, then I add it to the Hbox, else, I just add 
     // it as a static image
     if (isButton) {
+        mIsImage = false;
         mButton.set_image(*mCard);
         add(mButton);
     } else {
+        mIsImage = true;
         add(*mCard);
     }
 
@@ -46,6 +48,25 @@ bool CardPics::IsValidCard() {
         return true;
     }
     return false;
+}
+
+void CardPics::ButtonToImage() {
+    remove(mButton);
+    add(*mCard);
+    mCard->show();
+    mIsImage = true;
+}
+
+void CardPics::ImageToButton() {
+    remove(*mCard);
+    mButton.set_image(*mCard);
+    add(mButton);
+    mButton.show();
+    mIsImage = false;
+}
+
+bool CardPics::IsImage() {
+    return mIsImage;
 }
 
 void CardPics::UpdateCard(Rank rank, Suit suit) {

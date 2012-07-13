@@ -16,11 +16,13 @@ public:
     void update();
 
     void AddCards(std::vector<Card*>);
+    void ReturnLegalCardsToImage();
+    void DisplayLegalCards(vector<Card*> legalCards);
+    void TurnHandToButton();
+    void TurnHandToStatic();
 private:
     DeckGui* mDeck;
 
-    void StaticToButton();
-    void ButtonToStatic();
     int mPlayer;
     CardPics* mCards[13];
 };

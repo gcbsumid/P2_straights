@@ -26,7 +26,6 @@ public:
     View(DeckGui* deck, GamePlay* gameplay);
     //View(Controller*, Model*);
     virtual ~View();
-    virtual void update(); 
 
     // Implementing the methods that the controller calls.
     virtual void AddPlayer(int player);

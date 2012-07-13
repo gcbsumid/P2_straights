@@ -93,7 +93,7 @@ void View::onNewGame() {
     // TODO: NEW GAME
     cout << "New Game" << endl;
 
-    mGamePlay->Quit();
+    //mGamePlay->Quit();
     mGamePlay->PlayGame();
 }
 
