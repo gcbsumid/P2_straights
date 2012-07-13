@@ -236,9 +236,9 @@ void View::Model_CardDiscarded(int player, Card* card) {
     assert(player > 0 && player < 5);
     cout << "Apparently, player " << player << " Discarded card " << *card << endl;
     
-    if(mHand[player-1]){
+    if(mHand[player-1] != NULL){
         cout << "Discarding " << card->getRank() << card->getSuit() << endl;
-        mHand[player-1]->AddCard(card->getRank(), card->getSuit());
+        mPlayerInfo[player-1]->AddToDiscardPile(card->getRank(), card->getSuit());
         mHand[player-1]->CardPlayed(card);
         mHand[player-1]->TurnHandToStatic();
     }
