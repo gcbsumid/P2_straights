@@ -14,7 +14,11 @@ HandHBox::HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing) :
                 Gtk::HBox(true, spacing), mDeck(deck), mPlayer(player), 
                 mGamePlay(gameplay) {
     // The final step is to display the buttons (they display themselves)
-
+    for (int i = 0; i < 13; i++) {
+        mCards[i] = new CardPics(false, mDeck, mGamePlay, RANK_COUNT, SUIT_COUNT);
+        cout << "I'm adding the cards dealt to me." << endl;
+        add(*mCards[i]);
+    }
 }
 
 // Deletes the each card object
@@ -91,11 +95,9 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
     // Display all the cards
     for (int i = 0; i < 13; i++) {
         Card* card = cards.at(i);
-        mCards[i] = new CardPics(false, mDeck, mGamePlay, card->getRank(), card->getSuit());
+        mCards[i]->UpdateCard(card->getRank(), card->getSuit());
         cout << "I'm adding the cards dealt to me." << endl;
-        add(*mCards[i]);
     }
-    show_all_children();  // Not sure if needed
 }
 
 void HandHBox::CardPlayed(Card* card) {

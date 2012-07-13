@@ -86,6 +86,7 @@ void PlayerInfoBox::HumanToComputer() {
     mPlayerName = Gtk::TextBuffer::create();
     mPlayerName->set_text(playerNumberStream.str().c_str());
 
+    mPlayerTextBox.set_buffer(mPlayerName);
     // Disables Rage Quit and Discard button when computer
     mRageQuit.set_sensitive(false);
     mDiscard.set_sensitive(false);

@@ -81,7 +81,7 @@ void CardPics::ImageToButton() {
     mButton.set_image(*mCard);
     mButton.signal_clicked().connect(sigc::mem_fun(*this, &CardPics::HandleButtonClick));
     add(mButton);
-    show_all();
+    mButton.show();
     mIsImage = false;
 }
 
