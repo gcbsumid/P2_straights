@@ -20,6 +20,7 @@ public:
     void HumanToComputer();
     void AddToDiscardPile(Rank r, Suit s);
     void DeleteDiscardPile();
+    void DisableButtons();
 private:
     int mPlayerNumber;
     bool mIsHuman;

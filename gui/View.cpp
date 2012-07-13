@@ -142,8 +142,8 @@ void View::AddPlayer(int player) {
     stringstream s;
     s << "Is player " << player << " a human or a computer?";
     Gtk::Dialog dialog(s.str());
-    dialog.add_button("Human", 1);
-    dialog.add_button("Computer", 2);
+    dialog.add_button("Player is a Human", 1);
+    dialog.add_button("Player is a Computer", 2);
     int resp = dialog.run();
     cout << "Got response " << resp << endl;
     if (resp == 1) {
@@ -246,13 +246,20 @@ void View::Model_CardDiscarded(int player, Card* card) {
 
 }
 
-void View::Model_EndGame(int player) {
-    assert(player > 0 && player < 5);
+void View::Model_EndGame(vector<int> players) {
+    assert(!players.empty());
     cout << "EndGame called" << endl;
-    Gtk::MessageDialog dialog(*this, "Game over!");
-    stringstream s;
-    s << "The winner is...player " << player << "!";
-    dialog.set_secondary_text(s.str());
-    dialog.run();
+    // Disable the discard/ragequit buttons for players
+    for (int i = 0; i < 4; i++) {
+        mPlayerInfo[i]->DisableButtons();
+    }
+
+    for (int i = 0; i < players.size(); i++) {
+        Gtk::MessageDialog dialog(*this, "Game over!");
+        stringstream s;
+        s << "The winner is...player " << players[i] << "!";
+        dialog.set_secondary_text(s.str());
+        dialog.run();
+    }
 }
 

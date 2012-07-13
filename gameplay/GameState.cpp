@@ -327,7 +327,7 @@ void GameState::ClearDiscard(int player) {
 }
 
 
-void GameState::EndGame(int player) {
+void GameState::EndGame(vector<int> player) {
     // Let the observers know who won.
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
         (*i)->Model_EndGame(player);

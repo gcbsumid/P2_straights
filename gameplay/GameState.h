@@ -39,7 +39,7 @@ public:
     void ClearCardsOnTable();
 
     // The game has ended, player winner won.
-    void EndGame(int winner);
+    void EndGame(std::vector<int> winner);
 
     //----- Functions for treating the game as a state machine - advance to the next player, reset the next player, return current player.
     // Returns whoever's supposed to play next. Cycles through.

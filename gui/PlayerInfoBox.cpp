@@ -90,14 +90,19 @@ void PlayerInfoBox::UpdateScore(int score) {
 
 void PlayerInfoBox::HumanToComputer() {
     stringstream playerNumberStream;
-    cout << "FUCK THIS SHIT. I QUIT." << endl;
+    cout << "Human turns into computer" << endl;
     playerNumberStream << "Player " << mPlayerNumber << endl;
     playerNumberStream << "Status: Computer" << endl;
     mPlayerName = Gtk::TextBuffer::create();
     mPlayerName->set_text(playerNumberStream.str().c_str());
 
     mPlayerTextBox.set_buffer(mPlayerName);
-    // Disables Rage Quit and Discard button when computer
+
+    DisableButtons();
+}
+
+void PlayerInfoBox::DisableButtons() {
+    // Disables Rage Quit and Discard button when computer or game over.
     mRageQuit.set_sensitive(false);
     mDiscard.set_sensitive(false);
 }

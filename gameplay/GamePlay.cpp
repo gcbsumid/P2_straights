@@ -69,7 +69,7 @@ void GamePlay::EndRound() {
     mState->ClearCardsOnTable();
     // Round is over, let's tally scores and see if the game's over.
     // Keep track of the lowest score so we can see who won.
-    int winner = -1;
+    vector<int> winners;
     int minScore = 100000;
 
     bool endGame = false;
@@ -86,26 +86,29 @@ void GamePlay::EndRound() {
             endGame = true;
         }
         
-        // Keep track of the player with the lowest score.
+        // Keep track of the players with the lowest score.
         if (score < minScore) {
             minScore = score;
-            winner = player->GetID();
+            winners.clear();
+            winners.push_back(player->GetID());
+        } else if (score == minScore) {
+            winners.push_back(player->GetID());
         }
     }
 
     if (endGame) {
         // Game is over, alert view.
-        EndGame(winner);
+        EndGame(winners);
     } else {
         // Game isn't over, start a new round.
         StartRound();
     }
 }
 
-void GamePlay::EndGame(int winner) {
+void GamePlay::EndGame(vector<int> winners) {
     // The game being over represents a change in state.
     // Also, the model can alert the view of this.
-    mState->EndGame(winner);
+    mState->EndGame(winners);
 }
 
 void GamePlay::ContinueGame() {

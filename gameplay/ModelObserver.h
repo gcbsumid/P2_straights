@@ -34,7 +34,7 @@ public:
     virtual void Model_CardDiscarded(int player, Card*) = 0;
 
     // The game is over and player has won.
-    virtual void Model_EndGame(int player) = 0;
+    virtual void Model_EndGame(std::vector<int> players) = 0;
 };
 
 #endif

@@ -42,7 +42,7 @@ public:
     virtual void Model_DiscardsCleared(int player);
     virtual void Model_CardPlayed(int player, Card*);
     virtual void Model_CardDiscarded(int player, Card*);
-    virtual void Model_EndGame(int player);
+    virtual void Model_EndGame(std::vector<int> players);
 
 private:
     // Observer Pattern: to access Model accessors without having to downcast subject
