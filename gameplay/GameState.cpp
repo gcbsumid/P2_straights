@@ -49,6 +49,7 @@ void GameState::Initialize() {
         mScores[i] = 0;
         mDiscards[i].clear();
     }
+    mPlayers.clear();
     mCardsOnTable.clear();
 }
 
