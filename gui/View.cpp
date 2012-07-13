@@ -130,7 +130,13 @@ void View::AddPlayer(int player) {
 }
 
 
-void View::HumanTurn(int player) {}
+void View::HumanTurn(int player) {
+    // TODO: 
+    // Display Legal Hands
+    // Wait for Turn
+    // Call PlayCard on gameplay
+    // Return Buttons to Images
+}
 void View::PlayerWon(int player) {}
 
 
@@ -166,9 +172,19 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
     }
 }
 
-void View::Model_PlayerRageQuitted(int player) {}
-void View::Model_CardsCleared() {}
-void View::Model_ScoreUpdated(int player, int score) {}
+void View::Model_PlayerRageQuitted(int player) {
+    cout << "HUMAN is now a COMPUTER." << endl;
+    mPlayerInfo[player-1]->HumanToComputer();
+}
+void View::Model_CardsCleared() {
+    // TODO:: Clear table
+}
+void View::Model_ScoreUpdated(int player, int score) {
+    // at the end of the round, this is their accumulative score.
+    cout << "Updating Score." << endl;
+    assert(player > 0 && player < 5);
+    mPlayerInfo[player-1]->UpdateScore(score);
+}
 void View::Model_DiscardsCleared(int player) {}
 void View::Model_CardPlayed(int player, Card* card) {
     assert(player > 0 && player < 5);

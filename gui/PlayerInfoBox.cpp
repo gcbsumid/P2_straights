@@ -1,27 +1,47 @@
 #include "PlayerInfoBox.h"
+#include "gtkmm/textbuffer.h"
+#include "gtkmm/textview.h"
 #include <sstream>
 #include <iostream>
 using namespace std;
 
 PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum) : 
     VBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
-    mScore(0), mButtonBox(false), mScoreTextBox(false),
-    mRageQuit("Rage Quit"), mDiscard("Discard") {
+    mScore(0), mButtonBox(false), mRageQuit("Rage Quit"), 
+    mDiscard("Discard") {
 
     // set sme properties of the box
     stringstream playerNumberStream, scoreStream; 
-    playerNumberStream << "Player " << playerNum << endl;
-    set_name(playerNumberStream.str().c_str());
     add(mPanel);
+
+    playerNumberStream << "Player " << playerNum << endl;
+    if (isHuman) {
+        playerNumberStream << "Status: Human" << endl;
+    } else {
+        playerNumberStream << "Status: Computer" << endl;
+    }
+    mPlayerName = Gtk::TextBuffer::create();
+    mPlayerName->set_text(playerNumberStream.str().c_str());
+
+    mPlayerTextBox.set_buffer(mPlayerName);
+    mPanel.add(mPlayerTextBox);
 
     // Displays the score
     scoreStream << mScore << endl;
-    mScoreTextBox.set_name(scoreStream.str().c_str());
-    add(mScoreTextBox);
+    mScoreText = Gtk::TextBuffer::create();
+    mScoreText->set_text(scoreStream.str().c_str());
+
+    mScoreTextBox.set_buffer(mScoreText);
+    mPanel.add(mScoreTextBox);
 
     //Add Button container
     add(mButtonBox);
 
+    // If not human, buttons are disabled
+    if (!isHuman) {
+        mRageQuit.set_sensitive(false);
+        mDiscard.set_sensitive(false);
+    }
     // Adds the buttons 
     mButtonBox.add(mRageQuit);
     mButtonBox.add(mDiscard);
@@ -44,4 +64,25 @@ void PlayerInfoBox::DiscardButtonPressed() {
     // TODO: Prompts for the discard pile from GamePlay
     //       and then displays a popup displaying all 
     //       discarded cards
+}
+
+void PlayerInfoBox::UpdateScore(int score) {
+    // Update Display Scores
+    stringstream scoreStream;
+    scoreStream << mScore << endl;
+    mScoreText->set_text(scoreStream.str().c_str());
+
+    mScoreTextBox.set_buffer(mScoreText);
+}
+
+void PlayerInfoBox::HumanToComputer() {
+    stringstream playerNumberStream;
+    playerNumberStream << "Player " << mPlayerNumber << endl;
+    playerNumberStream << "Status: Computer" << endl;
+    mPlayerName = Gtk::TextBuffer::create();
+    mPlayerName->set_text(playerNumberStream.str().c_str());
+
+    // Disables Rage Quit and Discard button when computer
+    mRageQuit.set_sensitive(false);
+    mDiscard.set_sensitive(false);
 }

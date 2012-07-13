@@ -37,3 +37,6 @@ void TableVBox::CardPlayed(Card* card) {
     mSuits[(int)card->getSuit()]->CardPlayed(card);
 }
 
+void TableVBox::ClearTable() {
+    
+}

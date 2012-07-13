@@ -15,6 +15,7 @@ public:
     void update();
     void Display();
     void CardPlayed(Card* card);
+    void ClearTable();
 private:
     Gtk::VBox mPanel;
     RowHBox* mSuits[4];

@@ -53,7 +53,7 @@ bool CardPics::IsValidCard() {
 void CardPics::ButtonToImage() {
     remove(mButton);
     add(*mCard);
-    mCard->show();
+    show_all();
     mIsImage = true;
 }
 
@@ -61,7 +61,7 @@ void CardPics::ImageToButton() {
     remove(*mCard);
     mButton.set_image(*mCard);
     add(mButton);
-    mButton.show();
+    show_all();
     mIsImage = false;
 }
 
