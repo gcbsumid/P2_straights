@@ -118,11 +118,9 @@ void View::onNewGame() {
 
     mTable.ClearTable();
     mGamePlay->PlayGame();
-
 }
 
 void View::onNewSeed() {
-    // TODO: NEW GAME
     cout << "New Seed" << endl;
 
     // Prompt the user for the seed.
@@ -139,8 +137,8 @@ void View::onNewSeed() {
     seedLabel.show();
     seedField.show();
 
-    Gtk::Button * okButton = dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-    Gtk::Button * cancelButton = dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 
     // Run the dialog box and block until response.
     int result = dialog.run();
@@ -158,9 +156,7 @@ void View::onNewSeed() {
 }
  
 void View::onQuit() {
-    // TODO: NEW GAME
     cout << "Quit" << endl;
-
     // Closes the main window to stop the Gtk::Main::run()
     hide();
 }
@@ -198,7 +194,6 @@ void View::HumanTurn(int player) {
         mHand[player-1]->TurnHandToButton();
     }
 }
-void View::PlayerWon(int player) {}
 
 
 // Observer pattern - notifications of state changes from model.
@@ -233,6 +228,10 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
     }
 }
 
+void View::Model_NewRound(int roundNumber) {
+    cout << "We are now on round number " << roundNumber << endl;
+}
+
 void View::Model_PlayerRageQuitted(int player) {
     cout << "HUMAN is now a COMPUTER." << endl;
     mPlayerInfo[player-1]->HumanToComputer();
@@ -241,7 +240,6 @@ void View::Model_PlayerRageQuitted(int player) {
     mHand[player-1] = NULL;
 }
 void View::Model_CardsCleared() {
-    // TODO:: Clear table
     mTable.ClearTable();
 }
 void View::Model_ScoreUpdated(int player, int score) {

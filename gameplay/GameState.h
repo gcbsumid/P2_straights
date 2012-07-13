@@ -35,6 +35,8 @@ public:
     // Deal the cards between the players.
     void DealCards();
 
+    void NewRound();
+
     // Remove the cards from the table and let the observers know about this.
     void ClearCardsOnTable();
 
@@ -136,6 +138,9 @@ private:
 
     // Seed to use for next game.
     int mSeed;
+
+    // The number of our current round.
+    int mRound;
 };
 
 #endif

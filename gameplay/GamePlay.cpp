@@ -55,6 +55,7 @@ void GamePlay::StartRound() {
     // Get the state to shuffle/deal/alert view.
     mState->Shuffle();
     mState->DealCards();
+    mState->NewRound();
     
     // Start at the player with the 7 of spades.
     mState->ResetNextPlayer(mState->PlayerWithSevenOfSpades());

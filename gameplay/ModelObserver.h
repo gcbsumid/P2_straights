@@ -12,6 +12,9 @@ public:
     // The value is either an empty vector for a computer player or a vector of 13 cards for a human.
     virtual void Model_CardsDealt(std::vector<std::vector<Card*> >) = 0;
 
+    // A new round has begun - we are on round number roundNumber.
+    virtual void Model_NewRound(int roundNumber) = 0;
+
     // Player of ID id has been added.
     virtual void Model_PlayerAdded(bool isHuman, int id) = 0;
 
