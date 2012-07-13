@@ -118,6 +118,7 @@ void View::onNewGame() {
         }
     }
 
+    mTable.ClearTable();
     mGamePlay->PlayGame();
 
 }
