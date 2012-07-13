@@ -17,6 +17,11 @@ public:
     ~GameState();
     void AddObserver(ModelObserver*);
 
+    void ResetSeed(int seed);
+
+    // Make sure things are ready before the start of a game.
+    void Initialize();
+
     // Functions for interaction from the GamePlay controller.
     void AddHumanPlayer(ViewInterface* v);      // Add a Player to the game. 
     void AddComputerPlayer(ViewInterface* v);   // Add a Player to the game.
@@ -59,6 +64,7 @@ private:
 
     GamePlay* mGamePlay;
     int mCurrentPlayer;
+    int mSeed;
 };
 
 #endif
