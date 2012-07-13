@@ -1,15 +1,18 @@
 #include "PlayerInfoBox.h"
+#include "HandHBox.h" 
+#include "DeckGui.h"
 #include "../gameplay/GamePlay.h"
 #include "gtkmm/textbuffer.h"
 #include "gtkmm/textview.h"
+#include <gtkmm/dialog.h>
 #include <sstream>
 #include <iostream>
 using namespace std;
 
-PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum, GamePlay* gameplay) : 
+PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum, GamePlay* gameplay, DeckGui* deck) : 
     VBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
     mScore(0), mGamePlay(gameplay), mButtonBox(false), mRageQuit("Rage Quit"), 
-    mDiscard("Discard") {
+    mDeck(deck), mDiscard("Discard"), mDiscardPile(deck, gameplay, playerNum, 5) {
 
     // set sme properties of the box
     stringstream playerNumberStream, scoreStream; 
@@ -67,11 +70,18 @@ void PlayerInfoBox::DiscardButtonPressed() {
     // TODO: Prompts for the discard pile from GamePlay
     //       and then displays a popup displaying all 
     //       discarded cards
+    cout << "Displaying Discard Pile" << endl;
+    Gtk::Dialog dialog("Discard Pile");
+    Gtk::VBox* mDialogBox = dialog.get_vbox();
+    mDialogBox->add(mDiscardPile);
+    dialog.add_button("Okay", 1);
+    dialog.run();
 }
 
 void PlayerInfoBox::UpdateScore(int score) {
     // Update Display Scores
     stringstream scoreStream;
+    mScore = score;
     scoreStream << mScore << endl;
     mScoreText->set_text(scoreStream.str().c_str());
 
@@ -90,4 +100,12 @@ void PlayerInfoBox::HumanToComputer() {
     // Disables Rage Quit and Discard button when computer
     mRageQuit.set_sensitive(false);
     mDiscard.set_sensitive(false);
+}
+
+void PlayerInfoBox::AddToDiscardPile(Rank r, Suit s) {
+    mDiscardPile.AddCard(r, s);
+}
+
+void PlayerInfoBox::DeleteDiscardPile() {
+    mDiscardPile.Reset();
 }

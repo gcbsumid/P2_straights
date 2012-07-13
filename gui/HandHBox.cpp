@@ -108,3 +108,19 @@ void HandHBox::CardPlayed(Card* card) {
         }
     }
 }
+
+void HandHBox::AddCard(Rank r, Suit s) {
+    for (int i = 0; i < 13; i++) {
+        if (!mCards[i]->IsValidCard()) {
+            mCards[i]->UpdateCard(r, s);
+        }
+    }
+}
+
+void HandHBox::Reset() {
+    for (int i = 0; i < 13; i++) {
+        if (mCards[i]->IsValidCard()) {
+            mCards[i]->RemoveCard();
+        }
+    }
+}

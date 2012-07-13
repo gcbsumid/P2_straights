@@ -16,6 +16,7 @@ public:
     void update();
 
     void AddCards(std::vector<Card*>);
+    void AddCard(Rank r, Suit s);
     void ReturnLegalCardsToImage();
     void DisplayLegalCards(vector<Card*> legalCards);
     void TurnHandToButton();

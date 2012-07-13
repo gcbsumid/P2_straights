@@ -12,13 +12,7 @@ using namespace std;
 RowHBox::RowHBox(DeckGui* deck, GamePlay* gameplay, int suit, int spacing = 5)
         : HBox(true, spacing), mSuit(suit), mGamePlay(gameplay), mDeck(deck) {
     for (int i = 0; i < 13; i++) {
-        if (i == 6 && mSuit == 3) {
-            cout << "Hurr durr found seven of spades lol" << endl;
-            // 7 of spades;
-            mCards[i] = new CardPics(false, mDeck, mGamePlay, SEVEN, SPADE);
-        } else {
-            mCards[i] = new CardPics(false, mDeck, mGamePlay, RANK_COUNT, SUIT_COUNT);
-        }
+        mCards[i] = new CardPics(false, mDeck, mGamePlay, RANK_COUNT, SUIT_COUNT);
         //mCards[i] = new Gtk::Button("Fuck Nuts");
         mCards[i]->set_name("Test");
         add(*mCards[i]);
@@ -43,10 +37,6 @@ void RowHBox::CardPlayed(Card* card) {
 
 void RowHBox::Reset() {
     for (int i = 0; i < 13; i++) {
-        if (mSuit == 3 && i == 6) {
-            continue;
-        } else {
-            mCards[i]->RemoveCard();
-        }
+        mCards[i]->RemoveCard();
     }
 }

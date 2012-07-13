@@ -22,6 +22,12 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
     set_title("Straights");
     maximize();
 
+    // Initialize mPlayerInfo[x] to NULL pointers
+    for (int i = 0; i < 4; i++) {
+        mPlayerInfo[i] = NULL;
+        mHand[i] = NULL;
+    }
+
     // Sets some attributes of the frame
     mTable.set_label("Cards on the Table:");
     mTable.set_label_align(Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP);
@@ -93,8 +99,27 @@ void View::onNewGame() {
     // TODO: NEW GAME
     cout << "New Game" << endl;
 
-    //mGamePlay->Quit();
+    // Removing player info boxes at the beginning of the game.
+    // Removing mHands at the beginning of the game.
+    // Note: you should probably put this in a helper function
+    for (int i = 0; i < 4; i++) {
+        if (mPlayerInfo[i] != NULL) {
+            cout << "I am in the for loop remove" << endl;
+            mPlayerInfoContainer.remove(*mPlayerInfo[i]);
+            delete mPlayerInfo[i];
+            mPlayerInfo[i] = NULL;
+        }
+
+        if (mHand[i] != NULL) {
+            cout << "I am removing current human hands." << endl;
+            mPanel.remove(*mHand[i]);
+            delete mHand[i];
+            mHand[i] = NULL;
+        }
+    }
+
     mGamePlay->PlayGame();
+
 }
 
 void View::onNewSeed() {
@@ -160,7 +185,7 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     } else {
         mHand[playerid-1] = NULL;
     }
-    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid, mGamePlay);
+    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid, mGamePlay, mDeck);
     mPlayerInfoContainer.add(*mPlayerInfo[playerid-1]);
     mPlayerInfo[playerid-1]->show();
 }
@@ -182,6 +207,8 @@ void View::Model_PlayerRageQuitted(int player) {
     cout << "HUMAN is now a COMPUTER." << endl;
     mPlayerInfo[player-1]->HumanToComputer();
     mPanel.remove(*mHand[player-1]);
+    delete mHand[player-1];
+    mHand[player-1] = NULL;
 }
 void View::Model_CardsCleared() {
     // TODO:: Clear table
@@ -210,9 +237,12 @@ void View::Model_CardDiscarded(int player, Card* card) {
     cout << "Apparently, player " << player << " Discarded card " << *card << endl;
     
     if(mHand[player-1]){
+        cout << "Discarding " << card->getRank() << card->getSuit() << endl;
+        mHand[player-1]->AddCard(card->getRank(), card->getSuit());
         mHand[player-1]->CardPlayed(card);
         mHand[player-1]->TurnHandToStatic();
     }
+
 }
 
 void View::Model_EndGame(int player) {
