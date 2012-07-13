@@ -98,6 +98,10 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
 
 void HandHBox::CardPlayed(Card* card) {
     for (int i = 0; i < 13; i++) {
+        cout << "Card Rank: " << card->getRank() << endl;
+        cout << "Card Suit: " << card->getSuit() << endl;
+        cout << "mCard[" << i << "] Rank: " << mCards[i]->GetRank() << endl;
+        cout << "mCard[" << i << "] Suit: " << mCards[i]->GetSuit() << endl;
         if (mCards[i]->GetRank() == card->getRank() 
             && mCards[i]->GetSuit() == card->getSuit()) {
             mCards[i]->RemoveCard();

@@ -39,5 +39,7 @@ void TableVBox::CardPlayed(Card* card) {
 }
 
 void TableVBox::ClearTable() {
-    
+    for (int i = 0; i < 4; i++) {
+        mSuits[i]->Reset();
+    }
 }
