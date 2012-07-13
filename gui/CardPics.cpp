@@ -47,3 +47,7 @@ bool CardPics::IsValidCard() {
     }
     return false;
 }
+
+void CardPics::UpdateCard(Rank rank, Suit suit) {
+    mCard->set(mDeck->image(rank, suit));
+}

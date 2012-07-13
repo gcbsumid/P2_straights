@@ -15,7 +15,7 @@ public:
     Rank GetRank();
     Suit GetSuit();
     bool IsValidCard();
-
+    void UpdateCard(Rank rank, Suit suit);
 private:
     DeckGui* mDeck;
 

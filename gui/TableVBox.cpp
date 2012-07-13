@@ -1,7 +1,9 @@
 #include "TableVBox.h"
 #include "RowHBox.h"
+#include "../gameplay/Card.h"
 #include <iostream>
 using namespace std;
+
 
 // Constructor - it creates the 4 suits in a Hbox each
 TableVBox::TableVBox(DeckGui* deck) : mPanel(false, 5), mDeck(deck) { }
@@ -30,8 +32,8 @@ TableVBox::~TableVBox(){
     }
 }
 
-void TableVBox::update(){
-    for (int i = 0; i < 4; i++) {
-        mSuits[i]->update();
-    }
+void TableVBox::CardPlayed(Card* card) {
+    cout << "Alerting suit " << (int)card->getSuit() << " of the fact that card " << *card << " was played" << endl;
+    mSuits[(int)card->getSuit()]->CardPlayed(card);
 }
+

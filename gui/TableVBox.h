@@ -6,6 +6,7 @@
 
 class RowHBox;
 class DeckGui;
+class Card;
 
 class TableVBox : public Gtk::Frame {
 public:
@@ -13,6 +14,7 @@ public:
     ~TableVBox();
     void update();
     void Display();
+    void CardPlayed(Card* card);
 private:
     Gtk::VBox mPanel;
     RowHBox* mSuits[4];

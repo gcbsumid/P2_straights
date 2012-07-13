@@ -18,10 +18,11 @@ using namespace std;
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
 View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck), 
-        mMenu(false, 10), mPanel(, 0), mHand(), mPlayerInfoContainer(true, 5) {
+        mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
     set_title("Straights");
     set_default_size(1000, 1000);
+    maximize();
 
     // Sets some attributes of the frame
     mTable.set_label("Cards on the Table:");
@@ -80,8 +81,8 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
      ***********************/
 
     mTable.Display();
-    mMenu.pack_start(*pMenuBar, Gtk::PACK_SHRINK);
-    mPanel.pack_start(mTable, Gtk::PACK_SHRINK);
+    mMenu.pack_start(*pMenuBar);
+    mPanel.pack_start(mTable);
 
     mPanel.pack_start(mPlayerInfoContainer, Gtk::PACK_SHRINK);
 
@@ -150,13 +151,6 @@ void View::PlayerWon(int player) {}
 
 
 // Observer pattern - notifications of state changes from model.
-void View::Model_PlayerRageQuitted(int player) {}
-void View::Model_CardsCleared() {}
-void View::Model_ScoreUpdated(int player, int score) {}
-void View::Model_DiscardsCleared(int player) {}
-void View::Model_CardPlayed(int player, Card*) {}
-void View::Model_CardDiscarded(int player, Card*) {}
-
 
 // creates an HBox for the hand to be displayed
 // also creates a new player
@@ -187,3 +181,15 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
         }
     }
 }
+
+void View::Model_PlayerRageQuitted(int player) {}
+void View::Model_CardsCleared() {}
+void View::Model_ScoreUpdated(int player, int score) {}
+void View::Model_DiscardsCleared(int player) {}
+void View::Model_CardPlayed(int player, Card* card) {
+    assert(player > 0 && player < 5);
+    cout << "Apparently, player " << player << " played card " << *card << endl;
+    mTable.CardPlayed(card);
+}
+void View::Model_CardDiscarded(int player, Card*) {}
+

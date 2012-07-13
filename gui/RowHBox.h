@@ -6,12 +6,13 @@
 
 class CardPics;
 class DeckGui;
+class Card;
 
 class RowHBox : public Gtk::HBox {
 public:
     RowHBox(DeckGui*, int, int);
     virtual ~RowHBox();
-    void update();
+    void CardPlayed(Card* card);
 
 protected:
     int mSuit;
