@@ -35,7 +35,8 @@ void HandHBox::TurnHandToButton() {
     // When no legal plays, every card turns into a discard
     // option, therefore we turn them into buttons
     for (int i = 0; i < 13; i++) {
-        if (mCards[i]->IsValidCard()) {
+        if (mCards[i]->IsImage()) {
+            cout << "performing image to button" << endl;
             mCards[i]->ImageToButton();
         }
     }
@@ -46,7 +47,8 @@ void HandHBox::TurnHandToStatic() {
     // When the discard turn is done, return everything back
     // into imagesons
     for (int i = 0; i < 13; i++) {
-        if (mCards[i]->IsValidCard()) {
+        cout << "PERFORMING BUTTON TO IMAGE" << endl;
+        if (!mCards[i]->IsImage()) {
             mCards[i]->ButtonToImage();
         }
     }
@@ -98,10 +100,6 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
 
 void HandHBox::CardPlayed(Card* card) {
     for (int i = 0; i < 13; i++) {
-        cout << "Card Rank: " << card->getRank() << endl;
-        cout << "Card Suit: " << card->getSuit() << endl;
-        cout << "mCard[" << i << "] Rank: " << mCards[i]->GetRank() << endl;
-        cout << "mCard[" << i << "] Suit: " << mCards[i]->GetSuit() << endl;
         if (mCards[i]->GetRank() == card->getRank() 
             && mCards[i]->GetSuit() == card->getSuit()) {
             mCards[i]->RemoveCard();

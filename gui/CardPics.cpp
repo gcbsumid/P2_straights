@@ -58,8 +58,11 @@ void CardPics::ButtonToImage() {
     if (IsImage()) {
         return;
     }
+    cout << "removeing a buttonnnnnnnnnnnnnnnnnnnnnnnnn" << endl;
+    
     remove(mButton);
-    add(*mCard);
+    mCard->reparent(*this);
+    //add(*mCard);
     show_all();
     mIsImage = true;
 }

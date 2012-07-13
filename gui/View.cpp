@@ -36,7 +36,6 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
     *****************************/
 
     // Adds the menu at the top
-    mPanel.add(mMenu);
 
     // Define the actions:
     mRefActionGroup = Gtk::ActionGroup::create();
@@ -80,7 +79,8 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
 
     mTable.Display();
     mMenu.pack_start(*pMenuBar);
-    mPanel.pack_start(mTable);
+    mPanel.pack_start(mMenu, Gtk::PACK_SHRINK);
+    mPanel.pack_start(mTable, Gtk::PACK_SHRINK);
 
     mPanel.pack_start(mPlayerInfoContainer, Gtk::PACK_SHRINK);
 
@@ -202,5 +202,13 @@ void View::Model_CardPlayed(int player, Card* card) {
         mHand[player-1]->TurnHandToStatic();
     }
 }
-void View::Model_CardDiscarded(int player, Card*) {}
+void View::Model_CardDiscarded(int player, Card* card) {
+    assert(player > 0 && player < 5);
+    cout << "Apparently, player " << player << " Discarded card " << *card << endl;
+    
+    if(mHand[player-1]){
+        mHand[player-1]->CardPlayed(card);
+        mHand[player-1]->TurnHandToStatic();
+    }
+}
 
