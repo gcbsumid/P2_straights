@@ -80,6 +80,7 @@ void PlayerInfoBox::UpdateScore(int score) {
 
 void PlayerInfoBox::HumanToComputer() {
     stringstream playerNumberStream;
+    cout << "FUCK THIS SHIT. I QUIT." << endl;
     playerNumberStream << "Player " << mPlayerNumber << endl;
     playerNumberStream << "Status: Computer" << endl;
     mPlayerName = Gtk::TextBuffer::create();

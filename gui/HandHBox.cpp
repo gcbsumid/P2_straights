@@ -35,7 +35,7 @@ void HandHBox::TurnHandToButton() {
     // When no legal plays, every card turns into a discard
     // option, therefore we turn them into buttons
     for (int i = 0; i < 13; i++) {
-        if (mCards[i]->IsImage()) {
+        if (mCards[i]->IsImage() && mCards[i]->IsValidCard()) {
             cout << "performing image to button" << endl;
             mCards[i]->ImageToButton();
         }
