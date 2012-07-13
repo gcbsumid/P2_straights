@@ -40,3 +40,13 @@ void RowHBox::CardPlayed(Card* card) {
     cout << "RowHBox sees that card " << (int)card->getRank() << " was played " << endl;
     mCards[(int)card->getRank()]->UpdateCard(card->getRank(), card->getSuit());
 }
+
+void RowHBox::Reset() {
+    for (int i = 0; i < 13; i++) {
+        if (mSuit == 3 && i == 6) {
+            continue;
+        } else {
+            mCards[i]->RemoveCard();
+        }
+    }
+}

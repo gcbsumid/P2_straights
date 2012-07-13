@@ -55,6 +55,9 @@ bool CardPics::IsValidCard() {
 }
 
 void CardPics::ButtonToImage() {
+    if (IsImage()) {
+        return;
+    }
     remove(mButton);
     add(*mCard);
     show_all();
@@ -67,6 +70,9 @@ void CardPics::HandleButtonClick() {
 }
 
 void CardPics::ImageToButton() {
+    if (!IsImage()) {
+        return;
+    }
     cout << "ImageToButton called on " << mRank << " " << mSuit << endl;
     remove(*mCard);
     mButton.set_image(*mCard);
@@ -81,9 +87,13 @@ bool CardPics::IsImage() {
 }
 
 void CardPics::UpdateCard(Rank rank, Suit suit) {
+    mRank = rank;
+    mSuit = suit;
     mCard->set(mDeck->image(rank, suit));
 }
 
 void CardPics::RemoveCard() {
+    mRank = RANK_COUNT;
+    mSuit = SUIT_COUNT;
     mCard->set(mDeck->null());
 }

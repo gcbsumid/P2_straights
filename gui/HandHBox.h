@@ -21,6 +21,7 @@ public:
     void TurnHandToButton();
     void TurnHandToStatic();
     void CardPlayed(Card* card);
+    void Reset();
 private:
     DeckGui* mDeck;
 

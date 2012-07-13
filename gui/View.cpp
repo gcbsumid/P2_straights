@@ -133,15 +133,14 @@ void View::AddPlayer(int player) {
 void View::HumanTurn(int player) {
     assert(player > 0 && player < 5);
     cout << "The view sees that it's a human's turn to play " << endl;
-    player--;
-    vector<Card*> legalHand = mGamePlay->GetLegal(player + 1);
+    vector<Card*> legalHand = mGamePlay->GetLegal(player);
     if (!legalHand.empty()) {
         cout << "We have legal cards to play" << endl;
         // We have legal cards to play
-        mHand[player]->DisplayLegalCards(legalHand);
+        mHand[player-1]->DisplayLegalCards(legalHand);
     } else {
         // No legal plays.
-        mHand[player]->TurnHandToButton();
+        mHand[player-1]->TurnHandToButton();
     }
 }
 void View::PlayerWon(int player) {}
@@ -185,6 +184,7 @@ void View::Model_PlayerRageQuitted(int player) {
 }
 void View::Model_CardsCleared() {
     // TODO:: Clear table
+    mTable.ClearTable();
 }
 void View::Model_ScoreUpdated(int player, int score) {
     // at the end of the round, this is their accumulative score.
@@ -197,6 +197,11 @@ void View::Model_CardPlayed(int player, Card* card) {
     assert(player > 0 && player < 5);
     cout << "Apparently, player " << player << " played card " << *card << endl;
     mTable.CardPlayed(card);
+    // Only do if player is human and mHand[player] is not null
+    if(mHand[player-1]){
+        mHand[player-1]->CardPlayed(card);
+        mHand[player-1]->TurnHandToStatic();
+    }
 }
 void View::Model_CardDiscarded(int player, Card*) {}
 

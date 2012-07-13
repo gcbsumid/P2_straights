@@ -14,6 +14,7 @@ public:
     RowHBox(DeckGui*, GamePlay*, int, int);
     virtual ~RowHBox();
     void CardPlayed(Card* card);
+    void Reset();
 
 protected:
     int mSuit;
