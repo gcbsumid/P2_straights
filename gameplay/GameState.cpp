@@ -77,6 +77,7 @@ void GameState::DealCards() {
     // We only tell the observers about human cards.
     vector<vector<Card*> > observerUpdate;
     int card = 0;
+    mHands.clear();
     for (int i = 0; i < 4; i++) {
         vector<Card*> hand;
         for (int j = 0; j < 13; j++) {
@@ -107,7 +108,13 @@ int GameState::PlayerWithSevenOfSpades() const {
     }
     // This should never happen.
     cerr << "Nobody has the Seven of Spades." << endl;
-    return 4;
+    for (int i = 0; i < 4; i++) {
+        // Card #45 is the seven of spades.
+        for (int j = 0; j < 13; j++) {
+            cout << *mHands[i][j] << endl;
+        }
+    }
+    assert(false);
 }
 
 bool GameState::PlayerHas(int player, Card* card) const {
