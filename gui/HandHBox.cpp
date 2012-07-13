@@ -11,8 +11,8 @@ class GamePlay;
 
 // Constructor - it creates the 4 suits in a Hbox each
 HandHBox::HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing) : 
-                Gtk::HBox(true, spacing), mDeck(deck), mGamePlay(gameplay), 
-                mPlayer(player) {
+                Gtk::HBox(true, spacing), mDeck(deck), 
+                mPlayer(player), mGamePlay(gameplay) {
     // The final step is to display the buttons (they display themselves)
 
 }

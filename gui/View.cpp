@@ -161,7 +161,7 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     } else {
         mHand[playerid-1] = NULL;
     }
-    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid);
+    mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid, mGamePlay);
     mPlayerInfoContainer.add(*mPlayerInfo[playerid-1]);
     mPlayerInfo[playerid-1]->show();
 }
@@ -197,6 +197,7 @@ void View::Model_CardPlayed(int player, Card* card) {
     assert(player > 0 && player < 5);
     cout << "Apparently, player " << player << " played card " << *card << endl;
     mTable.CardPlayed(card);
+    //mHand[player - 1]->CardPlayed(card);
 }
 void View::Model_CardDiscarded(int player, Card*) {}
 

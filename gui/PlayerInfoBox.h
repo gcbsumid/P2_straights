@@ -6,9 +6,11 @@
 #include "gtkmm/textbuffer.h"
 #include "gtkmm/textview.h"
 
+class GamePlay;
+
 class PlayerInfoBox : public Gtk::VBox {
 public:
-    PlayerInfoBox(bool, int); // bool is for human or computer, int is player number
+    PlayerInfoBox(bool, int, GamePlay* gameplay); // bool is for human or computer, int is player number
     ~PlayerInfoBox();
 
     void UpdateScore(int score);
@@ -17,6 +19,8 @@ private:
     int mPlayerNumber;
     bool mIsHuman;
     int mScore;
+
+    GamePlay* mGamePlay;
 
     // Widgets
     Gtk::VBox mPanel;          // Frame Box

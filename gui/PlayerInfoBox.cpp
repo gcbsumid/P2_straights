@@ -1,13 +1,14 @@
 #include "PlayerInfoBox.h"
+#include "../gameplay/GamePlay.h"
 #include "gtkmm/textbuffer.h"
 #include "gtkmm/textview.h"
 #include <sstream>
 #include <iostream>
 using namespace std;
 
-PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum) : 
+PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum, GamePlay* gameplay) : 
     VBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
-    mScore(0), mButtonBox(false), mRageQuit("Rage Quit"), 
+    mScore(0), mButtonBox(false), mGamePlay(gameplay), mRageQuit("Rage Quit"), 
     mDiscard("Discard") {
 
     // set sme properties of the box
