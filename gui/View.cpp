@@ -192,7 +192,9 @@ void View::Model_ScoreUpdated(int player, int score) {
     assert(player > 0 && player < 5);
     mPlayerInfo[player-1]->UpdateScore(score);
 }
+
 void View::Model_DiscardsCleared(int player) {}
+
 void View::Model_CardPlayed(int player, Card* card) {
     assert(player > 0 && player < 5);
     cout << "Apparently, player " << player << " played card " << *card << endl;
@@ -213,6 +215,7 @@ void View::Model_CardDiscarded(int player, Card* card) {
 }
 
 void View::Model_EndGame(int player) {
+    assert(player > 0 && player < 5);
     cout << "EndGame called" << endl;
     Gtk::MessageDialog dialog(*this, "Game over!");
     stringstream s;

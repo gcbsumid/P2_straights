@@ -13,14 +13,12 @@ using namespace std;
 
 
 // Constructor - set up the cards.
-GameState::GameState(GamePlay* gameplay) : mGamePlay(gameplay), mCurrentPlayer(-1) {
+GameState::GameState(GamePlay* gameplay) : mGamePlay(gameplay), mCurrentPlayer(-1), mSeed(0) {
     for (int i = 0; i < GamePlay::CARD_COUNT; i++) {
 	    mCardsArray[i] = new Card((Suit)(i / RANK_COUNT), (Rank)(i % RANK_COUNT)); // Creates cards
         mArrangedCards[i] = mCardsArray[i]; // pointers to an arranged set of cards
     }
-    for (int i = 0; i < 4; i++) {
-        mScores.push_back(0);
-    }
+    mScores.resize(4);
     mDiscards.resize(4);
 }
 
@@ -35,6 +33,23 @@ GameState::~GameState() {
     for (int i = 0; i < 4; i++) {
         delete mPlayers[i];
     }
+}
+
+void GameState::ResetSeed(int seed) {
+    mSeed = seed;
+}
+
+void GameState::Initialize() {
+    srand48(mSeed);
+    // Delete the players
+    for (int i = 0; i < mPlayers.size(); i++) {
+        if (mPlayers[i]) {
+            delete mPlayers[i];
+        }
+        mScores[i] = 0;
+        mDiscards[i].clear();
+    }
+    mCardsOnTable.clear();
 }
 
 void GameState::AddObserver(ModelObserver* o) {

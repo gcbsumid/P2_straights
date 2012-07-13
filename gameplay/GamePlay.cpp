@@ -41,6 +41,7 @@ void GamePlay::AddPlayer(bool human) {
 }
 
 void GamePlay::PlayGame() {
+    mState->Initialize();
     cout << "WOULD YOU LIEK TO PLAY A GAME?!" << endl;
     // Initializes players.
     for (int i = 0; i < 4; i++) {
@@ -83,7 +84,7 @@ void GamePlay::EndRound() {
         }
     }
     if (endGame) {
-        EndGame(winner + 1);
+        EndGame(winner);
     } else {
         StartRound();
     }
@@ -168,10 +169,19 @@ void GamePlay::RageQuit(int player) {              // Converts indicated player 
         return;
     }
     HumanPlayer* h = (HumanPlayer*)p;
-    mState->HumanToComputer(h);
+
+    // If the current player just rage quit, carry on.
+    Player* newPlayer = mState->HumanToComputer(h);
+    if (newPlayer == mState->CurrentPlayer()) {
+        cout << "New player " << newPlayer->GetID() << " is the current player, so let's keep playing" << endl;
+        mState->ResetNextPlayer(newPlayer->GetID());
+        ContinueGame();
+    }
+    cout << "New player " << newPlayer->GetID() << " isn't " << mState->CurrentPlayer()->GetID() << " so let's block" << endl;
 }
     
 void GamePlay::ResetSeed(int seed) {
+    mState->ResetSeed(seed);
     srand48(seed);
 }
 
