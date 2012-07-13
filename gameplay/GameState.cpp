@@ -66,7 +66,7 @@ void GameState::AddObserver(ModelObserver* o) {
 
 void GameState::AddPlayer(bool IsHuman, ViewInterface* v) {
     assert(mPlayers.size() < 4);
-    if (isHuman) {
+    if (IsHuman) {
         mPlayers.push_back(new HumanPlayer(mGamePlay, this, v, mPlayers.size() + 1));
     } else {
         mPlayers.push_back(new ComputerPlayer(mGamePlay, this, v, mPlayers.size() + 1));
@@ -96,7 +96,6 @@ void GameState::DealCards() {
     assert(mPlayers.size() == 4);
     // We only tell the observers about human cards.
     vector<vector<Card*> > observerUpdate;
-    `
     int card = 0;
     mHands.clear();
     for (int i = 0; i < 4; i++) {
@@ -257,7 +256,7 @@ void GameState::DiscardCard(int player, Card* card) {
 }
 
 
-void GameState::RemoveFromHand(int player, Card* card);
+void GameState::RemoveFromHand(int player, Card* card) {
     // Find the card in the player's hand, and set that pointer to NULL.
     for (int i = 0; i < 13; i++) {
         if (mHands[player - 1][i] && mHands[player - 1][i] == card) {
