@@ -1,4 +1,3 @@
-//#include "observer.h"
 #include "View.h"
 #include "../gameplay/GamePlay.h"
 //#include "../gameplay/GameState.h"
@@ -21,7 +20,6 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
         mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
     set_title("Straights");
-    set_default_size(1000, 1000);
     maximize();
 
     // Sets some attributes of the frame
@@ -34,7 +32,7 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
 
 
     /*****************************
-    / THIS IS THE MENU CRAP
+    / THIS IS THE MENU
     *****************************/
 
     // Adds the menu at the top
@@ -87,29 +85,15 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
     mPanel.pack_start(mPlayerInfoContainer, Gtk::PACK_SHRINK);
 
     show_all_children();
-
-
-    //mPanel.add(mTable);
-    //mTable.Display();
-    // Adds the table to the window
-    //mTable = new TableVBox(10);
-
-    //add(*mTable);
-
-    // The final step is to display the buttons (they display themselves)
-    //show_all();
-
 }
 
 View::~View() {}
 
-void View::update() {
-    //mTable.update();
-}
-
 void View::onNewGame() {
     // TODO: NEW GAME
     cout << "New Game" << endl;
+
+    mGamePlay->Quit();
     mGamePlay->PlayGame();
 }
 
