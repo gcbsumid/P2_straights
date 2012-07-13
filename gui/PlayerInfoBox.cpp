@@ -103,6 +103,7 @@ void PlayerInfoBox::HumanToComputer() {
 }
 
 void PlayerInfoBox::AddToDiscardPile(Rank r, Suit s) {
+    cout << endl << "Moving to discard pile: " << r << s << endl << endl;
     mDiscardPile.AddCard(r, s);
 }
 

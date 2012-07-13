@@ -4,7 +4,9 @@
 #include "DeckGui.h"
 #include "CardPics.h"
 #include <gtkmm/box.h>
+#include <gtkmm/label.h>
 #include <vector>
+#include <string>
 
 class CardPic;
 class DeckGui;
@@ -27,6 +29,7 @@ private:
     DeckGui* mDeck;
 
     int mPlayer;
+    Gtk::Label::Label* mName;
     GamePlay* mGamePlay;
     CardPics* mCards[13];
 };

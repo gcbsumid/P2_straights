@@ -92,6 +92,7 @@ bool CardPics::IsImage() {
 void CardPics::UpdateCard(Rank rank, Suit suit) {
     mRank = rank;
     mSuit = suit;
+    cout << endl << "Updating Card to: " << rank << suit << endl << endl;
     mCard->set(mDeck->image(rank, suit));
 }
 

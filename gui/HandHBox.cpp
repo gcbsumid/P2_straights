@@ -3,8 +3,10 @@
 #include "../gameplay/Card.h"
 #include "DeckGui.h"
 #include <gtkmm/box.h>
+#include <gtkmm/label.h>
 #include <iostream>
 #include <vector>
+#include <sstream>
 using namespace std;
 
 class GamePlay;
@@ -12,7 +14,13 @@ class GamePlay;
 // Constructor - it creates the 4 suits in a Hbox each
 HandHBox::HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing) : 
                 Gtk::HBox(true, spacing), mDeck(deck), mPlayer(player), 
-                mGamePlay(gameplay) {
+                mGamePlay(gameplay), mName(NULL) {
+    stringstream name;
+    name << "Player " << player << endl;
+    mName = new Gtk::Label::Label(name.str().c_str(), false);
+
+    add(*mName);
+    show_all();
     // The final step is to display the buttons (they display themselves)
     for (int i = 0; i < 13; i++) {
         mCards[i] = new CardPics(false, mDeck, mGamePlay, RANK_COUNT, SUIT_COUNT);
@@ -113,6 +121,7 @@ void HandHBox::AddCard(Rank r, Suit s) {
     for (int i = 0; i < 13; i++) {
         if (!mCards[i]->IsValidCard()) {
             mCards[i]->UpdateCard(r, s);
+            return;
         }
     }
 }
