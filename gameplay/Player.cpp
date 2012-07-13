@@ -34,6 +34,7 @@ void Player::ClearDiscard() {
 }
 
 vector<Card*> Player::GetLegalPlays() {
+    cout << "Getting legal plays for player " << GetID() << endl;
     vector<Card*> hand = mGameState->GetHand(GetID());
     vector<Card*> plays;
     for (int i = 0; i < 13; i++) {
@@ -42,9 +43,11 @@ vector<Card*> Player::GetLegalPlays() {
                 // If the player has the seven of spades, that's their only legal play.
                 plays.clear();
                 plays.push_back(hand[i]);
+                cout << "We have a seven of hearts, nothing else is legal " << endl;
                 return plays;
             }
             plays.push_back(hand[i]);
+            cout << "Found a legal card " << *hand[i] << endl;
         }
     }
     return plays;

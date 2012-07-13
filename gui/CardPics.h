@@ -7,20 +7,23 @@
 #include "../gameplay/Card.h"
 
 class DeckGui;
+class GamePlay;
 
 class CardPics : public Gtk::HBox {
 public:
-    CardPics(bool isButton, DeckGui* deck, Rank f = RANK_COUNT, Suit s = SUIT_COUNT);
+    CardPics(bool isButton, DeckGui* deck, GamePlay* gameplay, Rank f = RANK_COUNT, Suit s = SUIT_COUNT);
     ~CardPics();
     Rank GetRank();
     Suit GetSuit();
     bool IsValidCard();
     void ButtonToImage();
+    void HandleButtonClick();
     void ImageToButton();
     bool IsImage();
     void UpdateCard(Rank rank, Suit suit);
 private:
     DeckGui* mDeck;
+    GamePlay* mGamePlay;
 
     Rank mRank;
     Suit mSuit;

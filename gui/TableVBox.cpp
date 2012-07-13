@@ -4,9 +4,10 @@
 #include <iostream>
 using namespace std;
 
+class GamePlay;
 
 // Constructor - it creates the 4 suits in a Hbox each
-TableVBox::TableVBox(DeckGui* deck) : mPanel(false, 5), mDeck(deck) { }
+TableVBox::TableVBox(DeckGui* deck, GamePlay* gameplay) : mGamePlay(gameplay), mPanel(false, 5), mDeck(deck) { }
 
 void TableVBox::Display() {
     // Sets some paramters
@@ -16,7 +17,7 @@ void TableVBox::Display() {
     add(mPanel);
 
     for (int i = 0; i < 4; i++) {
-        mSuits[i] = new RowHBox(mDeck, i, 5);
+        mSuits[i] = new RowHBox(mDeck, mGamePlay, i, 5);
         mPanel.pack_start(*mSuits[i], Gtk::PACK_SHRINK);
         cout << "this should be adding hbox " << i << endl;
     }

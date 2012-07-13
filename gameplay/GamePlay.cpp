@@ -48,64 +48,82 @@ void GamePlay::PlayGame() {
         // The view calls GamePlay::AddPlayer, then we call PlayerAdded.
         mView->AddPlayer(i + 1);
     }
-    while(!mQuit) {
-        mState->Shuffle();
-        mState->DealCards();
-        
-        mState->ResetNextPlayer(mState->PlayerWithSevenOfSpades());
+    StartRound();
+}
+void GamePlay::StartRound() {
+    mState->Shuffle();
+    mState->DealCards();
+    
+    mState->ResetNextPlayer(mState->PlayerWithSevenOfSpades() - 1);
 
-        // Which turn are we on?
-        int turnCounter = 0;
-        Player* nextPlayer = mState->NextPlayer(); 
-        cout << "A new round begins. It's player " << nextPlayer->GetID() << "'s turn to play." << endl;
-        
-        while (turnCounter < CARD_COUNT) {
-            nextPlayer->TakeTurn();
-            // If we have a human player, we need to take various actions depending on what they input.
-            if (nextPlayer->IsHuman()) {
-                // Get a human pointer so we can call human-specific methods.
-                HumanPlayer* human = (HumanPlayer*)nextPlayer;
+    cout << "A round has begun" << endl;
+    ContinueGame();
+}
 
-                if (human->IsRageQuitted()) {
-                    // Convert human into computer player.
-                    nextPlayer = mState->HumanToComputer(human);
-                    cout << "Player " << nextPlayer->GetID() << " ragequits. A computer will now take over." << endl;
-                    nextPlayer->TakeTurn();    // The computer player must take a turn for the rage quit player.
-                }
-            }
-            turnCounter++;
-            nextPlayer = mState->NextPlayer();
+void GamePlay::EndRound() {
+    mState->ClearCardsOnTable();
+    // Round is over, let's tally scores and see if the game's over.
+    // Keep track of the lowest score so we can see who won.
+    int winner = -1;
+    int minScore = 100000;
+
+    bool endGame = false;
+
+    mState->ResetNextPlayer(1);
+    for (int i = 0; i < 4; i++) {
+        Player* player = mState->NextPlayer();
+        player->ClearDiscard();  // Calculate player's final score.
+        int score = mState->GetScore(i + 1);
+        if (score > 79) {
+            endGame = true;
         }
-
-        mState->ClearCardsOnTable();
-        // Round is over, let's tally scores and see if the game's over.
-        // Keep track of the lowest score so we can see who won.
-        int winner = -1;
-        int minScore = 100000;
-        mState->ResetNextPlayer(1);
-
-        for (int i = 0; i < 4; i++) {
-            Player* player = mState->NextPlayer();
-            player->ClearDiscard();  // Calculate player's final score.
-            int score = mState->GetScore(i + 1);
-            if (score > 79) {
-                mQuit = true;
-            }
-            if (score < minScore) {
-                minScore = score;
-                winner = player->GetID();
-            }
+        if (score < minScore) {
+            minScore = score;
+            winner = player->GetID();
         }
-        if (mQuit) {
-            cout << "Player " << winner << " wins!" << endl;
-            return;
-        }
+    }
+    if (endGame) {
+        EndGame(winner);
+    } else {
+        StartRound();
     }
 }
 
-bool GamePlay::PlayCard(int player, Suit suit, Rank rank) {
+void GamePlay::EndGame(int winner) {
+    cout << "Player " << winner << " wins!" << endl;
+}
+
+void GamePlay::ContinueGame() {
+    Player* nextPlayer = mState->NextPlayer(); 
+    
+    while (true) {
+        cout << "It is " << nextPlayer->GetID() << "'s turn to play" << endl;
+        nextPlayer->TakeTurn();
+        // If we have a human player, we need to take various actions depending on what they input.
+        if (nextPlayer->IsHuman()) {
+            cout << "We have a human, freaking out" << endl;
+            break;
+        }
+        nextPlayer = mState->NextPlayer();
+    }
+}
+
+bool GamePlay::PlayCard(Suit suit, Rank rank) {
+    Player* p = mState->CurrentPlayer();
+    cout << "Player " << p->GetID() << " played the " << rank << " of " << suit << endl;
     Card c(suit, rank);
-    Player* p = mState->PlayerWithID(player);
+    if (p->IsHuman()) {
+        // Get a human pointer so we can call human-specific methods.
+        HumanPlayer* human = (HumanPlayer*)p;
+
+        if (human->IsRageQuitted()) {
+            // Convert human into computer player.
+            Player* nextPlayer = mState->HumanToComputer(human);
+            cout << "Player " << nextPlayer->GetID() << " ragequits. A computer will now take over." << endl;
+            nextPlayer->TakeTurn();    // The computer player must take a turn for the rage quit player.
+            ContinueGame();
+        }
+    }
     vector<Card*> legalPlays = p->GetLegalPlays();
     bool isLegal = false;
     for (vector<Card*>::const_iterator i = legalPlays.begin(); i != legalPlays.end(); i++) {
@@ -118,10 +136,11 @@ bool GamePlay::PlayCard(int player, Suit suit, Rank rank) {
         cerr << "Tried to play an illegal card " << rank << suit << endl;
         return false;
     }
-    Card* cardInHand = mState->CardInHand(player, &c);
+    Card* cardInHand = mState->CardInHand(p->GetID(), &c);
     assert(cardInHand != NULL);
 
-    mState->PlayCard(player, cardInHand);
+    mState->PlayCard(p->GetID(), cardInHand);
+    ContinueGame();
     return true;
 }
 
@@ -138,6 +157,7 @@ bool GamePlay::DiscardCard(int player, Suit suit, Rank rank) {
         return false;
     }
     mState->DiscardCard(player, cardInHand);
+    ContinueGame();
     return true;
 }
 

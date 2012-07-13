@@ -1,11 +1,15 @@
 #include "CardPics.h"
 #include "DeckGui.h"
 #include "../gameplay/Card.h"
+#include "../gameplay/GamePlay.h"
+
+#include <iostream>
+using namespace std;
 
 //DeckGui CardPics::deck;
 
-CardPics::CardPics(bool isButton, DeckGui* deck, Rank f, Suit s) 
-        : HBox(false,0), mDeck(deck), mRank(f), mSuit(s) {
+CardPics::CardPics(bool isButton, DeckGui* deck, GamePlay* gameplay, Rank f, Suit s) 
+        : HBox(false,0), mDeck(deck), mGamePlay(gameplay), mRank(f), mSuit(s) {
     Glib::RefPtr<Gdk::Pixbuf> card;
 
     // Sets the image to be displayed
@@ -57,9 +61,16 @@ void CardPics::ButtonToImage() {
     mIsImage = true;
 }
 
+void CardPics::HandleButtonClick() {
+    cout << "Handling a button click" << endl;
+    mGamePlay->PlayCard(mSuit, mRank);
+}
+
 void CardPics::ImageToButton() {
+    cout << "ImageToButton called on " << mRank << " " << mSuit << endl;
     remove(*mCard);
     mButton.set_image(*mCard);
+    mButton.signal_clicked().connect(sigc::mem_fun(*this, &CardPics::HandleButtonClick));
     add(mButton);
     show_all();
     mIsImage = false;

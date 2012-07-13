@@ -11,7 +11,7 @@ class DeckGui;
 
 class HandHBox : public Gtk::HBox {
 public:    
-    HandHBox(DeckGui* deck, int player, int spacing = 5);
+    HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing = 5);
     virtual ~HandHBox();
     void update();
 
@@ -24,6 +24,7 @@ private:
     DeckGui* mDeck;
 
     int mPlayer;
+    GamePlay* mGamePlay;
     CardPics* mCards[13];
 };
 

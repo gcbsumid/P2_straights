@@ -16,7 +16,7 @@ using namespace std;
 
 // Creates the table
 //View::View(GamePlay* c, GameState* m) : mGameState(m), mGamePlay(c) {
-View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck), 
+View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck, gameplay), 
         mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
     // Sets some properties in the window
     set_title("Straights");
@@ -131,11 +131,18 @@ void View::AddPlayer(int player) {
 
 
 void View::HumanTurn(int player) {
-    // TODO: 
-    // Display Legal Hands
-    // Wait for Turn
-    // Call PlayCard on gameplay
-    // Return Buttons to Images
+    assert(player > 0 && player < 5);
+    cout << "The view sees that it's a human's turn to play " << endl;
+    player--;
+    vector<Card*> legalHand = mGamePlay->GetLegal(player + 1);
+    if (!legalHand.empty()) {
+        cout << "We have legal cards to play" << endl;
+        // We have legal cards to play
+        mHand[player]->DisplayLegalCards(legalHand);
+    } else {
+        // No legal plays.
+        mHand[player]->TurnHandToButton();
+    }
 }
 void View::PlayerWon(int player) {}
 
@@ -148,7 +155,7 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
     cout << "Hey, apparently some player just got added lol. isHuman " << IsHuman << " id " << playerid << endl;
     assert(playerid > 0 && playerid < 5);
     if (IsHuman) {
-        mHand[playerid-1] = new HandHBox(mDeck, playerid);
+        mHand[playerid-1] = new HandHBox(mDeck, mGamePlay, playerid);
         mPanel.add(*mHand[playerid-1]);
         // Displays the player information onto the screen
     } else {

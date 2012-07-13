@@ -26,6 +26,7 @@ public:
     bool IsLegal(Card* card) const;
     int PlayerWithSevenOfSpades() const;        // Returns the ID of whichever player has thet 7 of spades.
     Player* NextPlayer();                       // Returns whoever's supposed to play next. Cycles through.
+    Player* CurrentPlayer();                       // Returns whoever's supposed to play right now.
     void ResetNextPlayer(int player);           // If instead of cycling through the players, we need to reset the next player. Takes the player ID.
     Player* HumanToComputer(HumanPlayer* human); // Call when a human player ragequits, returns pointer to new computer player.
 
