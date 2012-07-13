@@ -14,17 +14,33 @@ public:
     virtual ~Player();
     
     // Functions called by the GamePlay.
-    virtual bool TakeTurn() = 0;            // Player's turn happens here
-    virtual bool IsHuman() const = 0;       // Returns whether or not the player is human
-    int GetID() const;                      // Returns ID
-    void ClearDiscard();                    // Prints discarded cards and increments the score by the appropriate amount.
+    // Player's turn happens here
+    virtual bool TakeTurn() = 0;
+
+    // Returns whether or not the player is human
+    virtual bool IsHuman() const = 0;
+
+    // Returns ID
+    int GetID() const;
+
+    // Increment the player's score by the appropriate amount.
+    void ClearDiscard();
+
+    // Get the legal plays for the player.
     std::vector<Card*> GetLegalPlays();
     
 protected:
-    GamePlay* mGamePlay;                    // Pointer to the gameplay object
-    GameState* mGameState;                  // Pointer to the game state.
-    ViewInterface* mView;                   // Pointer to the view.
-    int mID;                                // Player's ID
+    // Pointer to the gameplay object
+    GamePlay* mGamePlay;
+
+    // Pointer to the game state.
+    GameState* mGameState;
+
+    // Pointer to the view.
+    ViewInterface* mView;
+
+    // Player's ID
+    int mID;
 };
 
 #endif

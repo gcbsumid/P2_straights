@@ -37,11 +37,7 @@ void GamePlay::AddModelObserver(ModelObserver* m) {
 
 void GamePlay::AddPlayer(bool human) {
     // Alert the model that we need to add a player.
-    if (human) {
-        mState->AddHumanPlayer(mView);
-    } else {
-        mState->AddComputerPlayer(mView);
-    }
+    mState->AddPlayer(human, mView);
 }
 
 void GamePlay::PlayGame() {
@@ -158,62 +154,87 @@ bool GamePlay::PlayCard(Suit suit, Rank rank) {
         }
     }
     if (!isLegal) {
-        cerr << "Player " << p->GetID() << " tried to play an illegal card " << rank + 1 << " of " << suit + 1 << endl;
+        // Tried te play a card that wasn't a legal play.
+        cerr << "Player " << p->GetID() << " tried to play an illegal card " << rank << " of " << suit << endl;
         return false;
     }
-    Card* cardInHand = mState->CardInHand(p->GetID(), &c);
-    assert(cardInHand != NULL);
 
+    // Get a pointer to the actual card in the player's hand.
+    Card* cardInHand = mState->CardInHand(p->GetID(), &c);
+    assert(cardInHand != NULL);  // The card should always exist, since it's a legal play.
+
+    // Tell the state that we played this card.
     mState->PlayCard(p->GetID(), cardInHand);
+
+    // Keep playing.
     ContinueGame();
     return true;
 }
 
 bool GamePlay::DiscardCard(int player, Suit suit, Rank rank) {
+    // Get the corresponding player who tried to discard the card.
     Player* p = mState->PlayerWithID(player);
+
+    // Can't discard a card if there are legal plays.
     vector<Card*> legalPlays = p->GetLegalPlays();
     if (!legalPlays.empty()) {
         cerr << "There are legal plays." << endl;
         return false;
     }
+
+    // Get a pointer to the actual card.
     Card c(suit, rank);
     Card* cardInHand = mState->CardInHand(player, &c);
     if (cardInHand == NULL) {
+        // Tried to discard a card that wasn't in the player's hand.
         cout << "Couldn't find card in hand for discarding" << endl;
         return false;
     }
     cout << "Player " << player << " is discarding card " << c << endl;
+    // Tell state to discard the card.
     mState->DiscardCard(player, cardInHand);
+    // Keep playing.
     ContinueGame();
     return true;
 }
 
-void GamePlay::RageQuit(int player) {              // Converts indicated player from human to computer.
+void GamePlay::RageQuit(int player) {
+    // Get a pointer to the player that tried to ragequit.
     Player* p = mState->PlayerWithID(player);
     if (!p->IsHuman()) {
+        // Only humans can ragequit.
         return;
     }
     HumanPlayer* h = (HumanPlayer*)p;
 
-    // If the current player just rage quit, carry on.
+    // Tell the state to convert the human to a computer.
     Player* newPlayer = mState->HumanToComputer(h);
+
+    // If the current player just rage quit, the computer gets to go immediately.
     if (newPlayer == mState->CurrentPlayer()) {
         cout << "New player " << newPlayer->GetID() << " is the current player, so let's keep playing" << endl;
+        // Let the computer play (ie. player gets another turn).
+        // Otherwise the game will advance to the next player and skip the current one.
         mState->ResetNextPlayer(newPlayer->GetID());
         ContinueGame();
     }
-    cout << "New player " << newPlayer->GetID() << " isn't " << mState->CurrentPlayer()->GetID() << " so let's block" << endl;
+    // Some player other than the current player just rage quit, so we should continue doing what we were doing before.
+    // ie. if we were waiting for user input, keep waiting.
+    cout << "New player " << newPlayer->GetID() << " isn't " << mState->CurrentPlayer()->GetID() << " so wait" << endl;
 }
     
+// Tell the state that we need a new seed for the next game.
 void GamePlay::ResetSeed(int seed) {
     mState->ResetSeed(seed);
     srand48(seed);
 }
 
 vector<Card*> GamePlay::GetDiscards(int player) const {
+    // Just pass the request to the model.
     return mState->GetDiscards(player);
 }
 
 vector<Card*> GamePlay::GetLegal(int player) const {
+    // Just pass the request to the model.
     return mState->PlayerWithID(player)->GetLegalPlays();
 }

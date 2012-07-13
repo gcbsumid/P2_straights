@@ -22,11 +22,13 @@ int Player::GetID() const {
 }
 
 void Player::ClearDiscard() {
+    // The additional score we earned this round.
     int newScore = 0;
 
+    // Get the list of discards from the model.
     const vector<Card*> discards = mGameState->GetDiscards(GetID());
     for (vector<Card*>::const_iterator it = discards.begin(); it != discards.end(); it++) {
-        newScore += (int)((*it)->getRank()) + 1;
+        newScore += (int)((*it)->getRank()) + 1; // Increment the additional score by the rank of the card.
     }
     newScore += mGameState->GetScore(GetID());
     mGameState->UpdateScore(GetID(), newScore);
