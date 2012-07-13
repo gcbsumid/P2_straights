@@ -233,6 +233,7 @@ void GameState::PlayCard(int player, Card* card) {
 
     // Get a pointer to the actual card in the player's hand.
     Card* c = CardInHand(player, card);
+    assert(c);
     RemoveFromHand(player, c);
 
     // Stick the card on the table.
@@ -247,6 +248,7 @@ void GameState::DiscardCard(int player, Card* card) {
     assert(player > 0 && player < 5 && card != NULL);
     // Get a pointer to the actual card in the player's hand.
     Card* c = CardInHand(player, card);
+    assert(c);
     RemoveFromHand(player, c);
     // Put the card in the discard pile.
     mDiscards[player - 1].push_back(c);
@@ -258,9 +260,11 @@ void GameState::DiscardCard(int player, Card* card) {
 
 void GameState::RemoveFromHand(int player, Card* card) {
     // Find the card in the player's hand, and set that pointer to NULL.
+    cout << "Removing " << *card << " From " << player << endl;
     for (int i = 0; i < 13; i++) {
-        if (mHands[player - 1][i] && mHands[player - 1][i] == card) {
+        if (mHands[player - 1][i] && *mHands[player - 1][i] == *card) {
             mHands[player - 1][i] = NULL;
+            return;
         }
     }
     assert(false); // Tried to remove a card that wasn't in the player's hand.
