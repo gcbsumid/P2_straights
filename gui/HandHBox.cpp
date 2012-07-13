@@ -7,9 +7,11 @@
 #include <vector>
 using namespace std;
 
+class GamePlay;
+
 // Constructor - it creates the 4 suits in a Hbox each
-HandHBox::HandHBox(DeckGui* deck, int player, int spacing) : 
-                Gtk::HBox(true, spacing), mDeck(deck), 
+HandHBox::HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing) : 
+                Gtk::HBox(true, spacing), mDeck(deck), mGamePlay(gameplay), 
                 mPlayer(player) {
     // The final step is to display the buttons (they display themselves)
 
@@ -52,14 +54,21 @@ void HandHBox::TurnHandToStatic() {
 
 void HandHBox::DisplayLegalCards(vector<Card*> legalCards) {
     // Makes all the Legal cards into buttons
+    cout << "Trying to display legal cards - we have " << legalCards.size() << " of them" << endl;
     for (int i = 0; i < 13; i++) {
+        cout << "Trying card " << mCards[i]->GetRank() << " of " << mCards[i]->GetSuit() << endl;
         for(int j = 0; j < legalCards.size(); j++) {
             if (!mCards[i]->IsValidCard()) {
+                cout << "Card number " << i << " has already been played" << endl;
                 break;
             }
-            if (mCards[i]->GetRank() == legalCards[j]->getRank()
-                    && mCards[i]->GetSuit() == legalCards[j]->getSuit()) {
-                mCards[i]->ImageToButton();
+            if (mCards[i]->GetRank() == legalCards[j]->getRank()) {
+                cout << "Rank matches " << *legalCards[j] << endl;
+                if (mCards[i]->GetSuit() == legalCards[j]->getSuit()) {
+                    cout << "Found legal card " << *legalCards[j] << endl;
+                    mCards[i]->ImageToButton();
+                    break;
+                }
             }
         }
     }
@@ -80,7 +89,7 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
     // Display all the cards
     for (int i = 0; i < 13; i++) {
         Card* card = cards.at(i);
-        mCards[i] = new CardPics(false, mDeck, card->getRank(), card->getSuit());
+        mCards[i] = new CardPics(false, mDeck, mGamePlay, card->getRank(), card->getSuit());
         cout << "I'm adding the cards dealt to me." << endl;
         add(*mCards[i]);
     }

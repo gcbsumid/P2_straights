@@ -32,7 +32,7 @@ public:
     // Functions called by players in the view.
 
     // The player plays the card with the given suit and rank. Returns false if invalid card.
-    bool PlayCard(int player, Suit suit, Rank rank);
+    bool PlayCard(Suit suit, Rank rank);
     // The player discards the card with the given suit and rank. Returns false if invalid card.
     bool DiscardCard(int player, Suit suit, Rank rank);
 
@@ -44,6 +44,10 @@ public:
     static int CARD_COUNT;
 private:
     // Functions called by individual players.
+    void ContinueGame();
+    void EndGame(int winner);
+    void EndRound();
+    void StartRound();
     bool mQuit;
 
     GameState* mState;

@@ -7,16 +7,18 @@
 class CardPics;
 class DeckGui;
 class Card;
+class GamePlay;
 
 class RowHBox : public Gtk::HBox {
 public:
-    RowHBox(DeckGui*, int, int);
+    RowHBox(DeckGui*, GamePlay*, int, int);
     virtual ~RowHBox();
     void CardPlayed(Card* card);
 
 protected:
     int mSuit;
     //Gtk::VBox* mCards[13];
+    GamePlay* mGamePlay;
     DeckGui* mDeck;
     CardPics* mCards[13];
 };

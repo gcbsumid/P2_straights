@@ -113,8 +113,8 @@ int GameState::PlayerWithSevenOfSpades() const {
 bool GameState::PlayerHas(int player, Card* card) const {
     assert(player < 5 && player > 0);
     for (int i = 0; i < 13; i++) {
-        if (mHands[player + 1][i]) {
-            if (*mHands[player + 1][i] == *card) {
+        if (mHands[player - 1][i]) {
+            if (*mHands[player - 1][i] == *card) {
                 return true;
             }
         }
@@ -123,14 +123,25 @@ bool GameState::PlayerHas(int player, Card* card) const {
 }
 
 Player* GameState::NextPlayer() {
-    Player* p = mPlayers[mCurrentPlayer];
     mCurrentPlayer++;
     mCurrentPlayer %= 4;
+    Player* p = mPlayers[mCurrentPlayer];
+    return p;
+}
+
+Player* GameState::CurrentPlayer() {
+    Player* p = mPlayers[mCurrentPlayer];
     return p;
 }
 
 void GameState::ResetNextPlayer(int player) {
-    mCurrentPlayer = player - 1;
+    player--;
+    if (player == 0) {
+        player = 3;
+    } else {
+        player--;
+    }
+    mCurrentPlayer = player;
 }
 
 Player* GameState::HumanToComputer(HumanPlayer* human) {
@@ -147,7 +158,7 @@ Player* GameState::HumanToComputer(HumanPlayer* human) {
 
 Player* GameState::PlayerWithID(int player) const {
     assert(player > 0 && player < 5);
-    return mPlayers[player];
+    return mPlayers[player - 1];
 }
 
 void GameState::ClearCardsOnTable() {
