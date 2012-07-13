@@ -36,11 +36,13 @@ public:
     int GetScore(int player) const;
     void ClearDiscard(int player);                  // Clear the discards of the given player.
     Card* CardInHand(int player, Card* card) const;    // Return pointer to card in player's hand if given card matches suit/rank, null otherwise.
+    int CardsInHand(int player) const;          // Returns the number of cards left in player's hand.
     void DiscardCard(int player, Card* card);   // Discards given card from player's hand.
     void PlayCard(int player, Card* card);
     bool PlayerHas(int player, Card* card) const;
     std::vector<Card*> GetDiscards(int player) const; // Get the vector of discarded cards for a player.
     std::vector<Card*> GetHand(int player) const;   // Get the legal plays for the player.
+    void EndGame(int winner);                   // The game has ended, player winner won.
 
 private:
     std::vector<ModelObserver*> mObservers;

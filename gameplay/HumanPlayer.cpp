@@ -8,8 +8,12 @@
 using namespace std;
 
 // Alert view that we need to take a turn.
-void HumanPlayer::TakeTurn() {
+bool HumanPlayer::TakeTurn() {
+    if (mGameState->CardsInHand(GetID()) == 0) {
+        return false;
+    }
     mView->HumanTurn(GetID());
+    return true;
 }
 
 // Is Human: yes

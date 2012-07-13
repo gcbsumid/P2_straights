@@ -268,4 +268,18 @@ Card* GameState::CardInHand(int player, Card* card) const {
     }
     return NULL;
 }
+int GameState::CardsInHand(int player) const {
+    int count = 0;
+    for (int i = 0; i < 13; i++) {
+        if (mHands[player][i]) {
+            count++;
+        }
+    }
+    return count;
+}
 
+void GameState::EndGame(int player) {
+    for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
+        (*i)->Model_EndGame(player);
+    }
+}

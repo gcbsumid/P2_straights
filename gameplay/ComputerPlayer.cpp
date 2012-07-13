@@ -14,7 +14,7 @@ ComputerPlayer::ComputerPlayer(Player* human) : Player(human->mGamePlay, human->
 }
 
 // Prompt command from AI
-void ComputerPlayer::TakeTurn() {
+bool ComputerPlayer::TakeTurn() {
     vector<Card*> legalPlays = GetLegalPlays();
     if (legalPlays.empty()) {
         // No legal plays, discard first available card.
@@ -23,14 +23,15 @@ void ComputerPlayer::TakeTurn() {
             if (hand[i]) {
                 cout << "Player " << GetID() << " discards " << *(hand[i]) << "." << endl;
                 mGameState->DiscardCard(GetID(), hand[i]);
-                return;
+                return true;
             }
         }
         cerr << "No legal plays and no cards to discard for player " << GetID() << endl;
-        assert(false);
+        return false;
     }
     cout << "Computer " << GetID() << " has " << legalPlays.size() << " plays " << endl;
     mGameState->PlayCard(GetID(), legalPlays[0]);
+    return true;
 }
 
 bool ComputerPlayer::IsHuman() const {

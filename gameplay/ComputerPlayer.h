@@ -13,7 +13,7 @@ public:
 
     ComputerPlayer(Player*);
     virtual ~ComputerPlayer() {}
-    void TakeTurn();                // The computer takes a turn
+    bool TakeTurn();                // The computer takes a turn
     bool IsHuman() const;           // returns false because it is a computer player object
 };
 
