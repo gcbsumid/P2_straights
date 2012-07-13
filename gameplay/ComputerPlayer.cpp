@@ -15,6 +15,7 @@ ComputerPlayer::ComputerPlayer(Player* human) : Player(human->mGamePlay, human->
 
 // Prompt command from AI
 bool ComputerPlayer::TakeTurn() {
+    // See if we have any legal plays first, if not, discard a card. If we have no cards to discard, fail.
     vector<Card*> legalPlays = GetLegalPlays();
     if (legalPlays.empty()) {
         // No legal plays, discard first available card.
@@ -23,14 +24,18 @@ bool ComputerPlayer::TakeTurn() {
             if (hand[i]) {
                 cout << "Player " << GetID() << " discards " << *(hand[i]) << "." << endl;
                 mGameState->DiscardCard(GetID(), hand[i]);
+                // Able to discard a card - the round may continue.
                 return true;
             }
         }
         cerr << "No legal plays and no cards to discard for player " << GetID() << endl;
+        // No cards left -  indicate that the round is over.
         return false;
     }
+    // Play a card by updating the state.
     cout << "Computer " << GetID() << " has " << legalPlays.size() << " plays " << endl;
     mGameState->PlayCard(GetID(), legalPlays[0]);
+    // We were able to play a card - the round may continue.
     return true;
 }
 

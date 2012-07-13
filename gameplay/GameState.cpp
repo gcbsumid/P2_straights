@@ -292,9 +292,10 @@ Card* GameState::CardInHand(int player, Card* card) const {
     return NULL;
 }
 int GameState::CardsInHand(int player) const {
+    assert(player < 5 && player > 0);
     int count = 0;
     for (int i = 0; i < 13; i++) {
-        if (mHands[player][i]) {
+        if (mHands[player - 1][i]) {
             count++;
         }
     }

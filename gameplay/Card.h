@@ -8,6 +8,8 @@ enum Suit { CLUB, DIAMOND, HEART, SPADE, SUIT_COUNT };
 enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN,
 			EIGHT, NINE, TEN, JACK, QUEEN, KING, RANK_COUNT };
 
+// Public interface for Cards. Immutable.
+// They can be read into, streamed out, compared, and you can get details with getSuit() and getRank().
 class Card{
 	friend std::istream &operator>>(std::istream &, Card &);
 
