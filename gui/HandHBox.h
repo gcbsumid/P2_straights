@@ -20,6 +20,7 @@ public:
     void DisplayLegalCards(vector<Card*> legalCards);
     void TurnHandToButton();
     void TurnHandToStatic();
+    void CardPlayed(Card* card);
 private:
     DeckGui* mDeck;
 

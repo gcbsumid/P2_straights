@@ -11,8 +11,8 @@ class GamePlay;
 
 // Constructor - it creates the 4 suits in a Hbox each
 HandHBox::HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing) : 
-                Gtk::HBox(true, spacing), mDeck(deck), 
-                mPlayer(player), mGamePlay(gameplay) {
+                Gtk::HBox(true, spacing), mDeck(deck), mPlayer(player), 
+                mGamePlay(gameplay) {
     // The final step is to display the buttons (they display themselves)
 
 }
@@ -94,4 +94,13 @@ void HandHBox::AddCards(std::vector<Card*> cards) {
         add(*mCards[i]);
     }
     show_all_children();  // Not sure if needed
+}
+
+void HandHBox::CardPlayed(Card* card) {
+    for (int i = 0; i < 13; i++) {
+        if (mCards[i]->GetRank() == card->getRank() 
+            && mCards[i]->GetSuit() == card->getSuit()) {
+            mCards[i]->RemoveCard();
+        }
+    }
 }
