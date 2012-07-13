@@ -20,6 +20,7 @@ public:
     void HandleButtonClick();
     void ImageToButton();
     bool IsImage();
+    void RemoveCard();
     void UpdateCard(Rank rank, Suit suit);
 private:
     DeckGui* mDeck;

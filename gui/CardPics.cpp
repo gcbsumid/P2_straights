@@ -83,3 +83,7 @@ bool CardPics::IsImage() {
 void CardPics::UpdateCard(Rank rank, Suit suit) {
     mCard->set(mDeck->image(rank, suit));
 }
+
+void CardPics::RemoveCard() {
+    mCard->set(mDeck->null());
+}
