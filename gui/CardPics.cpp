@@ -1,3 +1,8 @@
+/************************************************
+ * CardPics.cpp                                 *
+ * Author: Christian Sumido, Didier Smith       * 
+ ************************************************/
+// Include our own libraries
 #include "CardPics.h"
 #include "DeckGui.h"
 #include "../gameplay/Card.h"
@@ -10,6 +15,8 @@ using namespace std;
 
 CardPics::CardPics(bool isButton, DeckGui* deck, GamePlay* gameplay, Rank f, Suit s) 
         : HBox(false,0), mDeck(deck), mGamePlay(gameplay), mRank(f), mSuit(s) {
+    
+    // Temporary holder of the image
     Glib::RefPtr<Gdk::Pixbuf> card;
 
     // Wire up mButton to the button event handler.
@@ -38,18 +45,22 @@ CardPics::CardPics(bool isButton, DeckGui* deck, GamePlay* gameplay, Rank f, Sui
     show_all();
 }
 
+// Destructor - deletes the image 
 CardPics::~CardPics() {
     delete mCard;
 }
 
+// Returns the rank of a card in the image
 Rank CardPics::GetRank() {
     return mRank;
 }
 
+// Returns the suit of a card in the image
 Suit CardPics::GetSuit() {
     return mSuit;
 }
 
+// Returns whether the image is an actual card or a null image
 bool CardPics::IsValidCard() {
     if(mRank != RANK_COUNT || mSuit != SUIT_COUNT){
         return true;
@@ -57,50 +68,68 @@ bool CardPics::IsValidCard() {
     return false;
 }
 
+// Removes the button and adds the image
 void CardPics::ButtonToImage() {
     if (IsImage()) {
+        // If its already an image, return
         return;
     }
-    cout << "removeing a buttonnnnnnnnnnnnnnnnnnnnnnnnn" << endl;
     
+    // Removes the button
     remove(mButton);
+
+    // Changes the parent of the image from mButton to the object widget
     mCard->reparent(*this);
-    //add(*mCard);
+
+    // display the card
     show_all();
     mIsImage = true;
 }
 
+// Handles the button click 
 void CardPics::HandleButtonClick() {
-    cout << "Handling a button click" << endl;
-    if (mSuit == SUIT_COUNT || mRank == RANK_COUNT) {
+    if (!IsValidCard()) {
+        // The current card should never be a invalid, but if it does, 
+        // just return it.
         return;
     }
+
+    // If its a valid card, it is played.
     mGamePlay->PlayCard(mSuit, mRank);
 }
 
+// Turns the object from an image to a button
 void CardPics::ImageToButton() {
     if (!IsImage()) {
         return;
     }
-    cout << "ImageToButton called on " << mRank << " " << mSuit << endl;
+    // remove the card image from this widget
     remove(*mCard);
+
+    // Sets the button image to the card image
     mButton.set_image(*mCard);
+
+    // add it to the widget  and show it
     add(mButton);
     mButton.show();
     mIsImage = false;
 }
 
+// returns if the current widget contains an image or a button
 bool CardPics::IsImage() {
     return mIsImage;
 }
 
+// Changes the picture to the desired card
+// also sets the suit and rank
 void CardPics::UpdateCard(Rank rank, Suit suit) {
     mRank = rank;
     mSuit = suit;
-    cout << endl << "Updating Card to: " << rank << suit << endl << endl;
     mCard->set(mDeck->image(rank, suit));
 }
 
+// Resets the picture to the null image
+// also sets the suit and rank to invalid values
 void CardPics::RemoveCard() {
     mRank = RANK_COUNT;
     mSuit = SUIT_COUNT;
