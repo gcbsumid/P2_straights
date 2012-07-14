@@ -1,42 +1,54 @@
+/************************************************
+ * PlayerInfoBox.cpp                            *
+ * Author: Christian Sumido, Didier Smith       *
+ ************************************************/
+
+// Include our written code
 #include "PlayerInfoBox.h"
 #include "HandHBox.h" 
 #include "DeckGui.h"
 #include "../gameplay/GamePlay.h"
+
+// Include Gtkmm Libraries
 #include "gtkmm/textbuffer.h"
 #include "gtkmm/textview.h"
 #include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+
+// Include C++ libraries
 #include <sstream>
 #include <iostream>
 using namespace std;
 
+// Constructor 
 PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum, GamePlay* gameplay, DeckGui* deck) : 
     VBox(false, 2), mPlayerNumber(playerNum), mIsHuman(isHuman), 
-    mScore(0), mGamePlay(gameplay), mButtonBox(false), mRageQuit("Rage Quit"), 
-    mDeck(deck), mDiscard("Discard"), mDiscardPile(deck, gameplay, playerNum, 5) {
+    mScore(0), mGamePlay(gameplay), mDeck(deck), mButtonBox(false),  
+    mRageQuit("Rage Quit"), mDiscard("Discard Pile"), mDiscardPile(deck, gameplay, playerNum, 5) {
 
-    // set sme properties of the box
-    stringstream playerNumberStream, scoreStream; 
+    // add panel
     add(mPanel);
 
+    stringstream playerNumberStream, scoreStream; 
+    
+    // Determine whether the player info box will say human or computer
     playerNumberStream << "Player " << playerNum << endl;
     if (isHuman) {
-        playerNumberStream << "Status: Human" << endl;
+        playerNumberStream << "Status: Human";
     } else {
-        playerNumberStream << "Status: Computer" << endl;
+        playerNumberStream << "Status: Computer";
     }
-    mPlayerName = Gtk::TextBuffer::create();
-    mPlayerName->set_text(playerNumberStream.str().c_str());
 
-    mPlayerTextBox.set_buffer(mPlayerName);
-    mPanel.add(mPlayerTextBox);
+    // displays the Player and its status
+    mPlayerName = new Gtk::Label::Label(playerNumberStream.str().c_str(), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP);
 
     // Displays the score
-    scoreStream << mScore << endl;
-    mScoreText = Gtk::TextBuffer::create();
-    mScoreText->set_text(scoreStream.str().c_str());
+    scoreStream << "Score: " << mScore;
+    mScoreBox = new Gtk::Label::Label(scoreStream.str().c_str(), Gtk::ALIGN_LEFT, Gtk::ALIGN_TOP);
 
-    mScoreTextBox.set_buffer(mScoreText);
-    mPanel.add(mScoreTextBox);
+    // adds both labels to the panel so it can be displayed
+    mPanel.add(*mPlayerName);
+    mPanel.add(*mScoreBox);
 
     //Add Button container
     add(mButtonBox);
@@ -54,64 +66,74 @@ PlayerInfoBox::PlayerInfoBox(bool isHuman, int playerNum, GamePlay* gameplay, De
     mRageQuit.signal_clicked().connect(sigc::mem_fun(*this, &PlayerInfoBox::RageQuitButtonPressed));
     mDiscard.signal_clicked().connect(sigc::mem_fun(*this, &PlayerInfoBox::DiscardButtonPressed));
     
+    // Display everythin
     show_all();
 }
 
-PlayerInfoBox::~PlayerInfoBox() {}
+// Destructor 
+PlayerInfoBox::~PlayerInfoBox() {
+    delete mPlayerName;
+    delete mScoreBox;
+}
 
+// If the player pressed the rage quit button, call the controller
 void PlayerInfoBox::RageQuitButtonPressed() {
-    // TODO: rage quit button.
-    // Either GamePlay::RageQuit or View::RageQuit (the view goes to Gameplay)
-    cout << "Someone pressed the rage quit button, time to do something about that" << endl;
     mGamePlay->RageQuit(mPlayerNumber);
 }
 
+// Display a dialog box that shows the player's discard pile
 void PlayerInfoBox::DiscardButtonPressed() {
-    // TODO: Prompts for the discard pile from GamePlay
-    //       and then displays a popup displaying all 
-    //       discarded cards
-    cout << "Displaying Discard Pile" << endl;
+    // Creates the dialog box and adds the discard pile
     Gtk::Dialog dialog("Discard Pile");
     Gtk::VBox* mDialogBox = dialog.get_vbox();
     mDialogBox->add(mDiscardPile);
     dialog.add_button("Okay", 1);
+
+    // Shows and runs dialog
+    dialog.show_all_children();
     dialog.run();
 }
 
+// Updates the displayed score
 void PlayerInfoBox::UpdateScore(int score) {
     // Update Display Scores
     stringstream scoreStream;
     mScore = score;
-    scoreStream << mScore << endl;
-    mScoreText->set_text(scoreStream.str().c_str());
+    scoreStream << "Score: " << mScore;
 
-    mScoreTextBox.set_buffer(mScoreText);
+    // sets the label to display the new score
+    mScoreBox->set_text(scoreStream.str().c_str());
 }
 
+// Updates the label chaning the status from human to computer
 void PlayerInfoBox::HumanToComputer() {
     stringstream playerNumberStream;
-    cout << "Human turns into computer" << endl;
     playerNumberStream << "Player " << mPlayerNumber << endl;
-    playerNumberStream << "Status: Computer" << endl;
-    mPlayerName = Gtk::TextBuffer::create();
+    playerNumberStream << "Status: Computer";
     mPlayerName->set_text(playerNumberStream.str().c_str());
 
-    mPlayerTextBox.set_buffer(mPlayerName);
-
+    // Also disables all the buttons sinc it is a computer
     DisableButtons();
 }
 
+// Disables the rage quit button and the discard button
 void PlayerInfoBox::DisableButtons() {
     // Disables Rage Quit and Discard button when computer or game over.
     mRageQuit.set_sensitive(false);
     mDiscard.set_sensitive(false);
 }
 
+// Adds a card to the discard pile
 void PlayerInfoBox::AddToDiscardPile(Rank r, Suit s) {
-    cout << endl << "Moving to discard pile: " << r << s << endl << endl;
     mDiscardPile.AddCard(r, s);
 }
 
+// Resets the discard pile to display null images
 void PlayerInfoBox::DeleteDiscardPile() {
     mDiscardPile.Reset();
+}
+
+// Returns a pointer to the discard pile widget
+HandHBox* PlayerInfoBox::GetDiscardPile() {
+    return &mDiscardPile;
 }

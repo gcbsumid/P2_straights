@@ -304,10 +304,11 @@ bool GameState::IsLegal(Card* card) const {
 
 void GameState::UpdateScore(int player, int score) {
     assert(player < 5 && player > 0);
+    int prevScore = mScores[player -1];
     mScores[player - 1] = score;
     // Let the observers know of the score change.
     for (vector<ModelObserver*>::iterator i = mObservers.begin(); i != mObservers.end(); i++) {
-        (*i)->Model_ScoreUpdated(player, score);
+        (*i)->Model_ScoreUpdated(player, score, prevScore);
     }
 }
 

@@ -25,7 +25,7 @@ public:
     virtual void Model_CardsCleared() = 0;
 
     // player has a new score of score.
-    virtual void Model_ScoreUpdated(int player, int score) = 0;
+    virtual void Model_ScoreUpdated(int player, int score, int prevScore) = 0;
 
     // player has cleared their discard pile.
     virtual void Model_DiscardsCleared(int player) = 0;

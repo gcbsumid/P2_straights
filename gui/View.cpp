@@ -1,21 +1,36 @@
+/************************************************
+ * View.cpp                                     *
+ * Author: Christian Sumido, Didier Smith       *
+ ************************************************/
+
+// Include our written code
 #include "View.h"
-#include "../gameplay/GamePlay.h"
 #include "TableVBox.h"
 #include "RowHBox.h"
 #include "DeckGui.h"
 #include "PlayerInfoBox.h"
+#include "../gameplay/GamePlay.h"
+
+// Include Gtkmm Libraries
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
 
+// Include C++ Libraries
+#include <sstream>
 #include <iostream>
 #include <cassert>
 #include <vector>
 using namespace std;
 
-// Creates the table
-View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gameplay), mDeck(deck), mTable(deck, gameplay), 
-        mMenu(false, 10), mPanel(false, 0), mHand(), mPlayerInfoContainer(true, 5) {
+// View Constructor
+View::View(DeckGui* deck, GamePlay* gameplay) : 
+        Gtk::Window(), mGamePlay(gameplay), mDeck(deck),
+        mTable(deck, gameplay), mMenu(false, 10), 
+        mPanel(false, 5), mHand(), mPlayerInfoContainer(true, 5) {
+    
     // Sets some properties in the window
     set_title("Straights");
     maximize();
@@ -36,11 +51,8 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
 
 
     /*****************************
-    / THIS IS THE MENU
-    *****************************/
-
-    // Adds the menu at the top
-
+     * This initializes the menu *
+     *****************************/
     // Define the actions:
     mRefActionGroup = Gtk::ActionGroup::create();
 
@@ -81,62 +93,58 @@ View::View(DeckGui* deck, GamePlay* gameplay) : Gtk::Window(), mGamePlay(gamepla
      * DONE THE MENU       
      ***********************/
 
-    mTable.Display();
+    // Adds the pMenu to the mMenu container
     mMenu.pack_start(*pMenuBar);
+
+    // Adds the Menu container, Table container, and Player
+    // Information Container to the Gui
     mPanel.pack_start(mMenu, Gtk::PACK_SHRINK);
     mPanel.pack_start(mTable, Gtk::PACK_SHRINK);
-
     mPanel.pack_start(mPlayerInfoContainer, Gtk::PACK_SHRINK);
 
+    // Showing all the children
     show_all_children();
 }
 
-View::~View() {}
-
-void View::onNewGame() {
-    // TODO: NEW GAME
-    cout << "New Game" << endl;
-
-    // Removing player info boxes at the beginning of the game.
-    // Removing mHands at the beginning of the game.
-    // Note: you should probably put this in a helper function
+// View Destructor
+View::~View() {
     for (int i = 0; i < 4; i++) {
         if (mPlayerInfo[i] != NULL) {
-            cout << "I am in the for loop remove" << endl;
-            mPlayerInfoContainer.remove(*mPlayerInfo[i]);
             delete mPlayerInfo[i];
-            mPlayerInfo[i] = NULL;
         }
-
         if (mHand[i] != NULL) {
-            cout << "I am removing current human hands." << endl;
-            mPanel.remove(*mHand[i]);
-            delete mHand[i];
-            mHand[i] = NULL;
+            delete mHand[i]; 
         }
     }
+}
 
-    mTable.ClearTable();
+// Starts a new game
+void View::onNewGame() {
+    // Clearing from the previous game.
+    ResetGame();
+    // Start a new game in the Controller
     mGamePlay->PlayGame();
 }
 
+// This is used to set a new seed.
 void View::onNewSeed() {
-    cout << "New Seed" << endl;
-
-    // Prompt the user for the seed.
+    // Prompt the user for the seed via a dialog window
     Gtk::Dialog dialog("Enter a new seed.", *this);
 
     Gtk::Entry seedField;
     Gtk::Label seedLabel("New seed");
 
+    // Adding widgets to the dialog box
     Gtk::VBox* contentArea = dialog.get_vbox();
     contentArea->pack_start(seedLabel, true, false);
     contentArea->pack_start(seedField, true, false);
 
+    // Displaying children in the dialog box
     seedField.set_text("");
     seedLabel.show();
     seedField.show();
 
+    // Adding okay and cancel buttons in the dialog box
     dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
 
@@ -148,45 +156,47 @@ void View::onNewSeed() {
         int seed = 0;
         seedstream << seedstr;
         seedstream >> seed;
-        cout << "Got seed " << seed << endl;
+        // This resets the seed in the controller if Accepted.
         mGamePlay->ResetSeed(seed);
-    } else {
-        cout << "User cancelled re-seeding" << endl;
     }
 }
  
+// Quit th program.
 void View::onQuit() {
-    cout << "Quit" << endl;
     // Closes the main window to stop the Gtk::Main::run()
     hide();
 }
 
-// Implementations of the view external interface.
+/****************************************************
+ * Implementations of the view external interface.  *
+ ****************************************************/
+
+// Adds a new player and asks if it is a human or computer.
 void View::AddPlayer(int player) {
-    cout << "Got addplayer signal" << endl;
     stringstream s;
     s << "Is player " << player << " a human or a computer?";
     Gtk::Dialog dialog(s.str());
+    // Adds Human / Computer buttons
     dialog.add_button("Player is a Human", 1);
     dialog.add_button("Player is a Computer", 2);
+
+    // runs the dialog widget
     int resp = dialog.run();
-    cout << "Got response " << resp << endl;
     if (resp == 1) {
-        // Human player.
+        // adds a Human player.
         mGamePlay->AddPlayer(true);
     } else {
-        // Computer player.
+        // adds a Computer player.
         mGamePlay->AddPlayer(false);
     }
 }
 
-
+// Prompts human for legal play
 void View::HumanTurn(int player) {
     assert(player > 0 && player < 5);
-    cout << "The view sees that it's a human's turn to play " << endl;
+    // I ask for all the legal cards in my hand.
     vector<Card*> legalHand = mGamePlay->GetLegal(player);
     if (!legalHand.empty()) {
-        cout << "We have legal cards to play" << endl;
         // We have legal cards to play
         mHand[player-1]->DisplayLegalCards(legalHand);
     } else {
@@ -196,20 +206,23 @@ void View::HumanTurn(int player) {
 }
 
 
-// Observer pattern - notifications of state changes from model.
+/****************************************************************
+ * Observer pattern - notifications of state changes from mode  *
+ ****************************************************************/
 
-// creates an HBox for the hand to be displayed
-// also creates a new player
+// creates an HBox for the hand to be displayed also creates a new player
 void View::Model_PlayerAdded(bool IsHuman, int playerid) {
-    cout << "Hey, apparently some player just got added lol. isHuman " << IsHuman << " id " << playerid << endl;
     assert(playerid > 0 && playerid < 5);
     if (IsHuman) {
+        // If human was added, add a cards in hand container to the UI
         mHand[playerid-1] = new HandHBox(mDeck, mGamePlay, playerid);
-        mPanel.add(*mHand[playerid-1]);
-        // Displays the player information onto the screen
+        mPanel.pack_start(*mHand[playerid-1], Gtk::PACK_SHRINK);
     } else {
+        // Else, don't add any.
         mHand[playerid-1] = NULL;
     }
+    
+    // Displays the player information onto the screen
     mPlayerInfo[playerid-1] = new PlayerInfoBox(IsHuman, playerid, mGamePlay, mDeck);
     mPlayerInfoContainer.add(*mPlayerInfo[playerid-1]);
     mPlayerInfo[playerid-1]->show();
@@ -217,10 +230,10 @@ void View::Model_PlayerAdded(bool IsHuman, int playerid) {
 
 // Gives the list of cards to the mHand box to be displayed
 void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
-    cout << "Got some cards dealt" << endl;
     for (int i = 0; i < 4; i++) {
+        // passes all the cards belonging to human players
         if (!playerCards[i].empty()) {
-            cout << "Got some human cards dealt" << endl;
+            // Adds cards to hand and display them
             assert(mHand[i] != NULL);
             mHand[i]->AddCards(playerCards.at(i));
             mHand[i]->show();
@@ -228,59 +241,122 @@ void View::Model_CardsDealt(vector<vector<Card*> > playerCards) {
     }
 }
 
+// Displays the new round dialog box
 void View::Model_NewRound(int roundNumber) {
-    cout << "We are now on round number " << roundNumber << endl;
+    if (!IsThereAnyHuman()) {
+        return;
+    }
+
+    // Creates a dialog box displaying the round number.
+    Gtk::Dialog dialog("New Round");
+    stringstream message;
+    message << "Round " << roundNumber << " will begin shortly.";
+    Gtk::VBox* mDialogBox = dialog.get_vbox();
+    Gtk::Label::Label mLabel(message.str().c_str());
+    mDialogBox->add(mLabel);
+    dialog.show_all_children();
+
+    // Add button and then running the dialog widget
+    dialog.add_button("Okay", 1);
+    dialog.run();
 }
 
+// Turns human UI into Computer UI. Replaces staus as Computer in the UI.
+// Also removes the hand of cards in the UI
 void View::Model_PlayerRageQuitted(int player) {
-    cout << "HUMAN is now a COMPUTER." << endl;
+    // Changes the Player Info box status from Human to Computer
     mPlayerInfo[player-1]->HumanToComputer();
+
+    // Remove and Delete the cards in hand widget; and set pointer to NULL
     mPanel.remove(*mHand[player-1]);
     delete mHand[player-1];
     mHand[player-1] = NULL;
 }
+
+// Clears the table
 void View::Model_CardsCleared() {
     mTable.ClearTable();
 }
-void View::Model_ScoreUpdated(int player, int score) {
+
+// Updates the Score
+void View::Model_ScoreUpdated(int player, int score, int prevScore) {
+    // show the user the discard pile and the addition score if there is 
+    // at least one human playing. If not, then just continue the game.
+    if (IsThereAnyHuman()) {
+        stringstream temp;
+        temp << "Player " << player;
+
+        // Creates the dialog title
+        Gtk::Dialog dialog(temp.str().c_str());
+
+        // Clear out the stream
+        temp.str("");
+        
+        // Create widgets to be added to the dialog Vbox
+        Gtk::VBox* dialogBox = dialog.get_vbox();
+        temp << "Player " << player << " Score: " << prevScore;
+        temp <<" + " << score - prevScore << " = " << score;
+        Gtk::Label::Label message(temp.str().c_str());
+        HandHBox* discardPile = mPlayerInfo[player-1]->GetDiscardPile();
+
+        // Adding widgets to the dialog box
+        dialogBox->add(message);
+        dialogBox->add(*discardPile);
+        dialogBox->show_all_children();
+        dialog.add_button("Okay", 1);
+        dialog.run();
+    }
+
     // at the end of the round, this is their accumulative score.
-    cout << "Updating Score." << endl;
     assert(player > 0 && player < 5);
     mPlayerInfo[player-1]->UpdateScore(score);
 }
 
-void View::Model_DiscardsCleared(int player) {}
+// Clears the player's discard pile in the player info box
+void View::Model_DiscardsCleared(int player) {
+    if (mPlayerInfo[player-1] != NULL) {
+        // clears the discard pile
+        mPlayerInfo[player-1]->DeleteDiscardPile();
+    }
+}
 
+// User plays a card and removes the card from human hand in the UI
 void View::Model_CardPlayed(int player, Card* card) {
     assert(player > 0 && player < 5);
-    cout << "Apparently, player " << player << " played card " << *card << endl;
+    // Puts the played card on the table
     mTable.CardPlayed(card);
     if(mHand[player-1]){
-        mHand[player-1]->CardPlayed(card);
-        mHand[player-1]->TurnHandToStatic();
+        // If human, removes the card from the player's hand in the UI and
+        // returns all buttons to static images
+        RemoveCardFromHand(player, card);
     }
 }
+
+// Put the discarded cards in the Player Info Box's discard pile
 void View::Model_CardDiscarded(int player, Card* card) {
     assert(player > 0 && player < 5);
-    cout << "Apparently, player " << player << " Discarded card " << *card << endl;
+    
+    // Add card discarded to the player's discard pile in the info box
+    mPlayerInfo[player-1]->AddToDiscardPile(card->getRank(), card->getSuit());
     
     if(mHand[player-1] != NULL){
-        cout << "Discarding " << card->getRank() << card->getSuit() << endl;
-        mPlayerInfo[player-1]->AddToDiscardPile(card->getRank(), card->getSuit());
-        mHand[player-1]->CardPlayed(card);
-        mHand[player-1]->TurnHandToStatic();
+        // If human, removes the card from the player's hand in the UI and
+        // returns all buttons to static images
+        RemoveCardFromHand(player, card);
     }
 
 }
 
+// Displays the End of the game.
 void View::Model_EndGame(vector<int> players) {
     assert(!players.empty());
-    cout << "EndGame called" << endl;
-    // Disable the discard/ragequit buttons for players
+
+    // Disable the discard and ragequit buttons for players
     for (int i = 0; i < 4; i++) {
         mPlayerInfo[i]->DisableButtons();
     }
 
+    // Display the winner in a dialog button.
     for (int i = 0; i < players.size(); i++) {
         Gtk::MessageDialog dialog(*this, "Game over!");
         stringstream s;
@@ -290,3 +366,46 @@ void View::Model_EndGame(vector<int> players) {
     }
 }
 
+// Returns true if there are humans left in the game
+bool View::IsThereAnyHuman() {
+    for (int i = 0; i < 4; i++) {
+        if (mHand[i] != NULL) {
+            return true;
+        } 
+    }
+    // Return false if all players are computer
+    return false;
+}
+
+// Resets the entire UI
+void View::ResetGame() {
+    for (int i = 0; i < 4; i++) {
+        // Clears the Player Information Boxes
+        if (mPlayerInfo[i] != NULL) {
+            // remove the Player Info Widget, delete it, and set to null
+            mPlayerInfoContainer.remove(*mPlayerInfo[i]);
+            delete mPlayerInfo[i];
+            mPlayerInfo[i] = NULL;
+        }
+
+        // Clears the Hand of Card that human players see
+        if (mHand[i] != NULL) {
+            // Remove the Hand of Cards displayed for human. delete and set
+            // to nu;;
+            mPanel.remove(*mHand[i]);
+            delete mHand[i];
+            mHand[i] = NULL;
+        }
+    }
+
+    // Clears the tbale
+    mTable.ClearTable();
+}
+
+// Removes a card from the player's hand in the UI
+void View::RemoveCardFromHand (int player, Card* card) {
+    // Remove card from hand 
+    mHand[player-1]->CardPlayed(card);
+    // Changes all the buttons back to images
+    mHand[player-1]->TurnHandToStatic();
+}

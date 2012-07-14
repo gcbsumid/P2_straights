@@ -1,9 +1,19 @@
+/************************************************
+ * HandHBox.cpp                                 *
+ * Author: Christian Sumido, Didier Smith       * 
+ ************************************************/
+
+// Include our written code
 #include "HandHBox.h"
 #include "CardPics.h"
 #include "../gameplay/Card.h"
 #include "DeckGui.h"
+
+// Include Gtkmm Libraries
 #include <gtkmm/box.h>
 #include <gtkmm/label.h>
+
+// Include vectpr of Images
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -14,7 +24,7 @@ class GamePlay;
 // Constructor - it creates the 4 suits in a Hbox each
 HandHBox::HandHBox(DeckGui* deck, GamePlay* gameplay, int player, int spacing) : 
                 Gtk::HBox(true, spacing), mDeck(deck), mPlayer(player), 
-                mGamePlay(gameplay), mName(NULL) {
+                mName(NULL), mGamePlay(gameplay) {
     stringstream name;
     name << "Player " << player << endl;
     mName = new Gtk::Label::Label(name.str().c_str(), false);
@@ -37,10 +47,7 @@ HandHBox::~HandHBox() {
             delete mCards[i];
         }
     }
-}
-
-void HandHBox::update(){
-    // TODO: something/
+    delete mName;
 }
 
 void HandHBox::TurnHandToButton() {
